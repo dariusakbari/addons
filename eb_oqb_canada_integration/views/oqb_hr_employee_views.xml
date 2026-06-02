@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--        Employee XML-->
+     <record id="view_hr_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='hr_settings']" position="after">
+                    <page string="Quickbook Integration" name="Quickbook Integration">
+                         <group>
+                             <field name="first_name" string="First Name"/>
+                             <field name="last_name" string="Last Name"/>
+                             <field name="quickbook_id"/>
+                             <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                             <field name="odoo_hash"/>
+                             <field name="instance_name"/>
+                             <field name="quickbook_sync_token"/>
+                         </group>
+                    </page>
+                </xpath>
+                 <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="employee_record_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_employee_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.list</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='active']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="sync_to_quickbook" widget="boolean_toggle" optional="show"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_hr_employee_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="binding_model_id" ref="model_hr_employee"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.employee_record_send_to_quickbook()
+            </field>
+        </record>
+
+        <!--        Department XML-->
+
+        <record id="view_hr_department_form_inherit" model="ir.ui.view">
+            <field name="name">hr.department.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Quickbook Integration" name="Quickbook Integration">
+                             <group>
+                                 <field name="quickbook_id"/>
+                                 <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                                 <field name="odoo_hash"/>
+                                 <field name="instance_name"/>
+                                 <field name="quickbook_sync_token"/>
+                             </group>
+                        </page>
+                    </notebook>
+                </xpath>
+                 <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="department_record_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_department_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.department.list</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_hr_department_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hr_department"/>
+            <field name="binding_model_id" ref="model_hr_department"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.department_record_send_to_quickbook()
+            </field>
+        </record>
+
+    </data>
+</odoo>

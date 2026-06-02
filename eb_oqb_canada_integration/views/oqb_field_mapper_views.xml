@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_oqb_coa_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.coa.mapper.list</field>
+        <field name="model">oqb.coa.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_coa_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.coa.mapper.form</field>
+        <field name="model">oqb.coa.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_coa_mapper" model="ir.actions.act_window">
+        <field name="name">Companies Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.coa.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_coa_mapper"
+              name="Chart of Account Fields"
+              action="action_oqb_coa_mapper"
+              parent="menu_field_mapper_master"
+              sequence="1"/>
+
+<!--    Customer Fields-->
+
+    <record id="view_oqb_customer_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.customer.mapper.list</field>
+        <field name="model">oqb.customer.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_customer_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.customer.mapper.form</field>
+        <field name="model">oqb.customer.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_customer_mapper" model="ir.actions.act_window">
+        <field name="name">Customer Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.customer.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_customer_mapper"
+              name="Customer Fields"
+              action="action_oqb_customer_mapper"
+              parent="menu_field_mapper_master"
+              sequence="2"/>
+
+    <!--    Product Fields-->
+
+    <record id="view_oqb_product_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.product.mapper.list</field>
+        <field name="model">oqb.product.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_product_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.product.mapper.form</field>
+        <field name="model">oqb.product.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_product_mapper" model="ir.actions.act_window">
+        <field name="name">Product Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.product.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_product_mapper"
+              name="Product Fields"
+              action="action_oqb_product_mapper"
+              parent="menu_field_mapper_master"
+              sequence="3"/>
+
+<!--    Sale Order-->
+
+    <record id="view_oqb_salereceipt_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.salereceipt.mapper.list</field>
+        <field name="model">oqb.salereceipt.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_salereceipt_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.salereceipt.mapper.form</field>
+        <field name="model">oqb.salereceipt.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_salereceipt_mapper" model="ir.actions.act_window">
+        <field name="name">Sale Order Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.salereceipt.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_salereceipt_mapper"
+              name="Sale Order Fields"
+              action="action_oqb_salereceipt_mapper"
+              parent="menu_field_mapper_master"
+              sequence="3"/>
+
+    <!--    Invoice -->
+
+    <record id="view_oqb_invoice_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.invoice.mapper.list</field>
+        <field name="model">oqb.invoice.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_invoice_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.invoice.mapper.form</field>
+        <field name="model">oqb.invoice.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_invoice_mapper" model="ir.actions.act_window">
+        <field name="name">Invoice Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.invoice.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_invoice_mapper"
+              name="Invoice Fields"
+              action="action_oqb_invoice_mapper"
+              parent="menu_field_mapper_master"
+              sequence="4"/>
+
+
+    <!--    Credit Note -->
+
+    <record id="view_oqb_credit_note_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.cdt.mapper.list</field>
+        <field name="model">oqb.cdt.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_credit_note_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.cdt.mapper.form</field>
+        <field name="model">oqb.cdt.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_credit_note_mapper" model="ir.actions.act_window">
+        <field name="name">Credit Note Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.cdt.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_credit_note_mapper"
+              name="Credit Note Fields"
+              action="action_oqb_credit_note_mapper"
+              parent="menu_field_mapper_master"
+              sequence="4"/>
+
+
+    <!--    Customer Payment -->
+
+    <record id="view_oqb_cpt_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.cpt.mapper.list</field>
+        <field name="model">oqb.cpt.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_cpt_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.cpt.mapper.form</field>
+        <field name="model">oqb.cpt.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_cpt_mapper" model="ir.actions.act_window">
+        <field name="name">Customer Payment Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.cpt.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_cpt_mapper"
+              name="Customer Payment Fields"
+              action="action_oqb_cpt_mapper"
+              parent="menu_field_mapper_master"
+              sequence="5"/>
+
+
+       <!--    Vendor -->
+
+    <record id="view_oqb_vendor_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.vendor.mapper.list</field>
+        <field name="model">oqb.vendor.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_vendor_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.vendor.mapper.form</field>
+        <field name="model">oqb.vendor.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_vendor_mapper" model="ir.actions.act_window">
+        <field name="name">Vendor Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.vendor.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_vendor_mapper"
+              name="Vendor Fields"
+              action="action_oqb_vendor_mapper"
+              parent="menu_field_mapper_master"
+              sequence="6"/>
+
+     <!--    Purchase Order -->
+
+    <record id="view_oqb_purchaseorder_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.purchaseorder.mapper.list</field>
+        <field name="model">oqb.purchaseorder.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_purchaseorder_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.purchaseorder.mapper.form</field>
+        <field name="model">oqb.purchaseorder.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_purchaseorder_mapper" model="ir.actions.act_window">
+        <field name="name">Purchase Order Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.purchaseorder.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_purchaseorder_mapper"
+              name="Purchase Order Fields"
+              action="action_oqb_purchaseorder_mapper"
+              parent="menu_field_mapper_master"
+              sequence="7"/>
+
+     <!--    Vendor Bills -->
+
+    <record id="view_oqb_purchasebill_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.purchasebill.mapper.list</field>
+        <field name="model">oqb.purchasebill.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_purchasebill_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.purchasebill.mapper.form</field>
+        <field name="model">oqb.purchasebill.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_purchasebill_mapper" model="ir.actions.act_window">
+        <field name="name">Vendor Bills Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.purchasebill.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_purchasebill_mapper"
+              name="Vendor Bills Fields"
+              action="action_oqb_purchasebill_mapper"
+              parent="menu_field_mapper_master"
+              sequence="8"/>
+
+
+     <!--    Refund -->
+
+    <record id="view_oqb_refund_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.refund.mapper.list</field>
+        <field name="model">oqb.refund.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_refund_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.refund.mapper.form</field>
+        <field name="model">oqb.refund.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_refund_mapper" model="ir.actions.act_window">
+        <field name="name">Refund Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.refund.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_refund_mapper"
+              name="Refund Fields"
+              action="action_oqb_refund_mapper"
+              parent="menu_field_mapper_master"
+              sequence="8"/>
+
+    <!--    Vendor Payment -->
+
+    <record id="view_oqb_vpt_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.vpt.mapper.list</field>
+        <field name="model">oqb.vpt.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_vpt_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.vpt.mapper.form</field>
+        <field name="model">oqb.vpt.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_vpt_mapper" model="ir.actions.act_window">
+        <field name="name">Vendor Payment Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.vpt.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_vpt_mapper"
+              name="Vendor Payment Fields"
+              action="action_oqb_vpt_mapper"
+              parent="menu_field_mapper_master"
+              sequence="8"/>
+
+     <!--    Payment Term  -->
+
+    <record id="view_oqb_pyt_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.pyt.mapper.list</field>
+        <field name="model">oqb.pyt.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_pyt_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.pyt.mapper.form</field>
+        <field name="model">oqb.pyt.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_pyt_mapper" model="ir.actions.act_window">
+        <field name="name">Payment Term Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.pyt.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_pyt_mapper"
+              name="Payment Term Fields"
+              action="action_oqb_pyt_mapper"
+              parent="menu_field_mapper_master"
+              sequence="9"/>
+
+        <!--    Payment Method  -->
+
+    <record id="view_oqb_pym_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.pym.mapper.list</field>
+        <field name="model">oqb.pym.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_pym_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.pym.mapper.form</field>
+        <field name="model">oqb.pym.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_pym_mapper" model="ir.actions.act_window">
+        <field name="name">Payment Method Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.pym.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_pym_mapper"
+              name="Payment Method Fields"
+              action="action_oqb_pym_mapper"
+              parent="menu_field_mapper_master"
+              sequence="9"/>
+
+            <!--    Account Tax  -->
+
+    <record id="view_oqb_atx_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.atx.mapper.list</field>
+        <field name="model">oqb.atx.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_atx_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.atx.mapper.form</field>
+        <field name="model">oqb.atx.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_atx_mapper" model="ir.actions.act_window">
+        <field name="name">Account Tax Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.atx.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_atx_mapper"
+              name="Account Tax Fields"
+              action="action_oqb_atx_mapper"
+              parent="menu_field_mapper_master"
+              sequence="9"/>
+
+    <!--    Employee  -->
+
+    <record id="view_oqb_employee_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.employee.mapper.list</field>
+        <field name="model">oqb.employee.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_employee_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.employee.mapper.form</field>
+        <field name="model">oqb.employee.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_employee_mapper" model="ir.actions.act_window">
+        <field name="name">Employee Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.employee.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_employee_mapper"
+              name="Employee Fields"
+              action="action_oqb_employee_mapper"
+              parent="menu_field_mapper_master"
+              sequence="10"/>
+
+
+    <!--    Department  -->
+
+    <record id="view_oqb_department_mapper_list" model="ir.ui.view">
+        <field name="name">oqb.department.mapper.list</field>
+        <field name="model">oqb.department.mapper</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="internal_name"/>
+                <field name="label_name"/>
+                <field name="field_type"/>
+                <field name="quickbook_instance_name"/>
+                <field name="system_name"/>
+                <field name="field_definition"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_department_mapper_form" model="ir.ui.view">
+        <field name="name">oqb.department.mapper.form</field>
+        <field name="model">oqb.department.mapper</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="quickbook_instance_name"/>
+                            <field name="system_name"/>
+                             <field name="field_type"/>
+                        </group>
+                        <group>
+                            <field name="label_name"/>
+                            <field name="internal_name"/>
+                            <field name="field_definition"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_department_mapper" model="ir.actions.act_window">
+        <field name="name">Department Fields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.department.mapper</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+
+    <menuitem id="menu_department_mapper"
+              name="Department Fields"
+              action="action_oqb_department_mapper"
+              parent="menu_field_mapper_master"
+              sequence="11"/>
+
+</odoo>

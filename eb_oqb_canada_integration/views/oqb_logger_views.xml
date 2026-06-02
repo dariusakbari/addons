@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_oqb_logger_list" model="ir.ui.view">
+        <field name="name">oqb.logger.list</field>
+        <field name="model">oqb.logger</field>
+        <field name="arch" type="xml">
+            <list decoration-success="log_type == 'success'" decoration-danger="log_type == 'error'" decoration-warning="log_type == 'warning'" decoration-info="log_type == 'info'"  sample="1" multi_edit="1">
+                <field name="integration_direction" optional="show"/>
+                <field name="module_name" optional="show"/>
+                <field name="instance_name" optional="show"/>
+                <field name="operation_performed_by" optional="show"/>
+                <field name="record_id" optional="show"/>
+                <field name="quickbook_datetime" optional="show"/>
+                <field name="operation" optional="show"/>
+                <field name="log_type" decoration-success="log_type == 'success'" decoration-danger="log_type == 'error'" decoration-warning="log_type == 'warning'" decoration-info="log_type == 'info'" widget="badge" optional="show"/>
+                <field name="description" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_oqb_logger_form" model="ir.ui.view">
+        <field name="name">oqb.logger.form</field>
+        <field name="model">oqb.logger</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="integration_direction"/>
+                            <field name="module_name"/>
+                            <field name="operation_performed_by"/>
+                            <field name="instance_name"/>
+                            <field name="record_id"/>
+                            <field name="operation"/>
+                            <field name="request_payload"/>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                            <field name="quickbook_datetime"/>
+                            <field name="status_code"/>
+                            <field name="error_details"/>
+                            <field name="response_payload"/>
+                             <field name="resolution_status"/>
+                            <field name="log_type"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_oqb_logger" model="ir.actions.act_window">
+        <field name="name">Quickbook Logger</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.logger</field>
+        <field name="view_mode">list,form</field>
+        <field name="context"></field>
+    </record>
+
+    <menuitem id="menu_quickbook_logger"
+              name="Quickbook Logger"
+              action="action_oqb_logger"
+              parent="menu_oqb_root"
+              sequence="2"/>
+
+</odoo>

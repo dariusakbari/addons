@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='internal_notes']" position="after">
+                 <page string="Quickbook Integration" name="Quickbook Integration">
+                         <group>
+                             <field name="first_name" string="First Name" invisible="is_company == True"/>
+                             <field name="last_name" string="Last Name" invisible="is_company == True"/>
+                             <field name="quickbook_id"/>
+                             <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                             <field name="odoo_hash"/>
+                             <field name="instance_name"/>
+                             <field name="quickbook_sync_token"/>
+                         </group>
+                     </page>
+                </xpath>
+                 <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="partner_record_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_tree_inherit" model="ir.ui.view">
+            <field name="name">res.partner.list</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='complete_name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_res_partner_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="binding_model_id" ref="model_res_partner"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.partner_record_send_to_quickbook()
+            </field>
+        </record>
+
+<!--        res.users module-->
+
+        <record id="view_users_form_inherit" model="ir.ui.view">
+            <field name="name">res.users.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='login']" position="after">
+                    <group style="margin-top: 10px;">
+                        <field name="is_multi_company" string="Multi Company" widget="boolean_toggle" invisible="id != 2"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_users_tree_inherit" model="ir.ui.view">
+            <field name="name">res.users.list</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='company_id']" position="after">
+                    <field name="is_multi_company" widget="boolean_toggle" invisible="id != 2"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

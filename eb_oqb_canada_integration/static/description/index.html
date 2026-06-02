@@ -1,0 +1,1284 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-DQvkBjpPgn7RC31MCQoOeC9TI2kdqa4+BSgNMNj8v77fdC77Kj5zpWFTJaaAoMbC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YUe2LzesAfftltw+PEaao2tjU/QATaW/rOitAq67e0CT0Zi2VVRL0oC4+gAaeBKu"
+            crossorigin="anonymous"></script>
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body>
+
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <img src="Odoo_Partner_GIF.gif" class="img-responsive shadow" style="width:100% !important;"></div>
+</section>
+
+<section class="oe_container">
+    <div class="container  text-center" style="display: flex; justify-content: center; align-items: center;">
+        <div class="oe_row shadow  px-4 py-4 text-center" style="width:100% !important;">
+            <h1 style=" font-family:Montserrat;font-size: 38px;  margin-bottom: 20px; font-weight:300; text-align:center;">
+                Quickbooks Canada Online Integration</h1>
+            <div style="width: 65%; height: 4px; background-color:#0d1826; margin: 0 auto 20px auto; border-radius: 20px;"></div>
+            <p style="font-size:20px; font-family:Roboto; line-height: 1.5; text-align:left; color: #333; margin-bottom: 10px;">
+                This module offers a comprehensive and seamless integration between <span style="font-weight: bold;">Odoo</span> and <span style="font-weight: bold;">Quickbooks</span>,
+                providing a reliable solution for real-time synchronization of essential financial and business records.
+                It is designed to streamline accounting operations by connecting core Odoo modules like
+                <span style="font-weight: bold;">Currency</span>,
+                <span style="font-weight: bold;">Account Tax</span>,
+                <span style="font-weight: bold;">Chart of Accounts</span>,
+                <span style="font-weight: bold;">Customer</span>,
+                <span style="font-weight: bold;">Product</span>,
+                <span style="font-weight: bold;">Sale Orders</span>,
+                <span style="font-weight: bold;">Invoices</span>,
+                <span style="font-weight: bold;">Credit Notes</span>,
+                <span style="font-weight: bold;">Customer Payment</span>,
+                <span style="font-weight: bold;">Vendor</span>,
+                <span style="font-weight: bold;">Purchase Order</span>,
+                <span style="font-weight: bold;">Bills</span>,
+                <span style="font-weight: bold;">Refunds</span>,
+                <span style="font-weight: bold;">Vendor Payment</span>,
+                <span style="font-weight: bold;">Payment Term</span>,
+                <span style="font-weight: bold;">Payment Method</span>,
+                <span style="font-weight: bold;">Employee</span>,
+                <span style="font-weight: bold;">Department</span>
+                directly with <span style="font-weight: bold;">Quickbooks</span>.
+                <br/><br/>
+                The integration ensures accurate mapping and smooth data flow between both platforms. It supports
+                bidirectional syncing for contacts, invoices, and payments, automatic tax and account code matching, and
+                instant updates across both systems — reducing manual effort and eliminating data discrepancies. Whether
+                you’re managing customer invoices, vendor bills, sales quotes, or employee records, this connector
+                intelligently handles the exchange of critical financial data with minimal configuration.
+                <br/><br/>
+                This module is ideal for businesses seeking real-time visibility, enhanced financial control, and a
+                fully automated accounting workflow between Odoo and Quickbook. It promotes data consistency, simplifies
+                reconciliation, and ensures compliance with accounting best practices — all while keeping your financial
+                operations in sync and under control.
+            </p>
+            <div class="d-flex justify-content-center mt-5">
+              <a target="_blank"
+                 href="https://www.youtube.com/playlist?list=PL5BcbBAZvyYMODiGeaw6XhRMmsmZhTVjd"
+                 class="d-flex align-items-center px-4 py-2 text-white text-decoration-none"
+                 style="background-color: #e52d27; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: background-color 0.3s ease;">
+                <img src="youtube_icon.png" alt="YouTube Icon"
+                    style="height: 36px; width: 36px; margin-right: 12px; background-color: #fff; border-radius: 50%; padding: 4px;" loading="lazy">
+                <span style="font-size: 16px; font-weight: 500;">Watch Odoo–QuickBooks Integration Videos Playlist</span>
+              </a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <img src="Odoo_Quickbooks_Canada_Integration_Img.png" class="img-responsive shadow" style="width:100% !important;">
+    </div>
+</section>
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <img src="Quickbooks_Odoo_FlowChart.png" class="img-responsive shadow" style="width:100% !important;">
+    </div>
+</section>
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <!-- Features Tab-->
+        <div id="new_features_tab" style="width:100% !important;">
+            <div class="row mt-4 text-center">
+                <div class="themed-grid-col m-3 px-5">
+                    <h1 style="font-size: 38px;text-transform:uppercase; font-family:Montserrat; margin-bottom: 20px; font-weight: bold;text-align:center;">
+                        Key Features</h1>
+                    <div style="width: 30%; height: 4px; background-color: #0d1826; margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                </div>
+            </div>
+            <div class="shadow rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435;
+            font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+            <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+            font-size:18px; padding-right:10px"></span> Automatically synchronize account tax from QuickBooks to Odoo for reliable financial reporting and compliance.
+            </div>
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+            <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+            font-size:18px; padding-right:10px"></span> Map and sync your Chart of Accounts between Odoo and QuickBooks for consistent and transparent financial tracking.
+            </div>
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+            <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+            font-size:18px; padding-right:10px"></span> Bidirectional synchronization of contacts, ensuring customer and vendor data is always current in both systems.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+            <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+            font-size:18px; padding-right:10px"></span> Sync employee and department records bidirectionally to align HR and payroll data.
+            </div>
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+            font-size:18px; padding-right:10px"></span> Sync sale orders and quotations both ways for real-time forecasting and order management.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Manage purchase orders bidirectionally for efficient procurement and vendor tracking.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Automatically create and sync customer invoices between Odoo and QuickBooks, reducing manual entry and errors.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Sync vendor bills both ways to streamline accounts payable operations.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Keep refunds and credit notes fully aligned across both systems.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Ensure all customer and vendor payments are consistently reflected in both Odoo and QuickBooks for accurate cash flow tracking.
+            </div>
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Schedule automatic data syncs with background jobs or trigger manual sync from tree/form views.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Sync specific records from QuickBooks using record ID wizards for precise control.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Hash-based record comparison skips unchanged records to enhance sync performance.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Supports multi-company environment, allowing users to sync data per company context.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Built-in multi-currency support for accurate global financial management.
+            </div>
+
+            <div class="shadow  rounded"
+                 style="padding:20px; margin-bottom:20px; font-size:16px; color:#000435; font-weight:600; letter-spacing:1px; display:block; border-radius:0.25rem !important">
+                    <span class="fa fa-arrow-right" style="color:#06928f; font-weight:600;
+                font-size:18px; padding-right:10px"></span> Clean, intuitive, business-friendly UI with quick setup – no technical complexity required.
+            </div>
+        </div>
+    </div>
+</section>
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <div class="oe_row shadow  px-4 py-5" style="width:100% !important;">
+            <div class="tabs-container" style="width:100%; border-radius:50px; padding:0.6px; margin-bottom:20px">
+                <ul role="tablist" class="nav nav-tabs justify-content-center" data-tabs="tabs"
+                    style="border:none; background-color:unset; margin:0 auto">
+                    <li class="nav-item"
+                        style="border-top-right-radius:10px; border-top-left-radius:10px; background-color:white; margin-right:10px; border:1px solid #ddd; border-bottom:0">
+                        <a href="#screenshots_tab" data-bs-toggle="tab" aria-expanded="true" class="nav-link show active"
+                           style="font-family:Roboto; text-transform:uppercase; font-weight:600; font-size:15px; letter-spacing:1px; padding:11px 20px; border-top-left-radius:10px; border-top-right-radius:10px;  border:1px solid transparent">
+                            <i class="fa fa-list-ul"></i> Setup</a>
+                    </li>
+                    <li class="nav-item"
+                        style="border-top-right-radius:10px; border-top-left-radius:10px; background-color:white; margin-right:10px; border:1px solid #ddd; border-bottom:0">
+                        <a href="#release_tab" data-bs-toggle="tab" aria-expanded="true" class="nav-link show"
+                           style="font-family:Roboto; text-transform:uppercase; font-weight:600; font-size:15px; letter-spacing:1px; padding:11px 20px; border-top-left-radius:10px; border-top-right-radius:10px;  border:1px solid transparent">
+                            <i class="fa fa-image"></i> Releases</a>
+                    </li>
+                    <li class="nav-item"
+                        style="border-top-right-radius:10px; border-top-left-radius:10px; background-color:white; margin-right:10px; border:1px solid #ddd; border-bottom:0">
+                        <a href="#support_tab" data-bs-toggle="tab" aria-expanded="true" class="nav-link show"
+                           style="font-family:Roboto; text-transform:uppercase; font-weight:600; font-size:15px; letter-spacing:1px; padding:11px 20px; border-top-left-radius:10px; border-top-right-radius:10px; border:1px solid transparent">
+                            <i class="fa fa-users fa-1x  "></i> Support</a>
+                    </li>
+                    <li class="nav-item"
+                        style="border-top-right-radius:10px; border-top-left-radius:10px; background-color:white; margin-right:10px; border:1px solid #ddd; border-bottom:0">
+                        <a href="#faq_tab" data-bs-toggle="tab" aria-expanded="true" class="nav-link show"
+                           style="font-family:Roboto; text-transform:uppercase; font-weight:600; font-size:15px; letter-spacing:1px; padding:11px 20px; border-top-left-radius:10px; border-top-right-radius:10px;  border:1px solid transparent">
+                            <i class="fa fa-question-circle"></i> FAQs</a>
+                    </li>
+                </ul>
+
+
+                <!-- Screenshots tab main -->
+                <div class="tab-content">
+                    <div id="screenshots_tab" class="tab-pane active">
+                        <div class="row mt-4 text-center">
+                            <div class="themed-grid-col m-3 px-5">
+                                <h1 style="font-size: 38px; text-transform:uppercase; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                    Screenshots
+                                </h1>
+                                <div style="width: 45%; height: 4px; background-color: #0d1826;  margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center mb-4">
+
+                            <div class="col-md-12 text-center">
+                                 <h3 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    Create a QuickBooks Developer account and set up a workspace.</h3>
+                                 <div style="line-height: 1.4; margin: 0; padding: 0;">
+                                    <p style="margin: 4px 0;">Go to <a href="https://developer.intuit.com/" target="_blank">https://developer.intuit.com/</a></p>
+                                    <p style="margin: 4px 0;">Click Sign Up (or Sign In if you already have an Intuit account).</p>
+                                    <p style="margin: 4px 0;">After signing in, create a workspace.</p>
+                                </div>
+                                 <img src="account_conf09.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                 <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h3 style="color: #333; font-size: 20px; margin-bottom: 10px;">Create a New App</h3>
+                                <p>
+                                    Select a Workspace, then click the “+” icon to start creating your app.
+                                </p>
+
+                                <img src="account_conf01.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                                <img src="account_conf02.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style="width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h3 style="color: #333; font-size: 20px; margin-bottom: 10px;">App Created — Access Credentials</h3>
+                                <div style="line-height: 1.4; margin: 0; padding: 0;">
+                                    <p style="margin: 4px 0;">After the app is created, click on the app from your App dashboard.</p>
+                                    <p style="margin: 4px 0;">Go to the <span style="font-weight: bold;">Keys & Credentials</span> tab.</p>
+                                    <p style="margin: 4px 0;">Here you will find: <span style="font-weight: bold;">Client ID</span>, <span style="font-weight: bold;">Client Secret</span>.</p>
+                                </div>
+
+                                <img src="account_conf04.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h3 style="color: #333; font-size: 20px; margin-bottom: 10px;">Set Redirect URIs</h3>
+                                <p>On the Keys & Credentials tab --> Settings --> Redirect URIs</p>
+                                <img src="redirect_uri.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Use the Credentials in Your Integration</h4>
+                                <div style="line-height: 1.4; margin: 0; padding: 0;">
+                                    <p style="margin: 4px 0;">
+                                        Use <span style="font-weight: bold;">Client ID</span>,
+                                        <span style="font-weight: bold;">Client Secret</span>, and
+                                        <span style="font-weight: bold;">Redirect URI</span> to initiate the OAuth 2.0 flow from Odoo.
+                                    </p>
+                                    <p style="margin: 4px 0;">
+                                        Click the <span style="font-weight: bold;">“Generate Authorization URL”</span> button.
+                                    </p>
+                                </div>
+
+                                <img src="auth_code_03.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Select the QuickBooks company you want to authorize.</h4>
+
+                                <img src="account_conf11.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">After selecting the company, you’ll be redirected to your configured Redirect URI</h4>
+                                <div style="line-height: 1.5; margin: 0; padding: 0;">
+                                    <p style="margin: 4px 0;">The authorization code will be included in the URL (e.g., <code>?code=abc123...</code>).</p>
+                                    <p style="margin: 4px 0;">Copy this code, as you’ll need it to exchange for access and refresh tokens.</p>
+                                </div>
+
+                                <img src="auth_code_url.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"/>
+                                After generating the authorization code, paste it into the “Authorization Code” field.
+                                <img src="auth_code_01.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    After generating the authorization code, click the “Generate Access Token” button to create your Access Token and Refresh Token.</h4>
+
+                                <img src="auth_code_02.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    In the second configuration step, enter the following details:</h4>
+                                <div style="display: flex; flex-wrap: wrap; gap: 20px; line-height: 1.3; color: black; margin-left: 148px; margin-bottom: 10px;">
+                                    <span><span style="font-weight: bold;">Company ID:</span> (from QuickBooks)</span>
+                                    <span><span style="font-weight: bold;">API Base URL:</span> e.g., Sandbox or Production endpoint</span>
+                                    <span><span style="font-weight: bold;">QuickBooks Time Zone:</span></span>
+                                    <span><span style="font-weight: bold;">QuickBooks Version:</span> e.g., 73</span>
+                                    <span><span style="font-weight: bold;">Odoo Company:</span> Select the corresponding company</span>
+                                    <span><span style="font-weight: bold;">Pagination Size:</span> Set the preferred size</span>
+                                </div>
+
+                                <img src="account_conf_12.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style="width: 80%; object-fit: left; border-radius: 15px; margin-bottom: 5px;"/>
+                                <img src="check_connection.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">When the user clicks on “Get Currency”, the system fetches currency data from both Odoo and QuickBooks, including the home currency and a list of other available currencies.</h4>
+
+                                <img src="get_currency.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    When the user clicks on “QuickBooks to Odoo”, all Tax from QuickBooks are fetched and synced into Odoo.</h4>
+
+                                <img src="oqb_tax.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                                <img src="qbo_tax.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    Easily sync chart of account records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="oqb_coa.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                             <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    Easily sync chart of account records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.
+                                </h4>
+
+                                <img src="qto_coa.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync contact records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_contact.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    Easily sync contact records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.
+                                </h4>
+
+                                <img src="qto_contact.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    Easily sync product records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_product.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync product records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.
+                                </h4>
+
+                                <img src="qto_product.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync estimate and sale order records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_estimate.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync estimate and sale order records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_sale_order.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                                <img src="otq_sale_order_02.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync invoice records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_invoice.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync invoice records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_invoice.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync customer payment records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_cpt.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync customer payment records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_cpt.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync credit note records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_credit_note.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync credit note records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_credit_note.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">
+                                    Easily sync vendor records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_vendor.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync vendor records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_vendor.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync purchase order records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_po.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                                <img src="qto_po_02.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync purchase order records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_po.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync vendor bill records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_bill.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync vendor bill records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_bill.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                             <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync vendor payment records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_vpt.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync vendor payment records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_vpt.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;">Easily sync refund records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_refund.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync refund records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_refund.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync employee records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_emp.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                             <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync employee records from QuickBooks to Odoo via manual actions, schedulers, and a wizard.</h4>
+
+                                <img src="qto_emp.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync department records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_dept.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync payment term records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="oqb_pyt.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <h4 style="color: #333; font-size: 20px; margin-bottom: 10px;"> Easily sync payment method records Odoo to QuickBooks via manual actions, schedulers, form view, and list view</h4>
+
+                                <img src="otq_pym.png"
+                                     class="img-fluid rounded shadow-lg"
+                                     style=" width: 80%; object-fit: left; border-radius: 15px;"/>
+                                <hr style="margin: 40px 0;">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Releases-->
+                    <div id="release_tab" class="container tab-pane fade">
+                        <div class="container mt-3" style="background-color:#e8f0fe;">
+                            <h4 style="font-family: Montserrat; font-weight: 600; color: #091E42;">📦 Version 1.0.0 – Initial Release</h4>
+                            <ul style="font-family: Roboto; font-size: 15px; line-height: 1.8; color: #212529; padding-left: 20px;">
+                                <li>First stable release of QuickBooks Online – Odoo 16,17,18 and 19 Connector (Canada region only).</li>
+                                <li>OAuth 2.0 authentication with Client ID, Client Secret, and Redirect URI support.</li>
+                                <li>Supports manual and scheduled sync of:
+                                    <ul style="margin-top: 5px; margin-bottom: 5px; padding-left: 20px;">
+                                        <li>Contacts (Customers & Vendors)</li>
+                                        <li>Products (Items)</li>
+                                        <li>Chart of Accounts</li>
+                                        <li>Sale Order & Purchase Order</li>
+                                        <li>Invoices & Bills</li>
+                                        <li>Customer & Vendor Payments</li>
+                                        <li>Credit Note & Refund</li>
+                                        <li>Payment Terms & Payment Method</li>
+                                        <li>Employee & Department</li>
+                                        <li>Taxes & Currency</li>
+                                    </ul>
+                                </li>
+                                <li>Manual sync via form view and list view buttons.</li>
+                                <li>Automated background sync using schedulers.</li>
+                                <li>Logging with error tracking and detailed messages.</li>
+                                <li>Simple and intuitive configuration interface.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Support Tab -->
+                    <div id="support_tab" class="tab-pane">
+                        <div class="row mt-4 text-center">
+                            <div class="themed-grid-col zn-1 m-3 px-5">
+                                <h1 style="font-size: 38px; text-transform:uppercase; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                    Demo & Support</h1>
+                                <div style="width: 30%; height: 4px; background-color: #0d1826; margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                        <p style="max-width: 900px; margin: 0 auto 30px auto; color: black; font-size: 16px; line-height: 1.6; font-family: Montserrat; text-align: center;">
+                            We're here to help! Whether you need assistance with Odoo app
+                            installation, customization, or have any technical or functional
+                            questions, our support team is just a call or click away. Choose
+                            your preferred method to connect with us - phone, email, or
+                            schedule a meeting. You can also explore our detailed video
+                            playlist for step-by-step guidance.
+                        </p>
+                        <div class="container my-5">
+                            <div class="row shadow rounded-4 p-4 align-items-center justify-content-center"
+                                 style="background:white;">
+                                <div class="col-lg-6 col-md-12 text-center mb-4 mb-lg-0">
+                                    <img src="Schedule_meeting.png"
+                                         alt="Schedule Meeting"
+                                         style="width:90%; border-radius:10px;"
+                                         class="img img-fluid shadow">
+                                </div>
+                                <div class="col-lg-6 col-md-12  ">
+                                    <h2 class="mb-4 "
+                                        style="font-family:Montserrat; font-weight:700; font-size:26px; color:#0d1826;">
+                                        Need Odoo Support?</h2>
+                                    <div class="d-flex   flex-column gap-2">
+                                        <!-- Phone -->
+                                        <div class="d-flex  ">
+                                            <a href="tel:+919870062925" target="_blank"
+                                               class="d-flex align-items-center text-decoration-none">
+                                                <div class="rounded-circle bg-white text-success d-flex justify-content-center align-items-center shadow"
+                                                     style="width: 45px; height: 45px;">
+                                                    <i class="fa fa-phone"></i>
+                                                </div>
+                                                <span style="font-size: 18px; color: #000;">(+91) 98700 62925</span>
+                                            </a>
+                                        </div>
+                                        <!-- Email -->
+                                        <div class="d-flex  align-items-center ">
+                                            <a href="mailto:info@echobitz.com"
+                                               target="_blank"
+                                               class="d-flex align-items-center text-decoration-none">
+                                                <div class="rounded-circle bg-white text-primary d-flex justify-content-center align-items-center shadow"
+                                                     style="width: 45px; height: 45px;">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                                <span style="font-size: 18px; color: #000;">info@echobitz.com</span>
+                                            </a>
+                                        </div>
+                                        <!-- Schedule Meeting -->
+                                        <div class="d-flex  align-items-center ">
+                                            <a href="https://www.echobitzit.com/contactus"
+                                               target="_blank"
+                                               class="d-flex align-items-center text-decoration-none">
+                                                <div class="rounded-circle bg-white text-warning d-flex justify-content-center align-items-center shadow"
+                                                     style="width: 45px; height: 45px;">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <span style="font-size: 18px; color: #000;">Schedule a Meeting</span>
+                                            </a>
+                                        </div>
+                                        <!-- Video Playlist -->
+                                        <div class="d-flex  align-items-center ">
+                                            <a href="https://www.youtube.com/playlist?list=PL5BcbBAZvyYMODiGeaw6XhRMmsmZhTVjd"
+                                               target="_blank"
+                                               class="d-flex align-items-center text-decoration-none">
+                                                <div class="rounded-circle bg-white text-danger d-flex justify-content-center align-items-center shadow"
+                                                     style="width: 45px; height: 45px;">
+                                                    <i class="fa fa-youtube-play"></i>
+                                                </div>
+                                                <span style="font-size: 18px; color: #000;">watch video playlist</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQS Tab -->
+                    <div id="faq_tab" class="container tab-pane fade">
+                        <div class="row mt-4 text-center">
+                            <div class="themed-grid-col m-3 px-5">
+                                <h1 style="font-size: 38px; text-transform:uppercase; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                    FAQS
+                                </h1>
+                                <div style="width: 10%; height: 4px; background-color: #0d1826;  margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                        <section class="oe_container mt32 mb32">
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Is this app compatible with both Odoo Community and Enterprise editions?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Yes, this app is fully compatible with both Odoo Community and Enterprise editions,
+                                    including Odoo.sh and On-Premise deployments.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Does this app work with Odoo SaaS (odoo.com)?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    No, this application is designed for Odoo On-Premise and Odoo.sh, and is not
+                                    compatible with Odoo’s SaaS (odoo.com) platform.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    I need some customizations in this app. How can I request them?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    You can request customizations by contacting us at info@echobitzit.com. We'll be
+                                    happy to assist you!
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Do I receive free support with this app?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Yes, we offer free support for 365 days from the date of purchase.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Do I get free updates with this app?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Yes, you will receive free updates for a lifetime at no additional cost.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Do I have to install anything else to get this module working?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Not at all! Everything you need is included—no extra libraries required.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Do I need to purchase the module separately for each Odoo version?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Yes, you need to download the module specifically for each version.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    What if I purchase the module for the wrong Odoo version? Can I exchange it for the correct one?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Unfortunately, we do not offer exchanges for purchases made in the wrong version.
+                                    Please ensure you select the correct Odoo version before purchasing.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    What data can be synced between Odoo and Quickbooks?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    The app supports syncing of Currency, Account Tax, Chart of Accounts, Customer, Product, Sale Orders, Invoices, Credit Notes, Customer Payment, Vendor, Purchase Order, Bills, Refunds, Vendor Payment, Payment Term, Payment Method, Employee, Department.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    How can I sync records between Odoo and QuickBooks?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Manual actions, Scheduled sync (via cron jobs), List view actions, Form view button, Import wizard.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Can I sync selected records only?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Yes, you can manually sync individual records or use scheduled sync for batch
+                                    operations.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Is the synchronization one-way or two-way?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    The integration supports both import from and export to Quickbooks, depending on the model
+                                    and settings.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Can I schedule automatic sync jobs?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Yes, you can configure scheduled actions for automated import/export between Odoo
+                                    and Quickbooks.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Is there a log history for synchronization actions?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Yes, all sync operations are logged with success and error messages for easy
+                                    tracking.
+                                </p>
+                            </div>
+
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Is this integration only for QuickBooks Online Canada?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    It does not support other regions like USA, UK, or Australia. However, we offer a separate module for QuickBooks Online – USA.
+                                </p>
+                            </div>
+
+                            <!-- FAQ: Refund and Credit Note Support -->
+                            <div class="container position-relative mt-4"
+                                 style="background-color:#e8f0fe; color:#1a237e; border-radius:10px; border:1px solid #c7dafc; padding:15px; text-align:left;">
+                                <span style="font-size:22px; font-weight:600; color:#212529; font-family:Montserrat; padding-left:10px">
+                                    Does this module support refund and credit note functionality?
+                                </span>
+                                <p style="padding-left:10px; font-family:Roboto;">
+                                    Yes, this integration fully supports refund and credit note synchronization between Odoo and QuickBooks, ensuring that all financial adjustments are accurately reflected on both sides.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <div class="oe_row shadow   px-4 py-5" style="width:100% !important;">
+            <div class="row mt-4 text-center">
+                <div class="themed-grid-col zn-1 m-3 px-5">
+                    <h1 style="font-size: 38px;text-transform:uppercase; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                        Free Support for 365 Days </h1>
+                    <div style="width: 50%; height: 4px; background-color:#0d1826;  margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                </div>
+            </div>
+            <p style=" font-size:18px; font-family:Roboto; line-height: 1.5; text-align:left; color:#333; margin-bottom: 20px;">
+                We believe that great apps deserve great support. That's why every
+                purchase
+                of our Odoo apps comes with 365 days of free expert support-no hidden
+                fees,
+                no hassle. Whether you need help with installation, customization, or
+                troubleshooting, our team is here to guide you every step of the way.
+                We're
+                committed to ensuring your Odoo experience is smooth, efficient, and
+                worry-free. With fast response times and professional assistance, you
+                can
+                focus on growing your business while we handle the tech. Start strong
+                with
+                support you can count on-for free, for the first 365 days.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <div class="oe_row shadow   px-4 py-5" style="width:100% !important;">
+            <div class="row mt-4 text-center">
+                <div class="themed-grid-col zn-1 m-3 px-5">
+                    <h1 style="font-size: 38px; text-transform:uppercase; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                        Demo & Video</h1>
+                    <div style="width: 30%; height: 4px; background-color: #0d1826; margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                </div>
+            </div>
+            <div class="pb32 pt-3"
+                 style="display:block; margin:0 auto; text-align:center">
+                <div class="d-inline-block mx-3 my-3" style="max-width:348px">
+                    <div class="s_panel_video">
+                        <h3 style="color:#091E42; font-family:Montserrat; font-weight:600; text-align:center; font-size:17px; opacity:1; margin:8px 0 16px"
+                            class="oe_slogan">Schedule Meeting for Any Query </h3>
+                        <a href="https://www.echobitzit.com/contactus" target="_blank">
+                            <img src="Schedule_meeting.png"
+                                 style="border-radius:10px" class="img img-fluid shadow">
+                        </a>
+                    </div>
+                </div>
+                <div class="d-inline-block mx-3 my-3" style="max-width:348px;">
+                    <div class="s_panel_video">
+                        <h3 style="color:#091E42; font-family:Montserrat; font-weight:600; text-align:center; font-size:17px; opacity:1; margin:8px 0 16px"
+                            class="oe_slogan">Watch Video Playlist</h3>
+                        <a href="https://www.youtube.com/playlist?list=PL5BcbBAZvyYMODiGeaw6XhRMmsmZhTVjd"
+                           target="_blank">
+                            <img src="odoo_quickbook_ytimg.png"
+                                 style="border-radius:10px; height: 230px;" class="img img-fluid shadow">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <div class="oe_row shadow   px-4 py-5" style="width:100% !important;">
+            <div class="row mt-4 text-center">
+                <div class="themed-grid-col zn-1 m-3 px-5">
+                    <h1 style="font-size: 38px; text-transform:uppercase; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                        Our Services</h1>
+                    <div style="width: 25%; height: 4px; background-color: #0d1826; margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-3 g-4 px-5 mt-3">
+                <!-- Odoo Integration -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center"
+                         style="background-color:#f9e0f5;">
+                        <div class="card-body">
+                            <i class="fa fa-plug fa-2x mb-3 " style="color: #e83e8c;"></i>
+                            <h5 class="card-title"
+                                style="font-size: 18px; text-transform:capitalize; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                Odoo Integration</h5>
+                            <p class="card-text" style=" font-family:Roboto;">Seamlessly
+                                integrate Odoo with third-party
+                                apps, platforms, and tools for better workflow.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Odoo Implementation -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center"
+                         style="background-color:#d3d3d3;">
+                        <div class="card-body">
+                            <i class="fa fa-cogs fa-2x mb-3 text-muted"></i>
+                            <h5 class="card-title"
+                                style="font-size: 18px; text-transform:capitalize; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                Odoo Implementation</h5>
+                            <p class="card-text" style=" font-family:Roboto;">We plan,
+                                configure, and deploy Odoo
+                                tailored to your business processes.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Customization -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center"
+                         style="background-color:#fef7e0;">
+                        <div class="card-body">
+                            <i class="fa fa-pencil fa-2x mb-3 text-warning"></i>
+                            <h5 class="card-title"
+                                style="font-size: 18px; text-transform:capitalize; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                Customization</h5>
+                            <p class="card-text" style=" font-family:Roboto;">Get modules
+                                and workflows customized to
+                                meet your exact needs in Odoo.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Community Apps -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center"
+                         style="background-color:#abebcd;">
+                        <div class="card-body">
+                            <i class="fa fa-cube fa-2x mb-3 text-success"></i>
+                            <h5 class="card-title"
+                                style="font-size: 18px; text-transform:capitalize; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                Community Apps</h5>
+                            <p class="card-text" style=" font-family:Roboto;">Access or
+                                develop robust community apps to
+                                enhance your Odoo functionality.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Development Outsourcing -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center"
+                         style="background-color:#d8c3e5;">
+                        <div class="card-body">
+                            <i class="fa fa-users fa-2x mb-3 text-primary"></i>
+                            <h5 class="card-title"
+                                style="font-size: 18px; text-transform:capitalize; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                Development Outsourcing</h5>
+                            <p class="card-text" style=" font-family:Roboto;">Hire dedicated
+                                Odoo developers to build
+                                solutions efficiently and cost-effectively.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Support & Maintenance -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center"
+                         style="background-color:#c6d8e9;">
+                        <div class="card-body">
+                            <i class="fa fa-life-ring fa-2x mb-3 "
+                               style="color:#59598d;"></i>
+                            <h5 class="card-title"
+                                style="font-size: 18px; text-transform:capitalize; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                                Support & Maintenance</h5>
+                            <p class="card-text" style=" font-family:Roboto;">Enjoy peace of
+                                mind with our reliable
+                                support, updates, and bug fixing services.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <div class="oe_row shadow  justify-content-center px-4 py-5" style="width:100% !important;">
+            <!-- Section Title -->
+            <div class="row mt-4 text-center" style="width:100% !important;">
+                <div class="themed-grid-col zn-1 m-3 px-5">
+                    <h1 style="font-size: 38px; text-transform:uppercase; font-family:Montserrat;  margin-bottom: 20px; font-weight: bold;text-align:center;">
+                        Discover More Odoo Solutions</h1>
+                    <div style="width: 65%; height: 4px; background-color: #0d1826; margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                </div>
+                <div id="demo" class="row carousel justify-content-center slide mt16 mb4" data-bs-ride="carousel">
+                    <!-- The slideshow -->
+                    <div class="carousel-inner" style="margin-left:45px;">
+                        <div class="carousel-item" style="min-height: 344.609px;">
+                            <div class="col-xs-12 col-sm-4 col-md-4 mb16 mt16"
+                                 style="float:left">
+                                <a href="https://apps.odoo.com/apps/modules/18.0/opd_integration"
+                                   target="_blank">
+                                    <div style="border-radius:10px; margin-right:8px"
+                                         class="shadow-sm">
+                                        <img class="img img-responsive center-block"
+                                             style="border-top-left-radius:10px; border-top-right-radius:10px; width:100%"
+                                             src="Odoo_PipeDrive_GIF.gif">
+                                        <h4 class="mt0 "
+                                            style="background-color:#0C1E41; color:white; padding:6% 4%; text-align:center; width:100%; font-family:Montserrat;">
+                                            Odoo Pipedrive Integration
+                                        </h4>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 mb16 mt16"
+                                 style="float:left">
+                                <a href="https://apps.odoo.com/apps/modules/18.0/oz_integration"
+                                   target="_blank">
+                                    <div style="border-radius:10px; margin-right:8px"
+                                         class="shadow-sm">
+                                        <img class="img img-responsive center-block"
+                                             style="border-top-left-radius:10px; border-top-right-radius:10px; width:100%"
+                                             src="Odoo_ZohoCRM_GIF_v18.gif">
+                                        <h4 class="mt0 "
+                                            style="background-color:#0C1E41; color:white; padding:6% 4%; text-align:center; width:100%;font-family:Montserrat;">
+                                            Odoo Zoho Integration
+                                        </h4>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 mb16 mt16"
+                                 style="float:left">
+                                <a href="https://apps.odoo.com/apps/modules/18.0/eb_oz_integration"
+                                   target="_blank">
+                                    <div style="border-radius:10px; margin-right:8px"
+                                         class="shadow-sm">
+                                        <img class="img img-responsive center-block"
+                                             style="border-top-left-radius:10px; border-top-right-radius:10px; width:100%"
+                                             src="Odoo_Zendesk_GIF_v18.gif">
+                                        <h4 class="mt0 "
+                                            style="background-color:#0C1E41; color:white; padding:6% 4%; text-align:center; width:100%; font-family:Montserrat;">
+                                            Odoo ZenDesk Integration
+                                        </h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="carousel-item active" style="min-height: 344.609px;">
+                            <div class="col-xs-12 col-sm-4 col-md-4 mb16 mt16"
+                                 style="float:left">
+                                <a href="https://apps.odoo.com/apps/modules/18.0/eb_ofd_integration"
+                                   target="_blank">
+                                    <div style="border-radius:10px; margin-right:8px"
+                                         class="shadow-sm">
+                                        <img class="img img-responsive center-block"
+                                             style="border-top-left-radius:10px; border-top-right-radius:10px; width:100%"
+                                             src="Odoo_Freshdesk_GIF_v18.gif">
+                                        <h4 class="mt0 "
+                                            style="background-color:#0C1E41; color:white; padding:6% 4%; text-align:center; width:100%; font-family:Montserrat; ">
+                                            Odoo Freshdesk Integration
+                                        </h4>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 mb16 mt16"
+                                 style="float:left">
+                                <a href="https://apps.odoo.com/apps/modules/18.0/oh_integration"
+                                   target="_blank">
+                                    <div style="border-radius:10px; margin-right:8px"
+                                         class="shadow-sm">
+                                        <img class="img img-responsive center-block"
+                                             style="border-top-left-radius:10px; border-top-right-radius:10px; width:100%"
+                                             src="Odoo_HubSpot_GIF_Advance_v18.gif">
+                                        <h4 class="mt0 "
+                                            style="background-color:#0C1E41; color:white; padding:6% 4%; text-align:center; width:100%; font-family:Montserrat;">
+                                            Odoo Hubspot Integration
+                                        </h4>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 mb16 mt16"
+                                 style="float:left">
+                                <a href="https://apps.odoo.com/apps/modules/18.0/eb_of_integration"
+                                   target="_blank">
+                                    <div style="border-radius:10px; margin-right:8px"
+                                         class="shadow-sm">
+                                        <img class="img img-responsive center-block"
+                                             style="border-top-left-radius:10px; border-top-right-radius:10px; width:100%"
+                                             src="Odoo_Office_365_GIF_v18.gif">
+                                        <h4 class="mt0 "
+                                            style="background-color:#0C1E41; color:white; padding:6% 4%; text-align:center; width:100%; font-family:Montserrat;">
+                                            Odoo Office 365 Integration
+                                        </h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Left and right controls -->
+                    <a class="carousel-control-prev" href="#demo" data-bs-slide="prev"
+                       style="width:35px; color:#000; margin-left:10px">
+                                                    <span class="carousel-control-prev-icon"><i
+                                                            class="fa fa-chevron-left"
+                                                            style="font-size:24px; color:black;"></i></span>
+                    </a>
+                    <a class="carousel-control-next" href="#demo" data-bs-slide="next"
+                       style="width:35px; color:#000; margin-right:-30px">
+                                                    <span class="carousel-control-next-icon"><i
+                                                            class="fa fa-chevron-right"
+                                                            style="font-size:24px;  color:black;"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

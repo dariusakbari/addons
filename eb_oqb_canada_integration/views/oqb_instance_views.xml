@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_oqb_instance_list">
+        <field name="name">oqb.instance.list</field>
+        <field name="model">oqb.instance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" optional="show"/>
+                <field name="pagination_size" optional="show"/>
+                <field name="is_connected" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_oqb_instance_form">
+        <field name="name">oqb.instance.form</field>
+        <field name="model">oqb.instance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <style>
+                         o-form-buttonbox .btn.oe_stat_button > .o_stat_info, .o-form-buttonbox .btn.oe_stat_button >
+                        span, .o-form-buttonbox .btn.oe_stat_button > .o_field_statinfo {
+                        display: inline-block;
+                        vertical-align: middle;
+                        font-weight: 800;
+                        max-width: 100%;
+                        padding-right: 6px;
+                        line-height: 1.3;
+                        }
+
+                        .fw-bolder{
+                            font-size: 16px;
+                        }
+
+                        .o_input{
+                            padding: 12px 20px;
+                        }
+
+                        .o_form_statusbar{
+                            justify-content : flex-end !important;
+                            gap: 0 !important;
+                        }
+
+                        .o_statusbar_buttons{
+                        }
+
+                        .o_statusbar_buttons button{
+                            border-left: 2px solid black;
+                        }
+
+                         #quickbook_to_odoo {
+                            width: 250px;
+                            background-color: #211c52;
+                            color: white;
+                            margin-top: 15px;
+                        }
+
+
+                         #import_quickbook_fields{
+                            width: 250px;
+                            color: white;
+                            margin-top: 40px;
+                        }
+
+                        #odoo_to_quickbook {
+                            width: 250px;
+                            background-color: #432c3d;
+                            color: white;
+                        }
+
+                        #odoo_to_quickbooks_url{
+                            width: 250px;
+                            background-color: #432c3d;
+                            color: white;
+                        }
+
+                         #odoo_to_quickbooks_token{
+                            width: 250px;
+                            background-color: #432c3d;
+                            color: white;
+                            margin-top: 50px;
+                        }
+
+                         #odoo_to_quickbooks {
+                            width: 225px;
+                            background-color: #432c3d;
+                            color: white;
+                            margin-top: 15px;
+                        }
+                        .o-form-buttonbox button[name="test_connection"]{
+                            background-color: #211c52;
+                            color: white;
+                        }
+                        
+                         #odoo_coa_dropdown_mapping_0, #quickbook_coa_dropdown_mapping_0, #odoo_customer_dropdown_mapping_0, #quickbook_customer_dropdown_mapping_0,
+                        #odoo_sale_order_dropdown_mapping_0, #quickbook_sale_order_dropdown_mapping_0, #odoo_invoice_dropdown_mapping_0, #quickbook_invoice_dropdown_mapping_0,
+                        #odoo_product_dropdown_mapping_0,#quickbook_product_dropdown_mapping_0, #quickbook_customer_payment_dropdown_mapping_0, #odoo_customer_payment_dropdown_mapping_0,
+                        #odoo_vendor_dropdown_mapping_0, #quickbook_vendor_dropdown_mapping_0, #odoo_purchase_order_dropdown_mapping_0, #quickbook_purchase_order_dropdown_mapping_0,
+                        #odoo_purchase_bill_dropdown_mapping_0, #quickbook_purchase_bill_dropdown_mapping_0, #odoo_vendor_payment_dropdown_mapping_0, #quickbook_vendor_payment_dropdown_mapping_0,
+                        #odoo_employee_dropdown_mapping_0, #quickbook_employee_dropdown_mapping_0,#odoo_department_dropdown_mapping_0, #quickbook_department_dropdown_mapping_0,
+                        #odoo_credit_note_dropdown_mapping_0, #quickbook_credit_note_dropdown_mapping_0
+                        ,#odoo_refund_dropdown_mapping_0, #quickbook_refund_dropdown_mapping_0,#odoo_pyt_dropdown_mapping_0, #quickbook_pyt_dropdown_mapping_0
+                        ,#odoo_pym_dropdown_mapping_0, #quickbook_pym_dropdown_mapping_0,#odoo_account_tax_dropdown_mapping_0, #quickbook_account_tax_dropdown_mapping_0{
+                            min-height: 220px;
+                        }
+                    </style>
+                    <div class="oe_button_box" name="button_box">
+                        <button string="Test Connection" name="test_connection" type="object"
+                                class="btn btn-primary o_test_connection_button" data-hotkey="t">
+                            <span>
+                                <i class="fa fa-plug" aria-hidden="true" title="Description" style="color: white;"></i>
+                            </span>
+                            <span class="o_test_connection_text">Test API Connection</span>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="base_api_url"/>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="is_connected" widget="boolean_toggle"/>
+                            <field name="quickbook_time_zone"/>
+                        </group>
+                        <group>
+                            <field name="pagination_size"/>
+                            <field name="company_name"/>
+                            <field name="minor_version"/>
+                        </group>
+                    </group>
+                    <group string="Quickbooks Configuration">
+                        <group>
+                            <field name="client_id" widget="password_toggle_copy"/>
+                            <field name="client_secret" widget="password_toggle_copy"/>
+                            <field name="scope_code"/>
+                            <field name="redirect_uri"/>
+                            <field name="refresh_grant_type"/>
+                            <field name="access_grant_type" />
+                            <button name="generate_authorization_url" id='odoo_to_quickbooks_url'
+                                        string='Generate Authorization URL' icon="fa-spinner" type="object" data-hotkey="a"/>
+                        </group>
+                        <group>
+
+                           <field name="token_api_url" widget="password_toggle_copy"/>
+                            <field name="refresh_token" widget="password_toggle_copy"/>
+                            <field name="access_token"  widget="password_toggle_copy"/>
+                            <field name="authorize_code" widget="password_toggle_copy"/>
+                            <field name="authorization_url" widget="password_toggle_copy"/>
+                             <button name="generate_access_token" id='odoo_to_quickbooks_token'
+                                        string='Generate Access Token' icon="fa-spinner" type="object" data-hotkey="a"/>
+                        </group>
+                    </group>
+                    
+
+                    <notebook>
+                        <!--Currency Fields-->
+                        <page string="Currency" name="currency">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="odoo_default_currency"/>
+                                    <field name="odoo_currency_list"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="quickbook_default_currency"/>
+                                    <field name="quickbook_currency_list"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <button name="action_import_currency" type="object" string="Get Currency"
+                                    id='odoo_to_quickbook' class="oe_highlight" icon="fa-refresh"/>
+                                </group>
+                                <group>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Account Tax Fields-->
+
+                          <page string="Account Tax" name="Account Tax">
+                            <group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_account_tax_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_account_tax_last_sync_date" string="Last Sync Datetime"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_account_tax" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="account_tax_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_account_tax_fields" id="import_quickbook_fields" type="object" string="Import Account Tax Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+<!--                        Account Configuration-->
+
+                         <page string="Account Configuration" name="Account Configuration">
+                            <group string="Account Configuration">
+                                <group>
+                                    <field name="oqb_sale_journal"/>
+                                    <field name="oqb_purchase_journal"/>
+                                    <field name="oqb_bank_journal"/>
+                                    <field name="oqb_cash_journal"/>
+                                    <field name="oqb_misc_journal"/>
+                                </group>
+                                <group>
+                                    <field name="oqb_vpt_credit_card_account"/>
+                                    <field name="oqb_purchase_account"/>
+                                    <field name="oqb_asset_account"/>
+                                    <field name="oqb_product_income_account"/>
+                                    <field name="oqb_product_expense_account"/>
+                                </group>
+                            </group>
+                        </page>
+                        <!--Chart of Accounts Fields-->
+                         <page string="Chart of Accounts" name="Chart of Accounts">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_coa_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_coa_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_coa_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_coa_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_coa_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_coa_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_coa" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_coa" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="coa_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <button name="action_import_chart_of_account_fields" id="import_chart_of_account_fields" type="object" string="Import Chart of Account Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                        <!--Customer Fields-->
+
+                         <page string="Customer" name="Customer">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_customer_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_customer_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_customer_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_customer_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_customer_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_customer_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_customer" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_customer" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="customer_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <button name="action_import_customer_fields" id="import_quickbook_fields" type="object" string="Import customer Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                         <!--Product Fields-->
+
+                         <page string="Product" name="Product">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_product_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_product_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_product_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_product_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_product_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_product_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_product" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_product" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                             <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="product_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <button name="action_import_product_fields" id="import_quickbook_fields" type="object" string="Import Product Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                         <!-- Sale Order Fields-->
+
+                          <page string="Sale Order" name="Sale Order">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_sale_order_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_sale_order_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_sale_order_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_sale_order_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_sale_order_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_sale_order_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                                <group>
+                                    <group>
+                                         <button name="odoo_to_quickbook_sale_order" id='odoo_to_quickbook'
+                                                string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                    </group>
+                                     <group>
+                                         <button name="quickbook_to_odoo_sale_order" id='quickbook_to_odoo'
+                                                string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                    </group>
+                                </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="sale_order_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <button name="action_import_sale_order_fields" id="import_quickbook_fields" type="object" string="Import Sale Order Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                         <!-- Invoice Fields-->
+
+                          <page string="Invoices" name="Invoices">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_invoice_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_invoice_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_invoice_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_invoice_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_invoice_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_invoice_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_invoice" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_invoice" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="invoice_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_invoice_fields" id="import_quickbook_fields" type="object" string="Import Invoice Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                         <!-- Credit Note Fields-->
+
+                        <page string="Credit Note" name="Credit Note">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_credit_note_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_credit_note_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_credit_note_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_credit_note_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_credit_note_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_credit_note_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_credit_note" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_credit_note" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="credit_note_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_credit_note_fields" id="import_quickbook_fields" type="object" string="Import Credit Note Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                         <!-- Customer Payment Fields-->
+
+                          <page string="Customer Payment" name="Customer Payment">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_customer_payment_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_customer_payment_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_customer_payment_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_customer_payment_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_customer_payment_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_customer_payment_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_customer_payment" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_customer_payment" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="cpt_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_customer_payment_fields" id="import_quickbook_fields" type="object" string="Import Customer Payment Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+
+                        <!-- Vendor Fields-->
+
+                          <page string="Vendor" name="Vendor">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_vendor_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_vendor_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_vendor_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_vendor_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_vendor_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_vendor_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_vendor" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_vendor" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="vendor_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_vendor_fields" id="import_quickbook_fields" type="object" string="Import Vendor Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+
+                        <!-- Purchase Order Fields-->
+
+                          <page string="Purchase Order" name="Purchase Order">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_purchase_order_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_purchase_order_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_purchase_order_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_purchase_order_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_purchase_order_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_purchase_order_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_purchase_order" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_purchase_order" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                                <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="pco_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_purchase_order_fields" id="import_quickbook_fields" type="object" string="Import Purchase Order Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                        <!-- Vendor Bill Fields-->
+
+                          <page string="Vendor Bills" name="Vendor Bills">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_purchase_bill_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_purchase_bill_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_purchase_bill_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_purchase_bill_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_purchase_bill_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_purchase_bill_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_purchase_bill" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_purchase_bill" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="pcb_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <button name="action_import_purchase_bill_fields" id="import_quickbook_fields" type="object" string="Import Vendor Bill Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+
+                        <!-- Refund Fields-->
+
+                          <page string="Refund" name="Refund">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_refund_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_refund_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_refund_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_refund_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_refund_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_refund_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_refund" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_refund" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="refund_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <button name="action_import_refund_fields" id="import_quickbook_fields" type="object" string="Import Refund Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                        <!-- Vendor Payment Fields-->
+
+                          <page string="Vendor Payment" name="Vendor Payment">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_vendor_payment_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_vendor_payment_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_vendor_payment_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_vendor_payment_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_vendor_payment_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_vendor_payment_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_vendor_payment" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_vendor_payment" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="vpt_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_vendor_payment_fields" id="import_quickbook_fields" type="object" string="Import Vendor Payment Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                        <!-- Payment Term Fields-->
+
+                          <page string="Payment Term" name="Payment Term">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_pyt_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_pyt_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_pyt_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_pyt_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_pyt_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_pyt_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_payment_term" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_payment_term" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="pyt_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_payment_term_fields" id="import_quickbook_fields" type="object" string="Import Payment Term Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+
+                        <!-- Payment Method Fields-->
+
+                          <page string="Payment Method" name="Payment Method">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_pym_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_pym_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_pym_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_pym_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_pym_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_pym_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_payment_method" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_payment_method" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="pym_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_payment_method_fields" id="import_quickbook_fields" type="object" string="Import Payment Method Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+
+                        <!-- Employee Fields-->
+
+                          <page string="Employee" name="Employee">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_employee_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_employee_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_employee_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_employee_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_employee_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_employee_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_employee" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_employee" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                               <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="employee_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_employee_fields" id="import_quickbook_fields" type="object" string="Import Employee Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                        <!-- Department Fields-->
+
+                          <page string="Department" name="Department">
+                            <group>
+                                <group string="Odoo To Quickbook" id="otz">
+                                    <field name="is_department_sync_odoo_to_quickbook" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="odoo_department_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="odoo_department_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                                <group string="Quickbook To Odoo" id="zto">
+                                    <field name="is_department_sync_quickbook_to_odoo" string="Activate Schedular" widget="boolean_toggle"/>
+                                    <field name="quickbook_department_last_sync_date" string="Last Sync Datetime"/>
+                                    <field name="quickbook_department_dropdown_mapping" string="Dropdown Mapping" style="height: 250px; overflow: auto;"/>
+                                </group>
+                            </group>
+                             <group>
+                                 <group>
+                                     <button name="odoo_to_quickbook_department" id='odoo_to_quickbook'
+                                            string='SYNC ODOO TO QUICKBOOK' icon="fa-refresh" type="object"/>
+                                </group>
+                                 <group>
+                                     <button name="quickbook_to_odoo_department" id='quickbook_to_odoo'
+                                            string='SYNC QUICKBOOK TO ODOO' icon="fa-refresh" type="object"/>
+                                </group>
+                             </group>
+                              <separator name="field_Mapping" string="Field Mapping"/>
+                            <field name="department_line_ids" string="">
+                                <list editable="bottom">
+                                    <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                    <field name="odoo_field_internal_name"/>
+                                    <field name="odoo_fields_type"/>
+                                    <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                    <field name="quickbook_field_internal_name"/>
+                                    <field name="quickbook_fields_type"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="odoo_fields_label" options="{'no_create': True}"/>
+                                        <field name="odoo_field_internal_name"/>
+                                        <field name="odoo_fields_type"/>
+                                        <field name="quickbook_fields_label" options="{'no_create': True}"/>
+                                        <field name="quickbook_field_internal_name" />
+                                        <field name="quickbook_fields_type"/>
+                                        <field name="description"/>
+                                    </group>
+                                </form>
+                              </field>
+                            <button name="action_import_department_fields" id="import_quickbook_fields" type="object" string="Import Department Fields"
+                                    icon="fa-upload"
+                                    class="oe_highlight"/>
+                        </page>
+
+                    # ------------------------------------------ Delete Logger Fields----------------------------------------- #
+
+                         <page string="Delete Logger" name="Delete Logger">
+                            <group>
+                                <group>
+                                    <field name="remove_log_scheduler" string="Remove Logger Records Schedular" widget="boolean_toggle"/>
+                                    <field name="remove_log_month"/>
+                                </group>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_hospital_oqb_instance_search">
+        <field name="name">oqb.instance.search</field>
+        <field name="model">oqb.instance</field>
+        <field name="arch" type="xml">
+            <search>
+            </search>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_oqb_instance">
+        <field name="name">Quickbooks Instance</field>
+        <field name="res_model">oqb.instance</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type='html'>
+            <p class='o_view_nocontent_smiling_face'>
+                Create Your First Quickbooks Instance !
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_oqb_instance"
+              parent="menu_oqb_root"
+              action="action_oqb_instance"
+              name="Quickbooks Instance"
+              sequence="1"/>
+</odoo>

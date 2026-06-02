@@ -1,0 +1,38 @@
+<odoo>
+    <data>
+        <!-- Define a new cron job -->
+        <record id="cron_generate_access_token" model="ir.cron">
+            <field name="name">Generate Quickbook Refresh and Access Token</field>
+            <field name="model_id" ref="model_oqb_instance"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_generate_access_token()</field>
+            <field name="interval_number">57</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Define a new cron job -->
+        <record id="cron_sync_odoo_quickbook_all_records" model="ir.cron">
+            <field name="name">Sync Odoo and Quickbook All Records</field>
+            <field name="model_id" ref="model_oqb_instance"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_fetch_and_store_odoo_quickbook_records_scheduler()</field>
+            <field name="interval_number">30</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Define a new cron job -->
+        <record id="cron_delete_old_log_records" model="ir.cron">
+            <field name="name">Quickbook Delete Logger Records</field>
+            <field name="model_id" ref="model_oqb_logger"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_delete_old_log_records()</field>
+            <field name="interval_number">30</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+
+</odoo>
+

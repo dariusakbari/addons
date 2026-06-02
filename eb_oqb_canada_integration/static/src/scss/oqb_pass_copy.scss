@@ -1,0 +1,29 @@
+.password-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    input {
+        width: 100%;
+        padding-right: 70px; // enough space for both icons
+    }
+
+    .toggle-password, .copy-password {
+        position: absolute;
+        cursor: pointer;
+        color: #666;
+        font-size: 14px;
+
+        &:hover {
+            color: #333;
+        }
+    }
+
+    .toggle-password {
+        right: 35px;
+    }
+
+    .copy-password {
+        right: 10px;
+    }
+}

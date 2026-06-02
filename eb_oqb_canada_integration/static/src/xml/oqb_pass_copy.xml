@@ -1,0 +1,19 @@
+<t t-name="custom_password_copy_field.PasswordCopyField" owl="1">
+    <div class="password-field">
+        <input type="password"
+               t-att-value="props.value"
+               t-ref="input"
+               class="form-control"
+               placeholder="Enter value"/>
+
+        <!-- Eye toggle -->
+        <span class="toggle-password" t-on-click="togglePasswordVisibility">
+            <i t-att-class="state.showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+        </span>
+
+        <!-- Copy button -->
+        <span class="copy-password" t-on-click="copyToClipboard">
+            <i class="fa fa-copy"></i>
+        </span>
+    </div>
+</t>

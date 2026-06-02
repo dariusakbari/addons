@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_sale_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='customer_signature']" position="after">
+                     <page string="Quickbook Integration" name="Quickbook Integration">
+                         <group>
+                             <group>
+                                 <field name="quickbook_id"/>
+                                 <field name="quickbook_sale_order_name"/>
+                                 <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                             </group>
+                             <group>
+                                 <field name="odoo_hash"/>
+                                 <field name="instance_name"/>
+                                 <field name="quickbook_sync_token"/>
+                             </group>
+                         </group>
+                     </page>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="sale_order_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.order.list</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="quickbook_sale_order_name" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_res_sale_order_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_sale_order"/>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.sale_order_send_to_quickbook()
+            </field>
+        </record>
+
+        <!-- Invoice XML-->
+
+        <record id="view_account_move_form_inherit" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='other_info']" position="after">
+                     <page string="Quickbook Integration" name="Quickbook Integration">
+                         <group>
+                             <group>
+                                 <field name="quickbook_id" invisible="move_type in ['out_refund', 'in_refund']"/>
+                                 <field name="quickbook_credit_note_id" invisible="move_type != 'out_refund'"/>
+                                 <field name="quickbook_refund_id" invisible="move_type != 'in_refund'"/>
+                                 <field name="quickbook_account_name"/>
+<!--                              invisible="move_type != 'out_invoice'"-->
+                                 <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                             </group>
+                             <group>
+                                 <field name="odoo_hash" invisible="move_type in ['out_refund', 'in_refund']"/>
+                                 <field name="odoo_credit_note_hash" invisible="move_type != 'out_refund'"/>
+                                 <field name="odoo_refund_hash" invisible="move_type != 'in_refund'"/>
+                                 <field name="instance_name"/>
+                                 <field name="quickbook_sync_token"/>
+                             </group>
+                         </group>
+                     </page>
+                </xpath>
+                 <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="invoice_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_move_tree_inherit" model="ir.ui.view">
+            <field name="name">account.move.list</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="quickbook_account_name" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_move_credit_note_tree_inherit" model="ir.ui.view">
+            <field name="name">account.move.list</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_out_credit_note_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_credit_note_id" optional="show"/>
+                    <field name="quickbook_account_name" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_credit_note_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_res_account_move_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_account_move"/>
+            <field name="binding_model_id" ref="model_account_move"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.invoice_send_to_quickbook()
+            </field>
+        </record>
+
+        <!-- Customer Payment XML-->
+
+        <record id="view_account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Quickbook Integration" name="Quickbook Integration">
+                             <group>
+                                 <group>
+                                     <field name="quickbook_id"/>
+                                     <field name="quickbook_payment_name"/>
+                                     <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                                     <field name="odoo_hash"/>
+                                 </group>
+                                 <group>
+                                     <field name="instance_name" options="{'no_create': True}"/>
+                                    <field name="quickbook_sync_token"/>
+                                    <field name="oqb_payment_type" invisible="payment_type == 'inbound'"/>
+                                 </group>
+                             </group>
+                        </page>
+                    </notebook>
+                </xpath>
+                 <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="payment_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_move_account_payment_tree_inherit" model="ir.ui.view">
+            <field name="name">account.payment.list</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="quickbook_payment_name" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_res_account_payment_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_account_payment"/>
+            <field name="binding_model_id" ref="model_account_payment"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.payment_send_to_quickbook()
+            </field>
+        </record>
+        
+       <!-- Purchase Order XML-->
+
+         <record id="view_purchase_order_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='purchase_delivery_invoice']" position="after">
+                     <page string="Quickbook Integration" name="Quickbook Integration">
+                         <group>
+                             <group>
+                                 <field name="quickbook_id"/>
+                                 <field name="quickbook_purchase_order_name"/>
+                                 <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                             </group>
+                             <group>
+                                 <field name="instance_name"/>
+                                 <field name="quickbook_sync_token"/>
+                                 <field name="odoo_hash"/>
+                             </group>
+                         </group>
+                     </page>
+                </xpath>
+                 <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="purchase_order_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_purchase_order_tree_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.list</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="quickbook_purchase_order_name" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_invoice_bill_tree_inherit" model="ir.ui.view">
+            <field name="name">account.move.list</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_in_invoice_bill_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="quickbook_account_name" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+         <record id="view_refund_tree_inherit" model="ir.ui.view">
+            <field name="name">account.move.list</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_in_invoice_refund_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_refund_id" optional="show"/>
+                    <field name="quickbook_account_name" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_refund_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="action_res_purchase_order_list_view_add_button" model="ir.actions.server">
+            <field name="name">Sync To Quickbook</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_purchase_order"/>
+            <field name="binding_model_id" ref="model_purchase_order"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.purchase_order_send_to_quickbook()
+            </field>
+        </record>
+
+    </data>
+</odoo>

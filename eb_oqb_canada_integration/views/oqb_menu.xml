@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_oqb_root"
+              web_icon="eb_oqb_canada_integration,static/description/icon.png"
+              name="Odoo Quickbooks Integration"
+              groups="group_eb_oqb_canada_integration_admin"
+              sequence="0"/>
+
+    <menuitem id="menu_field_mapper_master"
+              parent="menu_oqb_root"
+              name="Quickbook Field Mapper"
+              sequence="3"/>
+
+</odoo>

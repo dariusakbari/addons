@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_oqb_wizard_form">
+        <field name="name">oqb.wizard.form</field>
+        <field name="model">oqb.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Manual Push Quickbook to Odoo Records">
+                <style>
+                    .modal-dialog {
+                        position: relative;
+                        width: 600px;
+                        height: 400px;
+                        margin: 0.5rem;
+                        pointer-events: none;
+                    }
+                    .o_input {
+                        border: 1px solid var(--o-input-border-color);
+                        border-width: 0 0 1px 0;
+                        padding: 2px 4px;
+                    }
+                </style>
+               <group>
+                   <field name="quickbook_module_name"/>
+                   <field name="quickbook_instance" options="{'no_create': True}"/>
+                   <field name="quickbook_record_id" placeholder="1,2,3"/>
+               </group>
+                <p style="color:red;"><b>Notes: </b>For multiple records push, the format will be <b>1,2,3</b>. For single record push, the format will be <b>1</b>.</p>
+                <footer>
+                    <button name="action_send_record_quickbook_to_odoo" type="object" string="Sync Quickbook to Odoo" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_oqb_wizard">
+        <field name="name">Manual Push Quickbook to Odoo Records</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_oqb_wizard"
+              parent="menu_oqb_root"
+              action="action_oqb_wizard"
+              name="Quickbook to Odoo"
+              sequence="6"/>
+
+    <!--    Quickbook to Odoo Manual Partner Record Send XML Code-->
+
+    <record model="ir.ui.view" id="view_oqb_partner_wizard_form">
+        <field name="name">oqb.partner.wizard.form</field>
+        <field name="model">oqb.partner.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Manual Push Quickbook to Odoo Records">
+                <style>
+                    .modal-dialog {
+                        position: relative;
+                        width: 600px;
+                        height: 400px;
+                        margin: 0.5rem;
+                        pointer-events: none;
+                    }
+                    .o_input {
+                        border: 1px solid var(--o-input-border-color);
+                        border-width: 0 0 1px 0;
+                        padding: 2px 4px;
+                    }
+                </style>
+               <group>
+                   <field name="quickbook_partner_module"/>
+                   <field name="quickbook_instance" options="{'no_create': True}"/>
+                   <field name="quickbook_record_id" placeholder="1,2,3"/>
+               </group>
+                 <p style="color:red;"><b>Notes: </b>For multiple records push, the format will be <b>1,2,3</b>. For single record push, the format will be <b>1</b>.</p>
+                <footer>
+                    <button name="action_send_partner_record_quickbook_to_odoo" type="object" string="Sync Quickbook to Odoo" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_oqb_partner_wizard_form">
+        <field name="name">Manual Push Quickbook to Odoo Records</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.partner.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_oqb_partner_wizard"
+              name="Quickbook Integration"
+              action="action_oqb_partner_wizard_form"
+              parent="contacts.menu_contacts"
+              sequence="2"/>
+
+<!--    Sale Order Module Quickbook to Odoo-->
+
+    <record model="ir.ui.view" id="view_oqb_sale_order_wizard_form">
+        <field name="name">oqb.sale_order.wizard.form</field>
+        <field name="model">oqb.sale_order.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Manual Push Quickbook to Odoo Records">
+                <style>
+                    .modal-dialog {
+                        position: relative;
+                        width: 600px;
+                        height: 400px;
+                        margin: 0.5rem;
+                        pointer-events: none;
+                    }
+                    .o_input {
+                        border: 1px solid var(--o-input-border-color);
+                        border-width: 0 0 1px 0;
+                        padding: 2px 4px;
+                    }
+                </style>
+               <group>
+                   <field name="quickbook_partner_module"/>
+                   <field name="quickbook_instance" options="{'no_create': True}"/>
+                   <field name="quickbook_record_id" placeholder="1,2,3"/>
+               </group>
+                 <p style="color:red;"><b>Notes: </b>For multiple records push, the format will be <b>1,2,3</b>. For single record push, the format will be <b>1</b>.</p>
+                <footer>
+                    <button name="action_send_sale_order_record_quickbook_to_odoo" type="object" string="Sync Quickbook to Odoo" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_oqb_sale_order_wizard_form">
+        <field name="name">Manual Push Quickbook to Odoo Records</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.sale_order.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_oqb_sale_order_wizard"
+              name="Quickbook Integration"
+              action="action_oqb_sale_order_wizard_form"
+              parent="sale.sale_menu_root"
+              sequence="100"/>
+
+
+    <!--    Purchase Order Module Quickbook to Odoo-->
+
+    <record model="ir.ui.view" id="view_oqb_purchase_order_wizard_form">
+        <field name="name">oqb.purchase_order.wizard.form</field>
+        <field name="model">oqb.purchase_order.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Manual Push Quickbook to Odoo Records">
+                <style>
+                    .modal-dialog {
+                        position: relative;
+                        width: 600px;
+                        height: 400px;
+                        margin: 0.5rem;
+                        pointer-events: none;
+                    }
+                    .o_input {
+                        border: 1px solid var(--o-input-border-color);
+                        border-width: 0 0 1px 0;
+                        padding: 2px 4px;
+                    }
+                </style>
+               <group>
+                   <field name="quickbook_partner_module"/>
+                   <field name="quickbook_instance" options="{'no_create': True}"/>
+                   <field name="quickbook_record_id" placeholder="1,2,3"/>
+               </group>
+                 <p style="color:red;"><b>Notes: </b>For multiple records push, the format will be <b>1,2,3</b>. For single record push, the format will be <b>1</b>.</p>
+                <footer>
+                    <button name="action_send_purchase_order_record_quickbook_to_odoo" type="object" string="Sync Quickbook to Odoo" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_oqb_purchase_order_wizard_form">
+        <field name="name">Manual Push Quickbook to Odoo Records</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.purchase_order.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_oqb_purchase_order_wizard"
+              name="Quickbook Integration"
+              action="action_oqb_purchase_order_wizard_form"
+              parent="purchase.menu_purchase_root"
+              sequence="100"/>
+
+     <!--    Employee, Department Module Quickbook to Odoo-->
+
+    <record model="ir.ui.view" id="view_oqb_emp_dept_wizard_form">
+        <field name="name">oqb.emp_dept.wizard.form</field>
+        <field name="model">oqb.emp_dept.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Manual Push Quickbook to Odoo Records">
+                <style>
+                    .modal-dialog {
+                        position: relative;
+                        width: 600px;
+                        height: 400px;
+                        margin: 0.5rem;
+                        pointer-events: none;
+                    }
+                    .o_input {
+                        border: 1px solid var(--o-input-border-color);
+                        border-width: 0 0 1px 0;
+                        padding: 2px 4px;
+                    }
+                </style>
+               <group>
+                   <field name="quickbook_partner_module"/>
+                   <field name="quickbook_instance" options="{'no_create': True}"/>
+                   <field name="quickbook_record_id" placeholder="1,2,3"/>
+               </group>
+                 <p style="color:red;"><b>Notes: </b>For multiple records push, the format will be <b>1,2,3</b>. For single record push, the format will be <b>1</b>.</p>
+                <footer>
+                    <button name="action_send_emp_dept_record_quickbook_to_odoo" type="object" string="Sync Quickbook to Odoo" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_oqb_emp_dept_wizard_form">
+        <field name="name">Manual Push Quickbook to Odoo Records</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oqb.emp_dept.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_oqb_emp_dept_wizard"
+              name="Quickbook Integration"
+              action="action_oqb_emp_dept_wizard_form"
+              parent="hr.menu_hr_root"
+              sequence="100"/>
+
+</odoo>

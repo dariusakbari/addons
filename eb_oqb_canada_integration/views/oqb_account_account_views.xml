@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_form_inherit" model="ir.ui.view">
+            <field name="name">account.account.form</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='accounting']" position="after">
+                 <page string="Quickbook Integration" name="Quickbook Integration">
+                         <group>
+                             <field name="quickbook_id"/>
+                             <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                             <field name="odoo_hash"/>
+                             <field name="instance_name"/>
+                             <field name="quickbook_sync_token"/>
+                         </group>
+                     </page>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                     <button name="coa_record_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_tree_inherit" model="ir.ui.view">
+            <field name="name">account.account.list</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_account_account_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_account_account"/>
+            <field name="binding_model_id" ref="model_account_account"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.coa_record_send_to_quickbook()
+            </field>
+        </record>
+
+<!--                Payment Term XML-->
+
+        <record id="view_account_payment_term_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.term.form</field>
+            <field name="model">account.payment.term</field>
+            <field name="inherit_id" ref="account.view_payment_term_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="after">
+                    <form>
+                        <notebook>
+                            <page string="Quickbook Integration" name="Quickbook Integration">
+                                <group>
+                                    <group>
+                                         <field name="quickbook_id"/>
+                                         <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                                         <field name="odoo_hash"/>
+                                     </group>
+                                    <group>
+                                        <field name="instance_name"/>
+                                        <field name="quickbook_sync_token"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </form>
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="pyt_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_payment_term_tree_inherit" model="ir.ui.view">
+            <field name="name">account.payment.term.list</field>
+            <field name="model">account.payment.term</field>
+            <field name="inherit_id" ref="account.view_payment_term_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_account_payment_term_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_account_payment_term"/>
+            <field name="binding_model_id" ref="model_account_payment_term"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.pyt_send_to_quickbook()
+            </field>
+        </record>
+
+        <!--                Payment Method XML-->
+
+        <record id="view_payment_method_form_inherit" model="ir.ui.view">
+            <field name="name">payment.method.form</field>
+            <field name="model">payment.method</field>
+            <field name="inherit_id" ref="payment.payment_method_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='brands']" position="after">
+                    <page string="Quickbook Integration" name="Quickbook Integration">
+                         <group>
+                             <field name="quickbook_id"/>
+                             <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                             <field name="odoo_hash"/>
+                             <field name="instance_name"/>
+                             <field name="quickbook_sync_token"/>
+                         </group>
+                    </page>
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="pym_send_to_quickbook"  class="oe_stat_button oe_highlight" icon="fa-refresh"  string='SYNC TO QUICKBOOK' type="object"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_payment_method_tree_inherit" model="ir.ui.view">
+            <field name="name">payment.method.list</field>
+            <field name="model">payment.method</field>
+            <field name="inherit_id" ref="payment.payment_method_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_payment_method_list_view_add_button" model="ir.actions.server">
+            <field name="name">SYNC TO QUICKBOOK</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_payment_method"/>
+            <field name="binding_model_id" ref="model_payment_method"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                model.pym_send_to_quickbook()
+            </field>
+        </record>
+
+
+        <!--  Account Tax XML-->
+
+        <record id="view_account_tax_form_inherit" model="ir.ui.view">
+            <field name="name">account.tax.form</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='advanced_options']" position="after">
+                    <page string="Quickbook Integration" name="Quickbook Integration">
+                         <group>
+                             <field name="quickbook_id"/>
+                             <field name="sync_to_quickbook" widget="boolean_toggle"/>
+                             <field name="odoo_hash"/>
+                             <field name="instance_name"/>
+                             <field name="quickbook_sync_token"/>
+                             <field name="quickbook_tax_code"/>
+                         </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_tax_tree_inherit" model="ir.ui.view">
+            <field name="name">account.tax.list</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="quickbook_id" optional="show"/>
+                    <field name="instance_name" optional="show"/>
+                    <field name="sync_to_quickbook" optional="show" widget="boolean_toggle"/>
+                    <field name="odoo_hash" optional="show"/>
+                    <field name="quickbook_sync_token" optional="show"/>
+                    <field name="quickbook_tax_code" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
