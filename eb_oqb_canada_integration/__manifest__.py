@@ -5,7 +5,7 @@
     'version': '19.0.0.1',
     'summary': 'Quickbooks Odoo Integration App Quickbooks Online Quickbooks Canada Canada Accounting Quickbooks Canada Online Quickbooks Quickbooks odoo Quickbooks Accounting Odoo Quickbooks connector Odoo Quickbooks integration Quickbooks connector QuickBooks Credit Memo Quickbooks reports Quickbooks Refund Quickbooks Payments Quickbooks credit Memo quickbook connector quickbook integration',
     'sequence': '-101',
-    'price': '189.00',
+    'price': '99.00',
     'currency': 'USD',
     'author': 'echoBitz IT Solutions Pvt. Ltd.',
     'maintainer': 'echoBitz IT Solutions Pvt. Ltd.',

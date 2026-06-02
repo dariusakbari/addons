@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="0">
     <!-- Define a new module category -->
-    <record model="ir.module.category" id="module_category_eb_oqb_canada_integration">
-        <field name="name">Odoo Quickbook Integration</field>
+    <record model="res.groups.privilege" id="module_category_eb_canada_oqb_integration">
+        <field name="name">Odoo Quickbook Canada Integration</field>
         <field name="sequence">-100</field>
     </record>
 
@@ -10,7 +10,7 @@
     <record id="group_eb_oqb_canada_integration_admin" model="res.groups">
         <field name="name">Odoo Plugin Admin</field>
         <field name="comment">The User will be able to Manage Integration.</field>
-        <field name="category_id" ref="module_category_eb_oqb_canada_integration"/>
+        <field name="privilege_id" ref="module_category_eb_canada_oqb_integration"/>
     </record>
 
     <!-- Define an access rule for the user group -->

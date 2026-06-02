@@ -517,6 +517,7 @@ class OqbDryMixin(models.AbstractModel):
             headers = self.env['oqb.dry.mixin'].get_headers(access_token)
 
             payload = ""
+
             # Make a GET request to the API endpoint
             response = requests.get(company_info_url, data=payload, headers=headers)
             # Handle response
@@ -1189,7 +1190,7 @@ class OqbDryMixin(models.AbstractModel):
                             )
                             return ('no_create', quickbook_record_id, '', '')
 
-                        #  Search existing account by code
+                        # 🔍 Search existing account by code
                         existing_account = self.env[model_name].search([('code_store', '=', acc_code)], limit=1)
                         if existing_account:
                             # Optional account type validation
@@ -1200,8 +1201,9 @@ class OqbDryMixin(models.AbstractModel):
                                     f'(Odoo: {existing_account.account_type}, QB: {qb_type})'
                                 )
                                 self.env['oqb.dry.mixin'].log_operation_warning(logger_name, description,
-                                'Chart of Account Sync', 'odoo',record_data, existing_account.id,
-                                operation_type, current_instance.name)
+                                                                                'Chart of Account Sync', 'odoo',
+                                                                                record_data, existing_account.id,
+                                                                                operation_type, current_instance.name)
                                 return ('no_update', quickbook_record_id, existing_account.id, existing_account)
 
                             # ✅ Update existing account
@@ -1210,13 +1212,8 @@ class OqbDryMixin(models.AbstractModel):
                             odoo_record = existing_account
                             operation_status = ('update', quickbook_record_id, odoo_record.id, odoo_record)
 
-                        else:
-                            # ✅ Create new account
-                            odoo_record = self.env[model_name].create(record_data)
-                            odoo_record.env.cr.commit()
-                            operation_status = ('create', quickbook_record_id, odoo_record.id, odoo_record)
                     else:
-                        # 🔹 Normal create for other models
+                        # ✅ Create new account
                         odoo_record = self.env[model_name].create(record_data)
                         odoo_record.env.cr.commit()
                         operation_status = ('create', quickbook_record_id, odoo_record.id, odoo_record)
@@ -2220,8 +2217,6 @@ class OqbDryMixin(models.AbstractModel):
                     elif 'AccountBasedExpenseLineDetail' in item:
                         line_detail_key = 'AccountBasedExpenseLineDetail'
 
-                    # quickbook_account_type = line_detail['AccountRef']['name']
-
                     if line_detail_key and line_detail_key != 'AccountBasedExpenseLineDetail':
                         line_detail = item[line_detail_key]
                         quickbook_product_id = line_detail['ItemRef']['value']
@@ -2271,21 +2266,16 @@ class OqbDryMixin(models.AbstractModel):
                                     'quantity': quickbook_quote_quantity
                                 })
 
-                            if logger_name == 'sales orders':
-                                line_tax_field = 'tax_id'
-                            elif logger_name == 'purchase order':
-                                line_tax_field = 'taxes_id'
-                            else:
-                                line_tax_field = 'tax_ids'
-
                             is_multi_company = self.env.user.is_multi_company
-                            if quickbook_tax_code:
-                                domain = [('quickbook_tax_code', '=', quickbook_tax_code)]
-                                if is_multi_company:
-                                    domain.append(('company_id', '=', odoo_company_id))
-                                odoo_tax_record = self.env['account.tax'].search(domain, limit=1)
-                                order_line_vals.update({line_tax_field: [(6, 0, odoo_tax_record.ids)]})
-
+                            domain = [('quickbook_tax_code', '=', quickbook_tax_code)]
+                            if is_multi_company:
+                                domain.append(('company_id', '=', odoo_company_id))
+                            odoo_tax_record = self.env['account.tax'].search(domain, limit=1)
+                            if odoo_tax_record:
+                                order_line_vals.update({'tax_ids': [(6, 0, odoo_tax_record.ids)]})
+                            else:
+                                _logger.warning("No matching Odoo tax found for QuickBooks tax code: %s",
+                                                quickbook_tax_code)
 
                             if order_line_record and sale_order.state != 'posted':
                                 order_line_record.write(order_line_vals)
@@ -2324,14 +2314,18 @@ class OqbDryMixin(models.AbstractModel):
                                 }
 
                                 order_line_vals.update({'move_id': sale_order.id})
-                                is_multi_company = self.env.user.is_multi_company
-                                if quickbook_tax_code:
-                                    domain = [('quickbook_tax_code', '=', quickbook_tax_code)]
-                                    if is_multi_company:
-                                        domain.append(('company_id', '=', odoo_company_id))
 
-                                    odoo_tax_record = self.env['account.tax'].search(domain, limit=1)
+                                is_multi_company = self.env.user.is_multi_company
+                                domain = [('quickbook_tax_code', '=', quickbook_tax_code)]
+                                if is_multi_company:
+                                    domain.append(('company_id', '=', odoo_company_id))
+                                odoo_tax_record = self.env['account.tax'].search(domain, limit=1)
+                                if odoo_tax_record:
                                     order_line_vals.update({'tax_ids': [(6, 0, odoo_tax_record.ids)]})
+                                else:
+                                    _logger.warning("No matching Odoo tax found for QuickBooks tax code: %s",
+                                                    quickbook_tax_code)
+
                                 if order_line_record:
                                     order_line_record.write(order_line_vals)
                                     order_line_record.env.cr.commit()
@@ -2531,6 +2525,7 @@ class OqbDryMixin(models.AbstractModel):
 
         # Step 1: Construct the basic select query
         select_query = f"SELECT * FROM {module_name} WHERE {field_name} = '{record_id}'"
+
 
         response = self.env['oqb.dry.mixin'].fetch_quickbooks_data(current_instance, module_name, select_query)
         operation = f'Get Quickbook Fields'
@@ -2781,19 +2776,21 @@ class OqbDryMixin(models.AbstractModel):
     # --------------------------------- Create Payload For Quickbook --------------------- #
 
     def process_odoo_quickbook_record(self, payload, access_token, base_url, quickbook_company_id, module_name,
-        partner_odoo_id, logger_name,operation_type, current_instance):
+                                      partner_odoo_id, logger_name,
+                                      operation_type, current_instance):
         endpoint = f"{base_url}/{quickbook_company_id}/batch"
         headers = self.get_headers(access_token)
         response = requests.post(endpoint, data=json.dumps(payload), headers=headers)
         response_status = response.status_code
         operation = f'Create quickbook {logger_name} Records'
         response_data = self.env['oqb.instance'].handle_response(response, payload, module_name, 'quickbook',
-        logger_name, partner_odoo_id, 'post', operation,operation_type, current_instance)
+                                                                 logger_name, partner_odoo_id, 'post', operation,
+                                                                 operation_type, current_instance)
         return response_data, response_status
 
     # ------------------------------- Process to Sync Odoo Record to Quickbook ------------------ #
 
-    def sync_odoo_record_to_quickbook(self, odoo_records, module_name, batch_records, dynamic_hashes, logger_name, current_instance,
+    def sync_odoo_record_to_quickbook(self, odoo_records, module_name, batch_records, logger_name, current_instance,
                                       odoo_company_id, check_hash, operation_type):
         """
         Sync Odoo customer data to QuickBooks and handle nested fields like 'BillAddr' statically.
@@ -2824,7 +2821,7 @@ class OqbDryMixin(models.AbstractModel):
         quickbook_payload = {"BatchItemRequest": []}
         hash_field, quickbook_id_field = self.get_sync_field_names(logger_name)
         # Iterate through Odoo records and batch records
-        for odoo_record, batch_record, dynamic_hash in zip(odoo_records, batch_records, dynamic_hashes):
+        for odoo_record, batch_record in zip(odoo_records, batch_records):
             # Initialize the record payload
             record_payload = {}
 
@@ -2883,8 +2880,10 @@ class OqbDryMixin(models.AbstractModel):
                             elif not account.sync_to_quickbook:
                                 warning_message = f"'Sync to Quickbook' is required for {logger_name.capitalize()} account: {account.name}."
                                 operation = f'Manual {logger_name.capitalize()} Push Odoo To Quickbook'
-                                self.env['oqb.dry.mixin'].log_operation_warning(logger_name, warning_message, operation,
-                                    'quickbook', account, account.id, 'manually',current_instance.name)
+                                self.env['oqb.dry.mixin'].log_operation_warning(
+                                    logger_name, warning_message, operation,
+                                    'quickbook', account, account.id, 'manually',
+                                    current_instance.name)
 
                         record_payload["IncomeAccountRef"] = {"value": odoo_income_account.quickbook_id}
                         record_payload["ExpenseAccountRef"] = {"value": odoo_expense_account.quickbook_id}
@@ -2897,21 +2896,21 @@ class OqbDryMixin(models.AbstractModel):
                     success_count, operation_status = 0, 'no_account'
                     continue
 
-            # ------------------ CHART OF ACCOUNT DUPLICATE NAME HANDLING ------------------ #
-            if logger_name == 'chart of account' and not getattr(batch_record, quickbook_id_field):
-
-                skip_create = self.handle_coa_duplicate_name_qb_linking(record_payload=record_payload,
-                    batch_record=batch_record,current_instance=current_instance,logger_name=logger_name,
-                    operation_type=operation_type,quickbook_id_field=quickbook_id_field, dynamic_hash=dynamic_hash)
-                if skip_create:
-                    success_count, operation_status = 0, 'sync_process_id'
-                    continue
-
             record_payload = self.process_odoo_to_quickbook_payload(record_payload=record_payload,
                 current_instance=current_instance,logger_name=logger_name, odoo_record=odoo_record,
                 batch_record=batch_record,odoo_company_id=odoo_company_id,check_hash=check_hash,
                 operation_type=operation_type)
             success_count, operation_status = 0, 'action'
+
+            # ------------------ CHART OF ACCOUNT DUPLICATE NAME HANDLING ------------------ #
+            if logger_name == 'chart of account' and not getattr(batch_record, quickbook_id_field):
+
+                skip_create = self.handle_coa_duplicate_name_qb_linking(record_payload=record_payload,
+                batch_record=batch_record,current_instance=current_instance,logger_name=logger_name,
+                operation_type=operation_type,quickbook_id_field=quickbook_id_field)
+                if skip_create:
+                    success_count, operation_status = 0, 'sync_process_id'
+                    continue
 
             # Remove keys with None values recursively
             record_payload = {k: v for k, v in record_payload.items() if v and v != {}}
@@ -3001,7 +3000,7 @@ class OqbDryMixin(models.AbstractModel):
     # ------------------------------------- Handle Duplicate COA odoo to quickbook ------------------------- #
 
     def handle_coa_duplicate_name_qb_linking(self, record_payload, batch_record, current_instance,
-            logger_name, operation_type, quickbook_id_field, dynamic_hash):
+                                             logger_name, operation_type, quickbook_id_field):
         """
         If Chart of Account with same Name exists in QuickBooks,
         link it to Odoo instead of creating a duplicate.
@@ -3018,7 +3017,8 @@ class OqbDryMixin(models.AbstractModel):
             return False
 
         qb_response = self.fetch_qb_chart_of_account(record_payload=record_payload,current_instance=current_instance,
-            logger_name=logger_name,operation_type=operation_type)
+        logger_name=logger_name, operation_type=operation_type)
+
         qb_accounts = []
 
         if isinstance(qb_response, list):
@@ -3037,9 +3037,7 @@ class OqbDryMixin(models.AbstractModel):
             'quickbook_sync_token': qb_account.get('SyncToken'),
             'instance_name': current_instance.name,
             'sync_to_quickbook': True,
-            'odoo_hash': dynamic_hash
         })
-
         batch_record.env.cr.commit()
 
         warning_message = (
@@ -3047,14 +3045,14 @@ class OqbDryMixin(models.AbstractModel):
             f"Linked existing account instead of creating duplicate."
         )
 
-        self.env['oqb.dry.mixin'].log_operation_warning(logger_name,warning_message,'Chart of Account Sync',
-            'quickbook',batch_record,batch_record.id,operation_type,current_instance.name)
+        self.env['oqb.dry.mixin'].log_operation_warning(logger_name, warning_message, 'Chart of Account Sync',
+        'quickbook', batch_record, batch_record.id, operation_type,current_instance.name)
 
         return True
 
     # ------------------------- Fetch Chart of Account Record ------------------- #
 
-    def fetch_qb_chart_of_account(self,record_payload,current_instance,logger_name,operation_type):
+    def fetch_qb_chart_of_account(self, record_payload, current_instance, logger_name, operation_type):
         """
         Chart of Account lookup using:
         AcctNum OR Name
@@ -3064,19 +3062,18 @@ class OqbDryMixin(models.AbstractModel):
         account_name = record_payload.get('Name')
         account_number = record_payload.get('AcctNum')
 
-
         qb_accounts = []
 
         # OR condition (first match wins)
         if account_number:
-            qb_accounts = self.fetch_quickbook_manual_record(module_name='Account',record_id=account_number,
-                current_instance=current_instance,logger_name=logger_name,operation_type=operation_type,
-                field_name='AcctNum')
+            qb_accounts = self.fetch_quickbook_manual_record(module_name='Account', record_id=account_number,
+            current_instance=current_instance,logger_name=logger_name, operation_type=operation_type,
+            field_name='AcctNum')
 
         if not qb_accounts and account_name:
-            qb_accounts = self.fetch_quickbook_manual_record(module_name='Account',record_id=account_name,
-                current_instance=current_instance,logger_name=logger_name,operation_type=operation_type,
-                field_name='Name')
+            qb_accounts = self.fetch_quickbook_manual_record(module_name='Account', record_id=account_name,
+            current_instance=current_instance,logger_name=logger_name, operation_type=operation_type,
+            field_name='Name')
 
         return qb_accounts
 
@@ -3362,12 +3359,12 @@ class OqbDryMixin(models.AbstractModel):
         quickbooks_lines, item_detail_name, tax_code_ref, line_detail_payload = [], None, None, {}
         subtotal = 0.0  # To calculate the subtotal for all line items
         if logger_name == 'sales orders':
-            line_tax_field, line_item_model, line_model_id = 'tax_id', 'sale.order.line', 'order_id'
+            line_tax_field, line_item_model, line_model_id = 'tax_ids', 'sale.order.line', 'order_id'
         elif logger_name == 'purchase order':
-            line_tax_field, line_item_model, line_model_id = 'taxes_id', 'purchase.order.line', 'order_id'
+            line_tax_field, line_item_model, line_model_id = 'tax_ids', 'purchase.order.line', 'order_id'
         else:
             line_tax_field, line_item_model, line_model_id = 'tax_ids', 'account.move.line', 'move_id'
-        # line_tax_field = 'tax_ids' if logger_name == 'invoice' else 'tax_id'
+
         quickbooks_lines = []
         for line in odoo_sale_order_line_record:
             # Determine the quantity field based on the document type
@@ -3516,10 +3513,12 @@ class OqbDryMixin(models.AbstractModel):
 
         try:
             for odoo_record in batch_records:
+
                 quickbook_record_data, dynamic_fields_values_hash, operation_status = \
                     self.env['oqb.dry.mixin'].odoo_to_quickbook_map_fields(
                         odoo_record, current_instance, field_model_name, dropdown_field_mapping_name, quickbook_id,
                         logger_name, operation_type)
+
                 if not quickbook_record_data:
                     operation_status = 'no_field'
                     break
@@ -3529,6 +3528,7 @@ class OqbDryMixin(models.AbstractModel):
 
                 # Check if we need to update
                 existing_hash = getattr(odoo_record, hash_field)
+
                 if existing_hash != dynamic_fields_values_hash or not check_hash:
                     odoo_records.append(quickbook_record_data)
                     records_data.append(quickbook_record_data)
@@ -3537,9 +3537,10 @@ class OqbDryMixin(models.AbstractModel):
                     update_odoo_records.append(odoo_record)
                 else:
                     continue  # Skip this record if hashes are identical
+
             if odoo_records:
                 quickbook_payload, success_count, operation_status, filtered_batch_records = self.sync_odoo_record_to_quickbook(
-                    odoo_records, module_name, update_odoo_records, dynamic_hashes, logger_name, current_instance, odoo_company_id,
+                    odoo_records, module_name, update_odoo_records, logger_name, current_instance, odoo_company_id,
                     check_hash, operation_type)
                 if operation_status in ['no_action', 'no_account', 'sync_process_id'] and not quickbook_payload.get("BatchItemRequest"):
                     return success_count, operation_status
@@ -4108,11 +4109,11 @@ class OqbDryMixin(models.AbstractModel):
         elif operation_status == 'not_selected':
             message = f"Please Select Instance Name"
         elif operation_status == "sync_process_id":
-             message = (
-                    "Chart of Account already exists in QuickBooks with the same name. "
-                    "The existing QuickBooks account has been linked to the Odoo record "
-                    "by updating the QuickBooks ID. No new account was created."
-                )
+            message = (
+                "Chart of Account already exists in QuickBooks with the same name. "
+                "The existing QuickBooks account has been linked to the Odoo record "
+                "by updating the QuickBooks ID. No new account was created."
+            )
         else:
             # No records were successfully processed
             message = f'Failed to create/update {logger_name_capitalize} record.'
