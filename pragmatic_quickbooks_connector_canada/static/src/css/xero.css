@@ -1,0 +1,55 @@
+.o_action_manager
+ {
+  overflow:auto !important;
+}
+.table_order table
+ {
+  width: 100%;
+}
+.table_order body
+ {
+  overflow-y: auto;
+  height: 100px;
+}
+
+.as_today_meeting_table, .as_today_meeting_table1, .as_today_meeting_table2, .as_today_meeting_table3
+ {
+    overflow-y: auto;
+        height: 183px;
+}
+
+.as_today_meeting_table thead th,.as_today_meeting_table1 thead th, .as_today_meeting_table2 thead th, .as_today_meeting_table3 thead th {
+        position: sticky;
+        top: 0;
+      }
+
+.as_today_meeting_table table, .as_today_meeting_table1 table, .as_today_meeting_table2 table, .as_today_meeting_table3 table{
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+.as_today_meeting_table th,.as_today_meeting_table td, .as_today_meeting_table1 th,.as_today_meeting_table1 td, .as_today_meeting_table2 th,.as_today_meeting_table2 td, .as_today_meeting_table3 th,.as_today_meeting_table3 td
+{
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+      }
+
+.as_today_meeting_table th, .as_today_meeting_table1 th, .as_today_meeting_table2 th, .as_today_meeting_table3 th {
+        background: #eee;
+      }
+      .canvasjs-chart-container a {
+        display:none!important;
+      }
+
+.dataclass
+ {
+      background-color: white;
+}
+
+.paddingbutton
+ {
+  margin-top: 20px;
+  grid-template-columns:none;
+}
+
+

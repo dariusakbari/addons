@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mapping_view_form" model="ir.ui.view">
+        <field name="name">mapping.fields</field>
+        <field name="model">mapping.fields</field>
+        <field name="arch" type="xml">
+            <form string="mapping">
+                <sheet>
+                    <group col="4">
+                        <field name="model_id"/>
+                        <field name="name"/>
+                        <field name="model_name" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="default_vals" widget="ace" options="{'mode': 'python'}"/>
+
+                    </group>
+                    <group string="Search BY Field" col="4">
+                        <field name="search_field_odoo_id" options="{'no_create': True}" domain="[('model_id', '=', model_id)]" required="1"/>
+                        <field name="search_field_qbo" required="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Mapping">
+                            <field name="fields_lines">
+                                <list editable="bottom">
+                                    <field name="require"/>
+                                    <field name="col1" options="{'no_create': True}"
+                                            domain="[('model_id', '=', parent.model_id)]"/>
+                                    <field name="relation"/>
+                                    <field name="ttype"/>
+                                    <field name="relation_field"
+
+                                           required = "relation != False"
+                                           options="{'no_create': True}"
+                                           domain="[('model', '=', relation)]"/>
+                                    <field name="om_relation_field_id"
+                                           attrs="{'readonly': [('ttype', 'not in', ['one2many', 'many2many'])]}"
+                                           options="{'no_create': True}"
+                                           domain="[('model', '=', relation), ('ttype', '=', 'many2one')]"/>
+                                    <field name="sub_field_object_id" attrs="{'readonly': [('ttype', 'not in', ['one2many', 'many2many'])]}" domain="[('model_name', '=', relation)]"/>
+                                    <field name="value" required="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="JSON Data">
+                            <field name="json_data"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mapping_view_tree" model="ir.ui.view">
+        <field name="name">mapping.fields</field>
+        <field name="model">mapping.fields</field>
+        <field name="arch" type="xml">
+            <list string="Mapping">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_mapping" model="ir.actions.act_window">
+        <field name="name">Mapping</field>
+        <field name="res_model">mapping.fields</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+<!--    <menuitem-->
+<!--        name="Mappings"-->
+<!--        parent="pragmatic_quickbooks_connector_canada.menu_qb_dashboard"-->
+<!--        action="action_mapping"-->
+<!--        sequence="3"-->
+<!--        id="menu_qbc_mapping"/>-->
+
+    <record id="mapping_sub_view_form" model="ir.ui.view">
+        <field name="name">mapping.sub</field>
+        <field name="model">mapping.sub</field>
+        <field name="arch" type="xml">
+            <form string="Mapping Sub">
+                <sheet>
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="model_id"/>
+                        <field name="default_domain"
+                               widget="domain"
+                               options="{'model': 'model_name', 'in_dialog': True}"/>
+                        <field name="model_name" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="default_vals" widget="ace" options="{'mode': 'python'}"/>
+                    </group>
+                    <notebook>
+                        <page string="Mapping">
+                            <field name="sub_field_ids">
+                                <list editable="bottom">
+                                    <field name="ttype" invisible="1"/>
+                                    <field name="field_id" options="{'no_create': True}"
+                                            domain="[('model_id', '=', parent.model_id), ('ttype', 'not in', ['one2many', 'many2many'])]"/>
+                                    <field name="relation_field"
+                                           attrs="{'readonly': [('relation', '=', False)], 'required': [('relation', '!=', False)]}"
+                                           options="{'no_create': True}"
+                                           domain="[('model', '=', relation)]"/>
+                                    <field name="relation" invisible="1"/>
+                                    <field name="qb_field"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mapping_sub_view_tree" model="ir.ui.view">
+        <field name="name">mapping.sub</field>
+        <field name="model">mapping.sub</field>
+        <field name="arch" type="xml">
+            <list string="Mapping Sub">
+                <field name="name"/>
+                <field name="model_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_mapping_sub" model="ir.actions.act_window">
+        <field name="name">Mapping Sub</field>
+        <field name="res_model">mapping.sub</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+<!--    <menuitem-->
+<!--        name="Mappings Sub"-->
+<!--        parent="pragmatic_quickbooks_connector_canada.menu_qb_dashboard"-->
+<!--        action="action_mapping_sub"-->
+<!--        sequence="3"-->
+<!--        id="menu_qbc_mapping_sub"/>-->
+
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_cust_form_custom" model="ir.ui.view">
+		<field name="name">res.partner.form.inherit</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='website']" position="after">
+				<field name="supplier_rank" invisible="1"/>
+				<field name="customer_rank" invisible="1"/>
+                 <field name="qbo_customer_id"
+						invisible = "supplier_rank == '1'"
+						readonly="1"/>
+                 <field name="qbo_vendor_id" invisible = "customer_rank == '1'"
+						readonly="1"/>
+                <field name="mobile"/>
+			</xpath>
+			<xpath expr="//page[@name='sales_purchases']" position="inside">
+				<group string="Ranks">
+					<group>
+						<field name="supplier_rank"/>
+						<field name="customer_rank"/>
+					</group>
+				</group>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_cust_tree_custom" model="ir.ui.view">
+		<field name="name">res.partner.tree.inherit</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_tree" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='email']" position="after">
+				<field name="supplier_rank" invisible="1"/>
+				<field name="customer_rank" invisible="1"/>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

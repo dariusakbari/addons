@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record model="ir.ui.view" id="qbo_hr_timesheet_line_tree">
+        <field name="name">qbo.account.analytic.line.tree</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="qbo_timeactivity_id"/>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="qbo_hr_timesheet_line_from">
+        <field name="name">qbo.account.analytic.line.from</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='task_id']" position="after">
+                <field name="qbo_timeactivity_id"/>
+
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="qbo_hr_timesheet_line_form">
+        <field name="name">qbo.account.analytic.line.form</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='unit_amount']" position="after">
+                <field name="billable_status" widget="selection"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.server" id="export_timesheet_to_quickbooks">
+        <field name="name">Export to QBO</field>
+        <field name="model_id" ref="sale.model_account_analytic_line"/>
+        <field name="binding_model_id" ref="analytic.model_account_analytic_line"/>
+        <field name="state">code</field>
+        <field name="code">if records:
+            action = records.export_timesheet_to_qbo()
+        </field>
+    </record>
+
+
+</odoo>

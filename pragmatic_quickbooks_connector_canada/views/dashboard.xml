@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <record id="view_dashboard_action2" model="ir.actions.client">
+            <field name="name">Dashboard</field>
+            <field name="tag">meeting_chart</field>
+        </record>
+        <menuitem name="Xero Odoo Connector" id="menu_xero_odoo_connector"/>
+        <menuitem id="menu_xero_odoo_connector_dashboard" name="Dashboard"
+                  action="view_dashboard_action2" parent="menu_qb_dashboard"
+                  sequence="1"/>
+    </data>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    <record id="import_sales_receipt" model="ir.cron">
+        <field name="name">QBO: Import Sales Receipt</field>
+        <field name="model_id" ref="model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">model.import_sales_receipt()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+<!--        <field name="numbercall">-1</field>-->
+    </record>
+    <record id="import_transfer" model="ir.cron">
+        <field name="name">QBO: Import Transfer</field>
+        <field name="model_id" ref="model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">model.import_transfer()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+<!--        <field name="numbercall">-1</field>-->
+    </record>
+        <record id="import_deposit" model="ir.cron">
+        <field name="name">QBO: Import Deposit</field>
+        <field name="model_id" ref="model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">model.import_deposit()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+<!--        <field name="numbercall">-1</field>-->
+    </record>
+        <record id="import_expenses" model="ir.cron">
+        <field name="name">QBO: Import Expenses</field>
+        <field name="model_id" ref="model_res_company"/>
+        <field name="state">code</field>
+        <field name="code">model.import_expenses()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+<!--        <field name="numbercall">-1</field>-->
+    </record>
+    </data>
+</odoo>

@@ -1,0 +1,1319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="qbo_view_company_form">
+        <field name="name">qbo.view.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]" position="after">
+                <page string="QuickBooks">
+                    <separator name="configuration" string="QuickBooks Configuration"/>
+                    <div>
+                        <span style="margin-right: 20px;">
+                            <button string='Authenticate' type="object" name="login" class="oe_highlight"
+                                    icon="fa-plug"/>
+                        </span>
+                        <span>
+                            <button string='Refresh Token' type="object" name="refresh_token" class="oe_highlight"
+                                    icon="fa-refresh" style="margin-left: 20px;"/>
+                        </span>
+                    </div>
+                    <notebook>
+
+                        <!--/////////////////////////  IMPORT PAGE  /////////////////////////////-->
+
+                        <!--<page name="initial_sync" string='Initial Sync'>-->
+                        <page name="initial_sync" string='Import'>
+                            <separator name='sync' string='Initial Sync'/>
+                            <group>
+
+                                <field name="start" required='1' style="width:20%"/>
+                                <field name="limit" required='1' style="width:20%"/>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="1-Import Chart of Accounts" type="object"
+                                            name="import_chart_of_accounts" class="oe_highlight"
+                                            icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_account_by_date"/>
+                                        <field name="account_import_by" string="Import By"
+                                               invisible="import_account_by_date == False"
+                                               required="import_account_by_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_acc_imported_id"/>
+                                    <field name="import_account_date"
+                                           invisible="import_account_by_date == False"
+                                           required="import_account_by_date == True"/>
+                                </group>
+                            </group>
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="2-Import Account tax" type="object" name="import_tax"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_tax_by_date"/>
+                                        <field name="tax_import_by" string="Import By"
+                                               invisible="import_tax_by_date == False"
+                                               required="import_tax_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_imported_tax_id"/>
+                                    <field name="import_tax_date"
+                                           invisible="import_tax_by_date == False"
+                                           required="import_tax_date == True"/>
+                                </group>
+                            </group>
+                            <h4 style="color:red">Please make QBO account configuration in QB Account Configuration
+                                tab
+                            </h4>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="3-Import Customer" type="object" name="import_customers"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_customer_by_date"/>
+                                        <field name="cutomer_import_by" string="Import By"
+                                               invisible="import_customer_by_date == False"
+                                               required="import_customer_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_imported_customer_id"/>
+                                    <field name="import_customer_date"
+                                           invisible="import_customer_by_date == False"
+                                           required="import_customer_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="4-Import Vendor" type="object" name="import_vendors"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_vendor_by_date"/>
+                                        <field name="vendor_import_by" string="Import By"
+                                               invisible="import_vendor_by_date == False"
+                                               required="import_vendor_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_imported_vendor_id"/>
+                                    <field name="import_vendor_date"
+                                           invisible="import_vendor_by_date == False"
+                                           required="import_vendor_by_date == True"/>
+                                </group>
+                            </group>
+
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="5-Import Product Category" type="object"
+                                            name="import_product_category" class="oe_highlight"
+                                            icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_pc_by_date"/>
+                                        <field name="prodct_catgry_import_by" string="Import By"
+                                               invisible="import_pc_by_date == False"
+                                               required="import_pc_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_imported_product_category_id"/> <!-- readonly="1" -->
+                                    <field name="import_pc_date"
+                                           invisible="import_pc_by_date == False"
+                                           required="import_pc_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="6-Import Product" type="object" name="import_product"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"
+                                            help="SKU ID should be Unique in QBO"/>
+                                    <group>
+                                        <field name="import_product_by_date"/>
+                                        <field name="prodct_import_by" string="Import By"
+                                               invisible="import_product_by_date == False"
+                                               required="import_product_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_imported_product_id"/>
+                                    <field name="import_product_date"
+                                           invisible="import_product_by_date == False"
+                                           required="import_product_by_date == True"/>
+                                </group>
+                                <h6 style="color:black">Please make sure that Unique SKU are maintained in QBO</h6>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="7-Import Inventory" type="object" name="import_inventory"
+                                            confirm="This process will override the Product quantities from QBO to Odoo. Do you want to continue ?"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                                <group>
+                                    <field name="last_imported_inv_product_id"/>
+                                    <!--                                    <field name="last_imported_product_id"/>-->
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="8-Import Payment Method" type="object" name="import_payment_method"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_payment_method_by_date"/>
+                                        <field name="paymnt_method_import_by" string="Import By"
+                                               invisible="import_payment_method_by_date ==  False"
+                                               required="import_payment_method_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_imported_payment_method_id"/>
+                                    <field name="import_payment_method_date"
+                                           invisible="import_payment_method_by_date == False"
+                                           required="import_payment_method_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="9-Import Payment Term" type="object"
+                                            name="import_payment_term_from_quickbooks" class="oe_highlight"
+                                            icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_payment_term_by_date"/>
+                                        <field name="paymnt_term_import_by" string="Import By"
+                                               invisible="import_payment_term_by_date == False"
+                                               required="import_payment_term_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="x_quickbooks_last_paymentterm_imported_id"/>
+                                    <field name="import_payment_term_date"
+                                           invisible="import_payment_term_by_date == False"
+                                           required="import_payment_term_by_date == True"/>
+                                </group>
+                            </group>
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="10-Import Sales Order" type="object" name="import_sale_order"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_sale_order_by_date"/>
+                                        <field name="sale_order_import_by" string="Import By"
+                                               invisible="import_sale_order_by_date == False"
+                                               required="import_sale_order_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <!--<field name="quickbooks_last_employee_sync" />-->
+                                    <field name="quickbooks_last_sale_imported_id"/>
+                                    <field name="import_sale_order_date"
+                                           invisible="import_sale_order_by_date == False"
+                                           required="import_sale_order_by_date == True"/>
+                                </group>
+                            </group>
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="11-Import Invoice" type="object" name="import_invoice_custom"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_invoice_by_date"/>
+                                        <field name="invoice_import_by" string="Import By"
+                                               invisible="import_invoice_by_date == False"
+                                               required="import_invoice_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <!--<field name="quickbooks_last_employee_sync" />-->
+                                    <field name="quickbooks_last_invoice_imported_id"/>
+                                    <field name="import_invoice_date"
+                                           invisible="import_invoice_by_date == False"
+                                           required="import_invoice_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="12-Import Credit Memo" type="object"
+                                            name="import_credit_memo_custom" class="oe_highlight"
+                                            icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_credit_memo_by_date"/>
+                                        <field name="credit_memo_import_by" string="Import By"
+                                               invisible="import_credit_memo_by_date == False"
+                                               required="import_credit_memo_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_credit_note_imported_id"/>
+                                    <field name="import_credit_memo_date"
+                                           invisible="import_credit_memo_by_date == False"
+                                           required="import_credit_memo_by_date == True"/>
+                                </group>
+                            </group>
+
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="13-Import Purchase Order" type="object" name="import_purchase_order"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_purchase_order_by_date"/>
+                                        <field name="purchase_order_import_by" string="Import By"
+                                               invisible="import_purchase_order_by_date ==  False"
+                                               required="import_purchase_order_date ==  True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <!--<field name="quickbooks_last_employee_sync" />-->
+                                    <field name="quickbooks_last_purchase_imported_id"/>
+                                    <field name="import_purchase_order_date"
+                                           invisible="import_purchase_order_by_date == False"
+                                           required="import_purchase_order_by_date == True"/>
+                                </group>
+                            </group>
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="14-Import Vendor Bill" type="object"
+                                            name="import_vendor_bill_custom" class="oe_highlight"
+                                            icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_bills_by_date"/>
+                                        <field name="vendor_bill_import_by" string="Import By"
+                                               invisible="import_bills_by_date ==  False"
+                                               required="import_bills_date ==  True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <!--<field name="quickbooks_last_employee_sync" />-->
+                                    <field name="quickbooks_last_vendor_bill_imported_id"/>
+                                    <field name="import_bills_date"
+                                           invisible="import_bills_by_date == False"
+                                           required="import_bills_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="15-Import Customer Payment" type="object" name="import_payment"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_cp_by_date"/>
+                                        <field name="customer_paymnt_import_by" string="Import By"
+                                               invisible="import_cp_by_date == False"
+                                               required="import_cp_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_imported_payment_id"/>
+                                    <field name="import_cp_date"
+                                           invisible="import_cp_by_date == False"
+                                           required="import_cp_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="16-Import Vendor Payment" type="object" name="import_bill_payment"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_vp_by_date"/>
+                                        <field name="vendor_paymnt_import_by" string="Import By"
+                                               invisible="import_vp_by_date == False"
+                                               required="import_vp_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="last_imported_bill_payment_id"/>
+                                    <field name="import_vp_date"
+                                           invisible="import_vp_by_date == False"
+                                           required="import_vp_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="17-Import Department" type="object" name="import_department"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_department_by_date"/>
+                                        <field name="department_import_by" string="Import By"
+                                               invisible="import_department_by_date == False"
+                                               required="import_department_date == True"/>
+
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_dept_imported_id"/>
+                                    <field name="import_department_date"
+                                           invisible="import_department_by_date == False"
+                                           required="import_department_by_date == True"/>
+                                </group>
+                            </group>
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="18 -Import Employee" type="object" name="import_employee"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_employee_by_date"/>
+                                        <field name="employee_import_by" string="Import By"
+                                               invisible="import_employee_by_date == False"
+                                               required="import_employee_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <!--<field name="quickbooks_last_employee_sync" />-->
+                                    <field name="quickbooks_last_employee_imported_id"/>
+                                    <field name="import_employee_date"
+                                           invisible="import_employee_by_date == False"
+                                           required="import_employee_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="19-Import Journal Entry" type="object" name="import_journal_entry"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_je_by_date"/>
+                                        <field name="journal_entry_import_by" string="Import By"
+                                               invisible="import_je_by_date == False"
+                                               required="import_je_date == True"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_journal_entry_imported_id"/>
+                                    <field name="import_je_date"
+                                           invisible="import_je_by_date == False"
+                                           required="import_je_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="19-Import Sales Receipt" type="object" name="import_sales_receipt"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_sr_by_date"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_sales_receipt_imported_id"/>
+                                    <field name="import_sr_date"
+                                           invisible="import_sr_by_date == False"
+                                           required="import_sr_by_date == True"/>
+                                </group>
+                            </group>
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="20-Import Transfer" type="object" name="import_transfer"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_trns_by_date"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_trns_imported_id"/>
+                                    <field name="import_trns_date"
+                                           invisible="import_trns_by_date == False"
+                                           required="import_trns_by_date == True"/>
+                                </group>
+                            </group>
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="21-Import Deposit" type="object" name="import_deposit"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_dp_by_date"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_dp_imported_id"/>
+                                    <field name="import_dp_date"
+                                           invisible="import_dp_by_date == False"
+                                           required="import_dp_by_date == True"/>
+                                </group>
+                            </group>
+
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="21-Import Expenses" type="object" name="import_expenses"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                    <group>
+                                        <field name="import_expns_by_date"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_expns_imported_id"/>
+                                    <field name="import_expns_date"
+                                           invisible="import_expns_by_date == False"
+                                           required="import_expns_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="22-Import Project" type="object" name="import_project"
+                                            class="oe_highlight" icon="fa-arrow-circle-down" invisible="timesheet_access == 0"/>
+                                    <group>
+                                        <field name="import_project_by_date" invisible="timesheet_access == 0"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_project_imported_id" invisible="timesheet_access == 0"/>
+                                    <field name="import_project_date" invisible="import_project_by_date == False"
+                                           required="import_project_by_date == True"/>
+                                </group>
+                            </group>
+                            <group class="paddingbutton">
+                                <div>
+                                    <button string="23-Import Timesheet" type="object" name="import_timesheet"
+                                            class="oe_highlight" icon="fa-arrow-circle-down" invisible="timesheet_access == 0"/>
+                                    <group>
+                                        <field name="import_timesheet_by_date" invisible="timesheet_access == 0"/>
+                                    </group>
+                                </div>
+                                <group>
+                                    <field name="quickbooks_last_timesheet_imported_id" invisible="timesheet_access == 0"/>
+                                    <field name="import_timesheet_date" invisible="import_timesheet_by_date == False"
+                                           required="import_timesheet_by_date == True"/>
+                                </group>
+                            </group>
+                        </page>
+
+
+                        <page name="export_sync" string='Export'>
+                            <!--<separator name='sync' string='Export'/>-->
+
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="1-Export Customer" type="object" name="export_customers"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="2-Export Vendor" type="object" name="export_vendors"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="3-Export Account" type="object" name="export_accounts"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="4-Export Account tax" type="object" name="export_tax"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <!--<group>-->
+                            <!--<group>-->
+                            <!--<button string="5-Export Account tax Agency" type="object" name="export_tax_agency" class="oe_highlight" icon="fa-arrow-circle-down"/>-->
+                            <!--</group>-->
+                            <!--</group>-->
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="5-Export Product" type="object" name="export_products"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="6-Export Payment Method" type="object" name="export_payment_method"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="7-Export Payment terms" type="object" name="export_payment_terms"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="8-Export Sales Order" type="object" name="export_sale_order"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="9-Export Invoice" type="object" name="export_invoice"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="10-Export Purchase Order" type="object" name="export_purchase_order"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="11-Export Vendor Bill" type="object" name="export_vendor_bill"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="12-Export Department" type="object" name="export_department"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="13-Export Employee" type="object" name="export_employee"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="14-Export Customer Payment" type="object"
+                                            name="export_customer_payment"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="15-Export Vendor Payment" type="object"
+                                            name="export_vendor_payment_button"
+                                            class="oe_highlight" icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                            <div class="paddingbutton">
+                                <div>
+                                    <button string="16-Export Timesheet" type="object"
+                                            name="export_timesheet" class="oe_highlight"
+                                            icon="fa-arrow-circle-down"/>
+                                </div>
+                            </div>
+                        </page>
+                        <!--                        <page name="mapping" string="Mapping">-->
+                        <!--                            <notebook>-->
+                        <!--                                <page name="import_mapping" string="Import">-->
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_customer_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_customer_id"-->
+                        <!--                                               invisible="import_mapping_customer_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field class="oe_inline" name="import_mapping_customer_id"-->
+                        <!--                                                   invisible="import_mapping_customer_field == False"-->
+                        <!--                                                   required="import_mapping_customer_field == True"/>-->
+                        <!--                                            <button string="Customer Mapping" class="oe_highlight" type="object"-->
+                        <!--                                                    name="import_customers"-->
+                        <!--                                                    invisible="import_mapping_customer_field == False"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_vendor_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_vendor_id"-->
+                        <!--                                               invisible="import_mapping_vendor_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field class="oe_inline" name="import_mapping_vendor_id"-->
+                        <!--                                                   invisible="import_mapping_vendor_field == False"-->
+                        <!--                                                   required="import_mapping_vendor_field == True"/>-->
+                        <!--                                            <button string="Vendor Mapping"-->
+                        <!--                                                    invisible="import_mapping_vendor_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_vendors"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_account_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_account_id"-->
+                        <!--                                               invisible="import_mapping_account_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_account_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_account_field == False"-->
+                        <!--                                                   required="import_mapping_account_field == True"/>-->
+                        <!--                                            <button string="Account Mapping"-->
+                        <!--                                                    invisible="import_mapping_account_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_chart_of_accounts"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_tax_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_tax_id"-->
+                        <!--                                               invisible="import_mapping_tax_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_tax_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_tax_field == False"-->
+                        <!--                                                   required="import_mapping_tax_field == True"/>-->
+                        <!--                                            <button string="Tax Mapping"-->
+                        <!--                                                    invisible="import_mapping_tax_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_tax"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_product_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_product_id"-->
+                        <!--                                               invisible="import_mapping_product_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_product_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_product_field == False"-->
+                        <!--                                                   required="import_mapping_product_field == True"/>-->
+                        <!--                                            <button string="Product Mapping"-->
+                        <!--                                                    invisible="import_mapping_product_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_product"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_product_category_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_product_category_id"-->
+                        <!--                                               invisible="import_mapping_product_category_field == False"/>-->
+                        <!--                                        <div>-->
+
+                        <!--                                            <field name="import_mapping_product_category_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_product_category_field == False"-->
+                        <!--                                                   required="import_mapping_product_category_field == True"/>-->
+                        <!--                                            <button string="Product Category Mapping"-->
+                        <!--                                                    invisible="import_mapping_product_category_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_product_category"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_payment_term_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_payment_term_id"-->
+                        <!--                                               invisible="import_mapping_payment_term_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_payment_term_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_payment_term_field == False"-->
+                        <!--                                                   required="import_mapping_payment_term_field == True"/>-->
+                        <!--                                            <button string="Payment Term Mapping"-->
+                        <!--                                                    invisible="import_mapping_payment_term_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_payment_term_from_quickbooks"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_so_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_so_id"-->
+                        <!--                                               invisible="import_mapping_so_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_so_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_so_field == False"-->
+                        <!--                                                   required="import_mapping_so_field == True"/>-->
+                        <!--                                            <button string="Sale Order Mapping"-->
+                        <!--                                                    invisible="import_mapping_so_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_sale_order"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_po_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_po_id"-->
+                        <!--                                               invisible="import_mapping_po_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_po_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_po_field == False"-->
+                        <!--                                                   required="import_mapping_po_field == True"/>-->
+                        <!--                                            <button string="Purchase Order Mapping"-->
+                        <!--                                                    invisible="import_mapping_po_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_purchase_order"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_inv_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_inv_id"-->
+                        <!--                                               invisible="import_mapping_inv_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_inv_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_inv_field == False"-->
+                        <!--                                                   required="import_mapping_inv_field == True"/>-->
+                        <!--                                            <button string="Invoice Mapping"-->
+                        <!--                                                    invisible="import_mapping_inv_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_invoice_custom"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_bill_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_bill_id"-->
+                        <!--                                               invisible="import_mapping_bill_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_bill_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_bill_field == False"-->
+                        <!--                                                   required="import_mapping_bill_field == True"/>-->
+                        <!--                                            <button string="Bills Mapping"-->
+                        <!--                                                    invisible="import_mapping_bill_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_vendor_bill_custom"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_credit_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_credit_id"-->
+                        <!--                                               invisible="import_mapping_credit_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_credit_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_credit_field == False"-->
+                        <!--                                                   required="import_mapping_credit_field == True"/>-->
+                        <!--                                            <button string="Credit Memo Mapping"-->
+                        <!--                                                    invisible="import_mapping_credit_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_invoice_custom"-->
+                        <!--                                                    context="{'mapping': True, 'credit': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_cust_payment_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_cust_payment_id"-->
+                        <!--                                               invisible="import_mapping_cust_payment_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_cust_payment_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_cust_payment_field == False"-->
+                        <!--                                                   required="import_mapping_cust_payment_field == True"/>-->
+                        <!--                                            <button string="Customer Payment Mapping"-->
+                        <!--                                                    invisible="import_mapping_cust_payment_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_payment"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_vendor_payment_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_vendor_payment_id"-->
+                        <!--                                               invisible="import_mapping_vendor_payment_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_vendor_payment_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_vendor_payment_field == False"-->
+                        <!--                                                   required="import_mapping_vendor_payment_field == True"/>-->
+                        <!--                                            <button string="Vendor Payment Mapping"-->
+                        <!--                                                    invisible="import_mapping_vendor_payment_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_bill_payment"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_department_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_department_id"-->
+                        <!--                                               invisible="import_mapping_department_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_department_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_department_field == False"-->
+                        <!--                                                   required="import_mapping_department_field == True"/>-->
+                        <!--                                            <button string="Department Mapping"-->
+                        <!--                                                    invisible="import_mapping_department_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_department"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                    <group col="4">-->
+                        <!--                                        <field name="import_mapping_employee_field"/>-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <label for="import_mapping_employee_id"-->
+                        <!--                                               invisible="import_mapping_employee_field == False"/>-->
+                        <!--                                        <div>-->
+                        <!--                                            <field name="import_mapping_employee_id" class="oe_inline"-->
+                        <!--                                                   invisible="import_mapping_employee_field == False"-->
+                        <!--                                                   required="import_mapping_employee_field == True"/>-->
+                        <!--                                            <button string="Employee Mapping"-->
+                        <!--                                                    invisible="import_mapping_employee_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="import_employee"-->
+                        <!--                                                    context="{'mapping': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-down"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+
+                        <!--                                </page>-->
+                        <!--                                <page name="export_mapping" string="Export">-->
+                        <!--                                    <group>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_customer_field"/>-->
+                        <!--                                            <field name="export_mapping_customer_id"-->
+                        <!--                                                   invisible="export_mapping_customer_field == False"-->
+                        <!--                                                   required="export_mapping_customer_field == True"/>-->
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_customer_field == False"-->
+                        <!--                                                       name="last_customer_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Customer Mapping"-->
+                        <!--                                                    invisible="export_mapping_customer_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_customers_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_vendor_field"/>-->
+                        <!--                                            <field name="export_mapping_vendor_id"-->
+                        <!--                                                   invisible="export_mapping_vendor_field == False"-->
+                        <!--                                                   required="export_mapping_vendor_field == True"/>-->
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_vendor_field == False"-->
+                        <!--                                                       name="last_vendor_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Vendor Mapping"-->
+                        <!--                                                    invisible="export_mapping_vendor_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_vendors_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_account_field"/>-->
+                        <!--                                            <field name="export_mapping_account_id"-->
+                        <!--                                                   invisible="export_mapping_account_field == False"-->
+                        <!--                                                   required="export_mapping_account_field == True"/>-->
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_account_field == False"-->
+                        <!--                                                       name="last_account_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Account Mapping"-->
+                        <!--                                                    invisible="export_mapping_account_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_account_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_tax_field"/>-->
+                        <!--                                            <field name="export_mapping_tax_id"-->
+                        <!--                                                   invisible="export_mapping_tax_field == False"-->
+                        <!--                                                   required="export_mapping_tax_field == True"/>-->
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_tax_field == False"-->
+                        <!--                                                       name="last_tax_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Tax Mapping"-->
+                        <!--                                                    invisible="export_mapping_tax_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_tax_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_product_field"/>-->
+                        <!--                                            <field name="export_mapping_product_id"-->
+                        <!--                                                   invisible="export_mapping_product_field == False"-->
+                        <!--                                                   required="export_mapping_product_field == True"/>-->
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_product_field == False"-->
+                        <!--                                                       name="last_product_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Product Mapping"-->
+                        <!--                                                    invisible="export_mapping_product_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_product_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_product_category_field"/>-->
+                        <!--                                            <field name="export_mapping_product_category_id"-->
+                        <!--                                                   invisible="export_mapping_product_category_field == False"-->
+                        <!--                                                   required="export_mapping_product_category_field == True"/>-->
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_product_category_field == False"-->
+                        <!--                                                       name="last_product_category_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Product Category Mapping"-->
+                        <!--                                                    invisible="export_mapping_product_category_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_product_category_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_payment_term_field"/>-->
+                        <!--                                            <field name="export_mapping_payment_term_id"-->
+                        <!--                                                   invisible="export_mapping_payment_term_field == False"-->
+                        <!--                                                   required="export_mapping_payment_term_field == True"/>-->
+
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_payment_term_field == False"-->
+                        <!--                                                       name="last_payment_term_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Payment Term Mapping"-->
+                        <!--                                                    invisible="export_mapping_payment_term_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_payment_terms_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_so_field"/>-->
+                        <!--                                            <field name="export_mapping_so_id"-->
+                        <!--                                                   invisible="export_mapping_so_field == False"-->
+                        <!--                                                   required="export_mapping_so_field == True"/>-->
+
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_so_field == False"-->
+                        <!--                                                       name="last_so_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Sale Order Mapping"-->
+                        <!--                                                    invisible="export_mapping_so_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_sale_order_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_po_field"/>-->
+                        <!--                                            <field name="export_mapping_po_id"-->
+                        <!--                                                   invisible="export_mapping_po_field == False"-->
+                        <!--                                                   required="export_mapping_po_field == True"/>-->
+
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_po_field == False"-->
+                        <!--                                                       name="last_po_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Purchase Order Mapping"-->
+                        <!--                                                    invisible="export_mapping_po_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_purchase_order_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_inv_field"/>-->
+                        <!--                                            <field name="export_mapping_inv_id"-->
+                        <!--                                                   invisible="export_mapping_inv_field == False"-->
+                        <!--                                                   required="export_mapping_inv_field == True"/>-->
+
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_inv_field == False"-->
+                        <!--                                                       name="last_inv_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Invoice Mapping"-->
+                        <!--                                                    invisible="export_mapping_inv_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_invoice_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_bill_field"/>-->
+                        <!--                                            <field name="export_mapping_bill_id"-->
+                        <!--                                                   invisible="export_mapping_bill_field == False"-->
+                        <!--                                                   required="export_mapping_bill_field == True"/>-->
+
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_bill_field == False"-->
+                        <!--                                                       name="last_bill_mapping_export"/>-->
+                        <!--                                            </group>-->
+
+                        <!--                                            <button string="Bill Mapping"-->
+                        <!--                                                    invisible="export_mapping_bill_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_bills_mapping"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_credit_field"/>-->
+                        <!--                                            <field name="export_mapping_credit_id"-->
+                        <!--                                                   invisible="export_mapping_credit_field == False"-->
+                        <!--                                                   required="export_mapping_credit_field == True"/>-->
+
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_credit_field == False"-->
+                        <!--                                                       name="last_credit_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Credit Notes Mapping"-->
+                        <!--                                                    invisible="export_mapping_credit_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_invoice_mapping"-->
+                        <!--                                                    context="{'credit': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_department_field"/>-->
+                        <!--                                            <field name="export_mapping_department_id"-->
+                        <!--                                                   invisible="export_mapping_department_field == False"-->
+                        <!--                                                   required="export_mapping_department_field == True"/>-->
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_department_field == False"-->
+                        <!--                                                       name="last_department_mapping_export"/>-->
+                        <!--                                            </group>-->
+                        <!--                                            <button string="Department Mapping"-->
+                        <!--                                                    invisible="export_mapping_department_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_department_mapping"-->
+                        <!--                                                    context="{'department': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+
+                        <!--                                        <group>-->
+                        <!--                                            <field name="export_mapping_employee_field"/>-->
+                        <!--                                            <field name="export_mapping_employee_id"-->
+                        <!--                                                   invisible="export_mapping_employee_field == False"-->
+                        <!--                                                   required="export_mapping_employee_field == True"/>-->
+                        <!--                                        </group>-->
+                        <!--                                        <div>-->
+                        <!--                                            <group>-->
+                        <!--                                                <field invisible="export_mapping_employee_field == False"-->
+                        <!--                                                       name="last_employee_mapping_export"/>-->
+                        <!--                                            </group>-->
+
+                        <!--                                            <button string="Employee Mapping"-->
+                        <!--                                                    invisible="export_mapping_employee_field == False"-->
+                        <!--                                                    type="object"-->
+                        <!--                                                    name="export_employee_mapping"-->
+                        <!--                                                    context="{'employee': True}"-->
+                        <!--                                                    class="oe_highlight"-->
+                        <!--                                                    icon="fa-arrow-circle-up"/>-->
+                        <!--                                        </div>-->
+                        <!--                                    </group>-->
+                        <!--                                </page>-->
+                        <!--                            </notebook>-->
+                        <!--                        </page>-->
+
+                        <!--////////////////////////////  CREDENTIALS PAGE   ////////////////////////////////-->
+                        <page name="credentials" string="Credentials">
+                            <group string="Credentials">
+                                <group name="Credential">
+                                    <field name="client_id" password="true"/>
+                                    <field name="client_secret" password="true"/>
+                                    <!--							<field name="access_token"/>-->
+                                    <!--							<field name="qbo_refresh_token"/>-->
+                                    <!--							<field name="realm_id"/>-->
+                                    <field name="access_token_expire_in" readonly="1"/>
+                                    <field name="refresh_token_expire_in" readonly="1"/>
+                                    <field name="minorversion"/>
+                                    <field name="quickbooks_company_name"/>
+                                    <!--<field name="suppress_warning"/>-->
+                                </group>
+                                <group name="Url">
+                                    <field name="auth_base_url"/>
+                                    <field name="access_token_url"/>
+                                    <field name="request_token_url"/>
+                                    <field name="qbo_domain"/>
+                                    <field name="url"/>
+                                </group>
+                            </group>
+                        </page>
+
+
+                        <page name="QB Account Settings" string=" QB Account Configuration">
+                            <group string="Product Accounts">
+                                <group name="Product Accounts">
+                                    <field name="qb_income_account"/>
+                                    <field name="qb_expense_account"/>
+                                </group>
+                                <group>
+                                    <field name="delivery_carrier_id"/>
+                                    <field name="default_customer_journal_entry"
+                                           domain="[('qbo_customer_id', '!=', False),('customer_rank', '!=', False)]"/>
+                                </group>
+                            </group>
+                            <group string="Customer Accounts">
+                                <group name="Customer Accounts">
+                                    <field name="qb_account_recievable"/>
+                                    <field name="qb_account_payable"/>
+                                </group>
+                                <group name="Journal Accounts">
+                                    <field name="journal_entry"/>
+                                    <field name="transfer_journal_entry"/>
+                                    <field name="deposit_journal_entry"/>
+                                    <field name="expense_journal_entry"/>
+                                    <field name="timesheet_access"/>
+                                    <field name="default_project_id" invisible="timesheet_access == 0"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="QBO Config Settings" string=" QB Config Settings">
+                            <group>
+                                <group string="Quickbooks Online Settings" colspan="4">
+                                    <field name="import_inactive_customer" string="import inactive customer/vendor"/>
+                                    <field name="export_bill_without_product" string="Export Bill Without Product"/>
+                                    <field name="product_id" string="Product"
+                                           invisible="export_bill_without_product == False"/>
+
+                                    <field name="update_customer_export" string="Update Customer While Export"/>
+                                    <field name="update_customer_import" string="Update Customer While Import"/>
+                                    <field name="update_vendor_export" string="Update Vendor While Export"/>
+                                    <field name="update_vendor_import" string="Update Vendor While Import"/>
+                                    <field name="update_product_export" string="Update Product While Export"/>
+                                    <field name="update_product_import" string="Update Product While Import"/>
+                                    <field name="update_account_export" string="Update Account While Export"/>
+                                    <field name="update_account_import" string="Update Account While Import"/>
+                                    <field name="non_tracked_item"
+                                           string="Export Stockable Product as Non Tracked Items"/>
+                                    <field name="separate_invoice_export" string="Separate Invoice Export"/>
+                                </group>
+
+                                <group col="4">
+                                    <field name="import_inactive_product" string="Import Inactive Product"/>
+                                </group>
+
+                                <group col="4">
+                                    <field name="import_category_detail"
+                                           string="Import Category Details On Purchase Order"/>
+                                </group>
+
+                                <group>
+                                    <div>
+                                        <button string="Import Inactive Product" class="oe_highlight" type="object"
+                                                name="inactive_product_import"
+                                                invisible="import_inactive_product == False"
+                                                icon="fa-arrow-circle-down"/>
+                                    </div>
+                                </group>
+                                <group col="4">
+                                    <field name="export_product_wo_sku"
+                                           string="Export Product Without Internal Reference"/>
+                                </group>
+                                <!-- Warning OUTSIDE the group -->
+                                <div class="alert alert-warning"
+                                     invisible="export_pos_payment == False">
+                                    <strong>Warning:</strong>
+                                    POS journal entries in Odoo may use a
+                                    <b>Receivable</b>
+                                    account on the debit side.
+                                    <br/>
+                                    QuickBooks Payments do <b>not</b> allow Receivable accounts as deposit accounts.
+                                    <br/>
+                                    Therefore, POS payments will be exported using a
+                                    <b>Bank / Asset </b>
+                                    account to ensure the invoice is marked as
+                                    <b>Paid</b>, even if the account differs.
+                                </div>
+                                <group col="4">
+                                    <field name="export_seprate_payment" string="Export Seprate Payment"/>
+                                    <field name="export_pos_payment" string="Export POS Payment"/>
+                                    <field name="export_pos_journal" invisible="export_pos_payment == False"
+                                           required="export_pos_payment == True"/>
+                                    <field name="export_pos_payment_account" invisible="export_pos_payment == False"
+                                           required="export_pos_payment == True"/>
+                                </group>
+                                <group col="4">
+                                    <field name="update_tax_invoice_export"
+                                           string="Update Tax while export Invoice/Bill And Update Payment"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

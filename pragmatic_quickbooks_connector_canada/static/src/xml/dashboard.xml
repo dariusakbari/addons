@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="XeroDashboardViewNew">
+        <div class="container co-living-table">
+            <div class="row" style="position:relative;">
+                <table width='100%' class="as_hostel_table table" id="hostel1">
+                    <thead>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+			</div>
+            <!--PURCHASE ORDER-->
+            <div class="row">
+                <div class="col-md-12 text-center mb-3 mt-3">
+                    <h1 class="o_stock_reports_header">Purchase Orders</h1>
+                </div>
+			</div>
+
+            <div class="o_stock_reports_table text-center">
+                   <!-- Content Row -->
+                <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-3 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Purchase Orders</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_pending_order"
+                                                 id="pending_order"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    <div class="col-md-3 col-md-3 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                 Waiting For Create Bills</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_completed_bill"
+                                                 id="completed_bill"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-3 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Unpaid </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_unpaid_order"
+                                                 id="unpaid_order"> </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-3 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paid
+                                            </div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" t-on-click="on_paid_order"
+                                                 id="paid_order"> </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    <div class="col-md-6 col-md-6 mb-4">
+                        <div class="row">
+                          <div class="dataclass col-md" t-on-click="on_DataType">
+                            <select id="DataType">
+                                <option value="pie">Pie</option>
+                                <option value="bar">Bar</option>
+                                <option value="scatter">Scatter</option>
+                                                    </select>
+                          </div>
+                            <div class="dataclass col-md">
+                                <select id="TimeData" t-on-click="on_DataType">
+                                    <option value="last_month">Last 30 Days</option>
+                                    <option value="last_week">Last 7 Days</option>
+                                    <option value="today">Today</option>
+                                    <option value="six_month">Last 6 Month</option>
+                                </select>
+                                </div>
+</div>
+                        <div class="row">
+                        <div id="chartContainer" style="height: 200px; width: 100%;"></div>
+                        </div>
+                     </div>
+                    <div class="as_today_meeting_table col-md-6 col-md-6 mb-4">
+                        <table width='100%'>
+                        <thead>
+
+                            <tr>
+                                <th style="width:33%;" valign="center"
+                                    class="o_report_line_header28">PO Number</th>
+                                <th style="width:33%;" valign="center" class="o_report_line_header28">Date</th>
+                                <th style="width:33%;" valign="center" class="o_report_line_header28">Total</th>
+                            </tr>
+                        </thead>
+                            <tbody></tbody>
+                </table>
+            </div>
+                </div>
+            </div>
+            <!--SALE ORDER-->
+            <div class="row">
+                <div class="col-md-12 text-center mb-3 mt-3">
+                    <h1 class="o_stock_reports_header">Sale Orders</h1>
+                </div>
+			</div>
+
+            <div class="o_stock_reports_table text-center">
+                   <!-- Content Row -->
+                <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-3 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Sale Orders</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_pending_sale_order"
+                                                 id="pending_sale_order"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    <div class="col-md-3 col-md-3 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                 Waiting For Create Invoices</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_pending_sale_order"
+                                                 id="completed_invoice"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-3 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Unpaid </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_unpaid_sale_order"
+                                                 id="unpaid_sale_order"> </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-3 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paid
+                                            </div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" t-on-click="on_paid_sale_order"
+                                                 id="paid_sale_order"> </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Pending Requests Card Example -->
+                    <div class="col-md-6 col-md-6 mb-4">
+                        <div class="row">
+                          <div class="dataclass col-md">
+                            <select id="DataType1" t-on-click="on_DataType1">
+                                <option value="pie">Pie</option>
+                                <option value="bar">Bar</option>
+                                <option value="scatter">Scatter</option>
+                                                    </select>
+                          </div>
+                            <div class="dataclass col-md">
+                                <select id="TimeData1" t-on-click="on_DataType1">
+                                    <option value="last_month">Last 30 Days</option>
+                                    <option value="last_week">Last 7 Days</option>
+                                    <option value="today">Today</option>
+                                    <option value="six_month">Last 6 Month</option>
+                                </select>
+                                </div>
+</div>
+                        <div id="chartContainer1" style="height: 200px; width: 100%;"></div>
+                    </div>
+                    <div class="as_today_meeting_table1 col-md-6 col-md-6 mb-4">
+                         <table width='100%'>
+                        <thead>
+
+                            <tr>
+                                <th style="width:33%;" valign="center"
+                                    class="o_report_line_header28">SO Number</th>
+                                <th style="width:33%;" valign="center" class="o_report_line_header28">Date</th>
+                                <th style="width:33%;" valign="center" class="o_report_line_header28">Total</th>
+
+                            </tr>
+                        </thead>
+                             <tbody>
+                        </tbody>
+                </table>
+            </div>
+                </div>
+            </div>
+            <!--            INVOICE-->
+
+            <div class="row">
+                <div class="col-md-12 text-center mb-3 mt-3">
+                    <h1 class="o_stock_reports_header">Invoices</h1>
+                </div>
+			</div>
+
+            <div class="o_stock_reports_table text-center">
+                   <!-- Content Row -->
+                <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Invoices</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_pending_invoice"
+                                                 id="pending_invoice"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-4 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Unpaid </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_unpaid_invoice"
+                                                 id="unpaid_invoice"> </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-4 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paid
+                                            </div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" t-on-click="on_paid_invoice"
+                                                 id="paid_invoice"> </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    <div class="col-md-6 col-md-6 mb-4">
+                        <div class="row">
+                          <div class="dataclass col-md">
+                            <select id="DataType2" t-on-click="on_DataType2">
+                                <option value="pie">Pie</option>
+                                <option value="bar">Bar</option>
+                                <option value="scatter">Scatter</option>
+                                                    </select>
+                          </div>
+                            <div class="dataclass col-md">
+                                <select id="TimeData2" t-on-click="on_DataType2">
+                                    <option value="last_month">Last 30 Days</option>
+                                    <option value="last_week">Last 7 Days</option>
+                                    <option value="today">Today</option>
+                                    <option value="six_month">Last 6 Month</option>
+                                </select>
+                                </div>
+</div>
+                        <div id="chartContainer2" style="height: 200px; width: 100%;"></div>
+                    </div>
+                    <div class="as_today_meeting_table2 col-md-6 col-md-6 mb-4">
+  <table width='100%'>
+                        <thead>
+
+                            <tr>
+                                <th style="width:33%;" valign="center"
+                                    class="o_report_line_header28">Invoice Number</th>
+                                <th style="width:33%;" valign="center" class="o_report_line_header28">Date</th>
+                                <th style="width:33%;" valign="center" class="o_report_line_header28">Total</th>
+
+                            </tr>
+                        </thead>
+      <tbody>
+                        </tbody>
+                </table>
+            </div>
+                    </div>
+                </div>
+            <!--            Bill-->
+            <div class="row">
+                <div class="col-md-12 text-center mb-3 mt-3">
+                    <h1 class="o_stock_reports_header">Bills</h1>
+                </div>
+			</div>
+
+            <div class="o_stock_reports_table text-center">
+                   <!-- Content Row -->
+                <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Bills</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_pending_bill"
+                                                 id="pending_bill"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-4 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Unpaid </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" t-on-click="on_unpaid_bill" id="unpaid_bill"> </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-md-3 col-md-4 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paid
+                                            </div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" t-on-click="on_paid_bill"
+                                                 id="paid_bill"> </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    <div class="col-md-6 col-md-6 mb-4">
+                        <div class="row">
+                          <div class="dataclass col-md">
+                            <select id="DataType3" t-on-click="on_DataType3">
+                                <option value="pie">Pie</option>
+                                <option value="bar">Bar</option>
+                                <option value="scatter">Scatter</option>
+                                                    </select>
+                          </div>
+                            <div class="dataclass col-md">
+                                <select id="TimeData3" t-on-click="on_DataType3">
+                                    <option value="last_month">Last 30 Days</option>
+                                    <option value="last_week">Last 7 Days</option>
+                                    <option value="today">Today</option>
+                                    <option value="six_month">Last 6 Month</option>
+                                </select>
+                                </div>
+</div>
+                        <div id="chartContainer3"
+                             style="height: 200px; width: 100%;"></div></div>
+                    <div class="as_today_meeting_table3 col-md-6 col-md-6 mb-4">
+  <table width='100%'>
+                        <thead>
+
+                            <tr>
+                                <th style="width:33%;" valign="center"
+                                    class="o_report_line_header28">Bill Number</th>
+                                <th style="width:33%;" valign="center" class="o_report_line_header28">Date</th>
+                                <th style="width:33%;" valign="center" class="o_report_line_header28">Total</th>
+
+
+                            </tr>
+                        </thead>
+      <tbody>
+                        </tbody>
+                </table>
+            </div>
+                </div>
+                </div>
+        </div>
+    </t>
+</templates>
