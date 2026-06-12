@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_eh_hr_mobile_device_user,eh.hr.mobile.device user,model_eh_hr_mobile_device,eh_hr_attendance_base.group_eh_hr_user,1,0,0,0
+access_eh_hr_mobile_device_manager,eh.hr.mobile.device manager,model_eh_hr_mobile_device,eh_hr_attendance_base.group_eh_hr_manager,1,1,0,0
+access_eh_hr_mobile_device_admin,eh.hr.mobile.device admin,model_eh_hr_mobile_device,eh_hr_attendance_base.group_eh_hr_admin,1,1,1,1
+access_eh_hr_mobile_device_auditor,eh.hr.mobile.device auditor,model_eh_hr_mobile_device,eh_hr_attendance_base.group_eh_hr_auditor,1,0,0,0
+access_eh_hr_mobile_pairing_manager,eh.hr.mobile.pairing manager,model_eh_hr_mobile_pairing,eh_hr_attendance_base.group_eh_hr_manager,1,1,1,0
+access_eh_hr_mobile_pairing_admin,eh.hr.mobile.pairing admin,model_eh_hr_mobile_pairing,eh_hr_attendance_base.group_eh_hr_admin,1,1,1,1
+access_eh_hr_mobile_pairing_auditor,eh.hr.mobile.pairing auditor,model_eh_hr_mobile_pairing,eh_hr_attendance_base.group_eh_hr_auditor,1,0,0,0

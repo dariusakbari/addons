@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mobile Geofence Clock-in | ERP Heritage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Per employee mobile clock in and clock out with GPS geofence enforcement for the ERP Heritage attendance suite. Pair a phone once, clock in from a mobile shell that the server gates by distance to active sites.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body style="margin:0;padding:0;background-color:#FBF8F2;color:#0E1E2B;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;font-size:16px;line-height:1.6;font-weight:400;">
+
+<header style="background-color:#0E1E2B;color:#FBF8F2;padding:64px 24px 56px 24px;border-bottom:4px solid #A07A3F;">
+  <div style="max-width:1180px;margin:0 auto;display:table;width:100%;">
+    <div style="display:table-cell;vertical-align:middle;width:60%;">
+      <img src="eh_logo.svg" alt="ERP Heritage" style="display:block;height:36px;width:auto;margin-bottom:18px;">
+      <div style="margin-bottom:14px;">
+        <span style="vertical-align:middle;font-size:0.86rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;">ERP Heritage &middot; Attendance Suite</span>
+      </div>
+      <div style="width:220px;height:2px;background-color:#A07A3F;margin:14px 0 16px 0;"></div>
+      <span style="display:inline-block;font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;padding:4px 12px;border:1px solid rgba(160,122,63,0.65);border-radius:999px;margin:4px 6px 0 0;">Mobile</span>
+      <h1 style="font-size:2.6rem;margin:0 0 12px 0;font-weight:700;letter-spacing:-0.01em;color:#FBF8F2;">Mobile Geofence Clock-in</h1>
+      <p style="margin:18px 0 0 0;font-size:1.1rem;line-height:1.65;max-width:640px;color:rgba(251,248,242,0.86);font-weight:400;">Per employee, mobile friendly clock in and out for the workers who do not pass through a kiosk. HR pairs the phone once with a six digit PIN. From then on the worker clocks in from a browser, the server gates the request by distance to the company's geofence enabled sites, and a violation raises an exception in the audit trail.</p>
+      <div style="margin-top:24px;">
+        <span style="display:inline-block;background-color:#A07A3F;border:1px solid #A07A3F;color:#0E1E2B;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;font-weight:500;">Odoo 19 Community</span>
+        <span style="display:inline-block;background-color:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#FBF8F2;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">v19.0.1.0.0</span>
+        <span style="display:inline-block;background-color:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#FBF8F2;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">LGPL-3</span>
+        <span style="display:inline-block;background-color:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#FBF8F2;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">Human Resources / Attendances</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section style="background-color:#1A2C3D;color:#FBF8F2;padding:22px 0;border-bottom:1px solid rgba(255,255,255,0.06);" aria-label="Highlights">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;display:table;width:100%;table-layout:fixed;">
+    <div style="display:table-cell;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;color:#C9A372;padding:0 12px;vertical-align:middle;"><span style="display:inline-block;width:7px;height:7px;background-color:#A07A3F;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>One shot phone pair</div>
+    <div style="display:table-cell;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;color:#C9A372;padding:0 12px;vertical-align:middle;"><span style="display:inline-block;width:7px;height:7px;background-color:#A07A3F;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>GPS at clock event</div>
+    <div style="display:table-cell;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;color:#C9A372;padding:0 12px;vertical-align:middle;"><span style="display:inline-block;width:7px;height:7px;background-color:#A07A3F;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>No background tracking</div>
+    <div style="display:table-cell;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;color:#C9A372;padding:0 12px;vertical-align:middle;"><span style="display:inline-block;width:7px;height:7px;background-color:#A07A3F;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>No app install</div>
+  </div>
+</section>
+
+<section style="background-color:#F4EFE6;border-bottom:1px solid rgba(58,74,92,0.14);" aria-label="Marketing summary">
+  <div style="max-width:1180px;margin:0 auto;display:table;width:100%;">
+    <div style="display:table-cell;width:33.33%;padding:18px 22px;vertical-align:top;border-right:1px solid rgba(58,74,92,0.14);">
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;margin-bottom:8px;font-weight:500;">BUILT FOR</div>
+      <div style="font-size:1.0rem;color:#0E1E2B;line-height:1.6;font-weight:500;">Field crews, sparkies on the road, home based workers, and any employee who does not walk past a reception kiosk every morning</div>
+    </div>
+    <div style="display:table-cell;width:33.33%;padding:18px 22px;vertical-align:top;border-right:1px solid rgba(58,74,92,0.14);">
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;margin-bottom:8px;font-weight:500;">SAVES YOU</div>
+      <div style="font-size:1.0rem;color:#0E1E2B;line-height:1.6;font-weight:500;">An app store roll out, MDM headaches, and a per employee SaaS that tracks GPS in the background all day</div>
+    </div>
+    <div style="display:table-cell;width:33.33%;padding:18px 22px;vertical-align:top;">
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;margin-bottom:8px;font-weight:500;">REPLACES</div>
+      <div style="font-size:1.0rem;color:#0E1E2B;line-height:1.6;font-weight:500;">SMS time sheets sent to a supervisor and the wall planner that says where everyone said they were on Tuesday</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#F4EFE6;border-top:1px solid rgba(58,74,92,0.10);border-bottom:1px solid rgba(58,74,92,0.10);">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Day in the life</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">A field worker arrives on site, clocks in from the ute, gets on with it.</h3>
+    <div style="background-color:#FBF8F2;border:1px solid rgba(58,74,92,0.14);border-radius:12px;padding:28px;max-width:880px;">
+      <p style="font-size:1.05rem;line-height:1.75;color:#2C3845;margin:0;">HR opens the employee record, hits Issue Pair PIN, reads the six digits to the worker over the phone. The worker opens the mobile shell on their handset, enters the PIN, and the server issues a long lived opaque token bound to that employee. From then on a tap on the shell asks the browser for location once, posts employee token plus latitude and longitude, and the server checks the distance to every active site in the worker's company. Inside any radius, the row is created. Outside, the request is rejected and an exception is raised. No background tracking, no constant ping home, no app install.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <div style="display:table;width:100%;table-layout:fixed;">
+      <div style="display:table-cell;width:55%;vertical-align:middle;">
+        <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Overview</h2>
+        <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">What this module does, in one read.</h3>
+        <p style="font-size:1.12rem;line-height:1.7;color:#0E1E2B;border-left-width:3px;border-left-style:solid;border-left-color:#A07A3F;padding:4px 0 4px 22px;margin:0 0 14px 0;">eh_hr_attendance_geofence pairs an employee's phone to the suite once and turns it into a mobile clock in path, gated by distance to the company's sites.</p>
+        <p style="font-size:1.12rem;line-height:1.7;color:#0E1E2B;border-left-width:3px;border-left-style:solid;border-left-color:#A07A3F;padding:4px 0 4px 22px;margin:0 0 14px 0;">The pairing PIN expires after five minutes; once redeemed, the device gets a 256 bit opaque token. Geolocation is read only at the moment of clock in or clock out, never continuously. The server compares the reported coordinates against every active site within the company using a haversine distance check. The default radius is 100m unless a site overrides it.</p>
+        <div style="margin-top:18px;">
+          <span style="display:inline-block;background-color:rgba(14,30,43,0.06);border:1px solid rgba(14,30,43,0.18);color:#0E1E2B;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">eh_hr_attendance_base</span>
+          <span style="display:inline-block;background-color:rgba(14,30,43,0.06);border:1px solid rgba(14,30,43,0.18);color:#0E1E2B;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">hr_attendance</span>
+        </div>
+      </div>
+      <div style="display:table-cell;width:45%;vertical-align:middle;">
+        <div style="background-color:#F4EFE6;border-radius:12px;padding:24px;border:1px solid rgba(58,74,92,0.14);">
+          <div style="margin-bottom:16px;">
+            <div style="display:inline-block;vertical-align:middle;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;">Module</div>
+              <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.95rem;color:#0E1E2B;font-weight:500;margin-top:4px;">eh_hr_attendance_geofence</div>
+            </div>
+          </div>
+          <div style="display:table;width:100%;border-collapse:separate;border-spacing:10px;">
+            <div style="display:table-row;">
+              <div style="display:table-cell;width:50%;background-color:#FBF8F2;padding:14px;border-radius:8px;border:1px solid rgba(58,74,92,0.14);">
+                <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#2C3845;">VERSION</div>
+                <div style="font-weight:500;color:#0E1E2B;">19.0.1.0.0</div>
+              </div>
+              <div style="display:table-cell;width:50%;background-color:#FBF8F2;padding:14px;border-radius:8px;border:1px solid rgba(58,74,92,0.14);">
+                <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#2C3845;">LICENCE</div>
+                <div style="font-weight:500;color:#0E1E2B;">LGPL-3</div>
+              </div>
+            </div>
+            <div style="display:table-row;">
+              <div style="display:table-cell;background-color:#FBF8F2;padding:14px;border-radius:8px;border:1px solid rgba(58,74,92,0.14);">
+                <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#2C3845;">DEFAULT RADIUS</div>
+                <div style="font-weight:500;color:#0E1E2B;">100 m</div>
+              </div>
+              <div style="display:table-cell;background-color:#FBF8F2;padding:14px;border-radius:8px;border:1px solid rgba(58,74,92,0.14);">
+                <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#2C3845;">PIN TTL</div>
+                <div style="font-weight:500;color:#0E1E2B;">5 minutes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Capabilities</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">Eight things this module gives you, with no padding.</h3>
+    <div style="display:table;width:100%;border-collapse:separate;border-spacing:18px;">
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-key" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 01</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Six digit pairing PIN</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">HR clicks Issue Pair PIN on the employee record. The PIN is good for five minutes and one redemption. The redeemed device gets a 256 bit opaque token in return.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-mobile" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 02</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Mobile shell, no app install</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">/eh_hr/mobile/&lt;token&gt; serves a touch friendly check in and check out shell themed to match the kiosk. Workers bookmark the URL on their phone home screen; iOS, Android, and any browser based device are equal.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-map-o" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 03</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Server side haversine geofence</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">The clock endpoint reads each geofence enabled site in the employee's company, computes distance with the haversine formula, and accepts the request if the device is inside any site's radius.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-circle-o-notch" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 04</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Site override, company default</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Each site can declare its own radius; otherwise the company default of 100m applies. Tight a city site to 50m and leave a sprawling depot at 250m without forking the model.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-toggle-off" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 05</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Per employee opt out</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">A per employee toggle (default on) lets HR mark roles where geofencing does not apply: roving sales, off site contractors, agreed work from home. The mobile path stays available; only the distance check is skipped.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-eye-slash" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 06</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">No background tracking</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Location is read only at the moment of clock in and clock out, never continuously. The phone never streams its location to the server outside those two moments. Privacy by design.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-refresh" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 07</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Token rotation and revoke</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">A lost handset is revoked from the device record with one click. Action Rotate Token issues a new token (and invalidates the old one) on a re paired phone. Last seen, last IP, last lat and lng are tracked for diagnostics.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-history" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 08</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Geofence pass and fail audited</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Every clock attempt writes to the suite base audit trail. A pass records the distance for forensic context; a fail records why (no geo, distance exceeds radius). Violations also raise a geofence violation exception.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Compared</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">How this module stacks up.</h3>
+    <div style="display:table;width:100%;border-collapse:separate;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;overflow:hidden;">
+      <div style="display:table-row;background-color:#1A2C3D;">
+        <div style="display:table-cell;padding:14px 16px;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;">FEATURE</div>
+        <div style="display:table-cell;padding:14px 16px;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">SMS TIME SHEETS</div>
+        <div style="display:table-cell;padding:14px 16px;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">FIELD SAAS APP</div>
+        <div style="display:table-cell;padding:14px 16px;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;text-align:center;background-color:#A07A3F;">THIS MODULE</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;font-weight:500;">Worker friction</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Free text typing</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">App store install + login</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">One pair PIN, then bookmark URL</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;font-weight:500;">Location verification</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Trust the worker</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Continuous tracking</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">GPS read at clock in and clock out only</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;font-weight:500;">Where coordinates travel</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">No coordinates</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Vendor cloud</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">Your Odoo, your servers</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;font-weight:500;">Audit trail</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Inbox archaeology</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Vendor dashboard</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">Every clock event in your kiosk audit</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;color:#0E1E2B;font-weight:500;">Per employee opt out</div>
+        <div style="display:table-cell;padding:14px 16px;color:#2C3845;text-align:center;">No fence anyway</div>
+        <div style="display:table-cell;padding:14px 16px;color:#2C3845;text-align:center;">Vendor specific</div>
+        <div style="display:table-cell;padding:14px 16px;color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">Toggle on the employee record</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:0;background-color:#F4EFE6;border-top:1px solid rgba(58,74,92,0.10);border-bottom:1px solid rgba(58,74,92,0.10);">
+  <div style="max-width:1180px;margin:0 auto;display:table;width:100%;">
+    <div style="display:table-cell;width:33.33%;padding:32px 22px;vertical-align:top;text-align:center;border-right:1px solid rgba(58,74,92,0.14);">
+      <div style="font-size:3rem;font-weight:700;color:#A07A3F;line-height:1;">100 m</div>
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#2C3845;margin:12px 0 6px 0;">Default radius</div>
+      <div style="font-size:0.96rem;color:#2C3845;line-height:1.6;">Per company default. Each site can override with its own radius.</div>
+    </div>
+    <div style="display:table-cell;width:33.33%;padding:32px 22px;vertical-align:top;text-align:center;border-right:1px solid rgba(58,74,92,0.14);">
+      <div style="font-size:3rem;font-weight:700;color:#A07A3F;line-height:1;">5 min</div>
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#2C3845;margin:12px 0 6px 0;">Pair PIN TTL</div>
+      <div style="font-size:0.96rem;color:#2C3845;line-height:1.6;">Six digit PIN expires after five minutes; one redemption only.</div>
+    </div>
+    <div style="display:table-cell;width:33.33%;padding:32px 22px;vertical-align:top;text-align:center;">
+      <div style="font-size:3rem;font-weight:700;color:#A07A3F;line-height:1;">256 bit</div>
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#2C3845;margin:12px 0 6px 0;">Device token</div>
+      <div style="font-size:0.96rem;color:#2C3845;line-height:1.6;">secrets.token_urlsafe(32). Rotatable, revocable, bound to the employee.</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#F4EFE6;border-top:1px solid rgba(58,74,92,0.10);border-bottom:1px solid rgba(58,74,92,0.10);">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Workflow</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">Pair. Bookmark. Tap. Done.</h3>
+    <div style="margin-top:24px;">
+      <div style="display:table;width:100%;border-collapse:separate;border-spacing:14px 0;">
+        <div style="display:table-row;">
+          <div style="display:table-cell;width:25%;vertical-align:top;">
+            <div style="background-color:#FBF8F2;padding:20px;border-radius:10px;border:1px solid rgba(58,74,92,0.14);height:100%;box-sizing:border-box;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;background-color:#0E1E2B;color:#FBF8F2;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;font-size:0.92rem;font-weight:600;margin-bottom:12px;">1</div>
+              <h4 style="font-size:1rem;font-weight:600;margin:0 0 6px 0;">Pair</h4>
+              <p style="font-size:0.88rem;color:#2C3845;margin:0;line-height:1.5;">From the employee record, click Issue Pair PIN. Read the six digit PIN to the worker over the phone.</p>
+            </div>
+          </div>
+          <div style="display:table-cell;width:25%;vertical-align:top;">
+            <div style="background-color:#FBF8F2;padding:20px;border-radius:10px;border:1px solid rgba(58,74,92,0.14);height:100%;box-sizing:border-box;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;background-color:#0E1E2B;color:#FBF8F2;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;font-size:0.92rem;font-weight:600;margin-bottom:12px;">2</div>
+              <h4 style="font-size:1rem;font-weight:600;margin:0 0 6px 0;">Bookmark</h4>
+              <p style="font-size:0.88rem;color:#2C3845;margin:0;line-height:1.5;">The worker opens the mobile shell, types the PIN, and adds the resulting URL to the home screen. The token is bound to the device and the employee.</p>
+            </div>
+          </div>
+          <div style="display:table-cell;width:25%;vertical-align:top;">
+            <div style="background-color:#FBF8F2;padding:20px;border-radius:10px;border:1px solid rgba(58,74,92,0.14);height:100%;box-sizing:border-box;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;background-color:#0E1E2B;color:#FBF8F2;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;font-size:0.92rem;font-weight:600;margin-bottom:12px;">3</div>
+              <h4 style="font-size:1rem;font-weight:600;margin:0 0 6px 0;">Tap</h4>
+              <p style="font-size:0.88rem;color:#2C3845;margin:0;line-height:1.5;">Worker arrives on site, opens the bookmark, taps the big check in button. The browser asks for location once and posts the request.</p>
+            </div>
+          </div>
+          <div style="display:table-cell;width:25%;vertical-align:top;">
+            <div style="background-color:#FBF8F2;padding:20px;border-radius:10px;border:1px solid rgba(58,74,92,0.14);height:100%;box-sizing:border-box;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;background-color:#0E1E2B;color:#FBF8F2;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;font-size:0.92rem;font-weight:600;margin-bottom:12px;">4</div>
+              <h4 style="font-size:1rem;font-weight:600;margin:0 0 6px 0;">Verify</h4>
+              <p style="font-size:0.88rem;color:#2C3845;margin:0;line-height:1.5;">Server validates against the company's geofenced sites. Inside any radius, the row is created. Outside, the request is rejected and an exception is raised.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Frequently asked questions</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">Honest answers to the questions a buyer asks.</h3>
+    <div style="margin-top:24px;">
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">Does the worker need to install an app?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">No. The mobile shell is a web page served by your Odoo. The worker opens the URL once via the pair PIN, bookmarks it on their home screen, and uses it like an app from then on.</p>
+      </div>
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">Does it track location continuously?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">No. The browser reads location only at the moment of clock in and clock out. There is no background tracking, no all day GPS ping, no Wi-Fi signature scraping.</p>
+      </div>
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">What if a phone is lost?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">Open the device record and click Revoke. The token is deactivated; the bookmark stops working immediately. Issue a new pair PIN to provision a replacement.</p>
+      </div>
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">What if a worker has approved off site work?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">Untick the geofence required toggle on their employee record. The mobile path stays available; only the distance check is skipped for that worker. The clock event still records the IP and last seen lat or lng for visibility.</p>
+      </div>
+      <div style="margin-bottom:0;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">Can a worker spoof their location?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">Browser geolocation is reasonably hard to fake on a stock device but is possible with developer tools or rooted hardware. For exposure beyond rough hours assurance, pair this with a face match kiosk at the depot start of week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background-color:#0E1E2B;color:#FBF8F2;padding:48px 24px;border-top:4px solid #A07A3F;">
+  <div style="max-width:1180px;margin:0 auto;text-align:center;">
+    <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#C9A372;margin-bottom:12px;">ERP Heritage</div>
+    <p style="font-size:1.0rem;color:rgba(251,248,242,0.7);margin:0 0 16px 0;">Questions about the suite or this module:</p>
+    <a href="mailto:info@erpheritage.com.au" style="color:#A07A3F;text-decoration:none;font-weight:500;">info@erpheritage.com.au</a>
+    <p style="margin:24px 0 0 0;font-size:0.86rem;color:rgba(251,248,242,0.5);">Module: <span style="font-family:'DM Mono',ui-monospace,monospace;">eh_hr_attendance_geofence</span> &middot; Version 19.0.1.0.0 &middot; Licence LGPL-3</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_res_config_settings_eh_geofence" model="ir.ui.view">
+            <field name="name">res.config.settings.eh.geofence</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="eh_hr_attendance_base.view_res_config_settings_eh_hr"/>
+            <field name="arch" type="xml">
+                <xpath expr="//app[@name='eh_hr_attendance_base']" position="inside">
+                    <block title="Mobile clock-in" name="eh_hr_mobile_block">
+                        <setting id="eh_hr_mobile_default_radius_m" string="Mobile geofence default radius (m)" help="Default radius applied when checking distance from the phone to a kiosk site that does not declare a custom radius. The kiosk path uses the site's own radius regardless.">
+                            <field name="eh_hr_mobile_default_radius_m"/>
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

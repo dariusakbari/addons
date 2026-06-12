@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Attendance Suite Base | ERP Heritage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Shared engine for the ERP Heritage people operations suite. Biometric consent lifecycle, kiosk site and device registry, attendance exception log, append only kiosk audit trail with retention sweeps. Auto installs with any ERP Heritage attendance module.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body style="margin:0;padding:0;background-color:#FBF8F2;color:#0E1E2B;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;font-size:16px;line-height:1.6;font-weight:400;">
+
+<header style="background-color:#0E1E2B;color:#FBF8F2;padding:64px 24px 56px 24px;border-bottom:4px solid #A07A3F;">
+  <div style="max-width:1180px;margin:0 auto;display:table;width:100%;">
+    <div style="display:table-cell;vertical-align:middle;width:60%;">
+      <img src="eh_logo.svg" alt="ERP Heritage" style="display:block;height:36px;width:auto;margin-bottom:18px;">
+      <div style="margin-bottom:14px;">
+        <span style="vertical-align:middle;font-size:0.86rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;">ERP Heritage &middot; Attendance Suite</span>
+      </div>
+      <div style="width:220px;height:2px;background-color:#A07A3F;margin:14px 0 16px 0;"></div>
+      <span style="display:inline-block;font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;padding:4px 12px;border:1px solid rgba(160,122,63,0.65);border-radius:999px;margin:4px 6px 0 0;">Foundation</span>
+      <h1 style="font-size:2.6rem;margin:0 0 12px 0;font-weight:700;letter-spacing:-0.01em;color:#FBF8F2;">Attendance Suite Base</h1>
+      <p style="margin:18px 0 0 0;font-size:1.1rem;line-height:1.65;max-width:640px;color:rgba(251,248,242,0.86);font-weight:400;">The shared engine every ERP Heritage attendance module quietly stands on. Biometric consent with explicit lifecycle. Kiosk site and device registry with rotating tokens. Append only audit trail with retention sweeps. Multi company isolation enforced in code, not paperwork.</p>
+      <div style="margin-top:24px;">
+        <span style="display:inline-block;background-color:#A07A3F;border:1px solid #A07A3F;color:#0E1E2B;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;font-weight:500;">Odoo 19 Community</span>
+        <span style="display:inline-block;background-color:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#FBF8F2;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">v19.0.1.0.0</span>
+        <span style="display:inline-block;background-color:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#FBF8F2;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">LGPL-3</span>
+        <span style="display:inline-block;background-color:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#FBF8F2;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">Human Resources / Attendances</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section style="background-color:#1A2C3D;color:#FBF8F2;padding:22px 0;border-bottom:1px solid rgba(255,255,255,0.06);" aria-label="Highlights">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;display:table;width:100%;table-layout:fixed;">
+    <div style="display:table-cell;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;color:#C9A372;padding:0 12px;vertical-align:middle;"><span style="display:inline-block;width:7px;height:7px;background-color:#A07A3F;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>Consent lifecycle</div>
+    <div style="display:table-cell;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;color:#C9A372;padding:0 12px;vertical-align:middle;"><span style="display:inline-block;width:7px;height:7px;background-color:#A07A3F;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>Kiosk registry</div>
+    <div style="display:table-cell;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;color:#C9A372;padding:0 12px;vertical-align:middle;"><span style="display:inline-block;width:7px;height:7px;background-color:#A07A3F;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>Append only audit</div>
+    <div style="display:table-cell;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;color:#C9A372;padding:0 12px;vertical-align:middle;"><span style="display:inline-block;width:7px;height:7px;background-color:#A07A3F;border-radius:50%;margin-right:6px;vertical-align:middle;"></span>Multi company native</div>
+  </div>
+</section>
+
+<section style="background-color:#F4EFE6;border-bottom:1px solid rgba(58,74,92,0.14);" aria-label="Marketing summary">
+  <div style="max-width:1180px;margin:0 auto;display:table;width:100%;">
+    <div style="display:table-cell;width:33.33%;padding:18px 22px;vertical-align:top;border-right:1px solid rgba(58,74,92,0.14);">
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;margin-bottom:8px;font-weight:500;">BUILT FOR</div>
+      <div style="font-size:1.0rem;color:#0E1E2B;line-height:1.6;font-weight:500;">Operators rolling out a self hosted attendance stack on Odoo 19 Community without per employee subscriptions or third party cloud</div>
+    </div>
+    <div style="display:table-cell;width:33.33%;padding:18px 22px;vertical-align:top;border-right:1px solid rgba(58,74,92,0.14);">
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;margin-bottom:8px;font-weight:500;">SAVES YOU</div>
+      <div style="font-size:1.0rem;color:#0E1E2B;line-height:1.6;font-weight:500;">Months of plumbing work building consent, kiosk pairing, audit, and retention from scratch on top of stock hr_attendance</div>
+    </div>
+    <div style="display:table-cell;width:33.33%;padding:18px 22px;vertical-align:top;">
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;margin-bottom:8px;font-weight:500;">REPLACES</div>
+      <div style="font-size:1.0rem;color:#0E1E2B;line-height:1.6;font-weight:500;">A scrap heap of consent PDFs in a shared drive, a spreadsheet of paired tablets, and a tribal knowledge handover note for every new HR hire</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#F4EFE6;border-top:1px solid rgba(58,74,92,0.10);border-bottom:1px solid rgba(58,74,92,0.10);">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Day in the life</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">A new starter walks in on a Monday and the kiosk just works.</h3>
+    <div style="background-color:#FBF8F2;border:1px solid rgba(58,74,92,0.14);border-radius:12px;padding:28px;max-width:880px;">
+      <p style="font-size:1.05rem;line-height:1.75;color:#2C3845;margin:0;">HR opens the employee record, captures consent in plain English, and ticks granted. The base writes one consent row with the validity window the company configured. The new starter walks up to the reception tablet, pairs once with the one shot PIN HR issued, and is recognised on every clock in from then on. Behind the curtain a daily cron expires past due grants, prunes withdrawn rows past the retention horizon, and trims the kiosk audit trail to the configured horizon. The CFO who asks for a Fair Work audit on Friday afternoon does not need to phone the IT team. They open Audit Trail, filter by date, export. No spreadsheets, no SaaS dashboards, no surprise.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <div style="display:table;width:100%;table-layout:fixed;">
+      <div style="display:table-cell;width:55%;vertical-align:middle;">
+        <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Overview</h2>
+        <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">What this module does, in one read.</h3>
+        <p style="font-size:1.12rem;line-height:1.7;color:#0E1E2B;border-left-width:3px;border-left-style:solid;border-left-color:#A07A3F;padding:4px 0 4px 22px;margin:0 0 14px 0;">eh_hr_attendance_base ships the privacy primitives, kiosk infrastructure, and audit guarantees the rest of the ERP Heritage people operations suite plugs into.</p>
+        <p style="font-size:1.12rem;line-height:1.7;color:#0E1E2B;border-left-width:3px;border-left-style:solid;border-left-color:#A07A3F;padding:4px 0 4px 22px;margin:0 0 14px 0;">It auto installs as a dependency of any sibling module so an operator never picks it manually. Consent records gate every biometric and geolocation capture downstream. Sites and devices live on first class models with rotating opaque tokens. Every kiosk event lands in an append only log a manager can read and an auditor can export, and nobody can edit.</p>
+        <div style="margin-top:18px;">
+          <span style="display:inline-block;background-color:rgba(14,30,43,0.06);border:1px solid rgba(14,30,43,0.18);color:#0E1E2B;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">base</span>
+          <span style="display:inline-block;background-color:rgba(14,30,43,0.06);border:1px solid rgba(14,30,43,0.18);color:#0E1E2B;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">mail</span>
+          <span style="display:inline-block;background-color:rgba(14,30,43,0.06);border:1px solid rgba(14,30,43,0.18);color:#0E1E2B;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">hr</span>
+          <span style="display:inline-block;background-color:rgba(14,30,43,0.06);border:1px solid rgba(14,30,43,0.18);color:#0E1E2B;padding:5px 12px;border-radius:999px;font-size:0.86rem;letter-spacing:0.06em;font-family:'DM Mono',ui-monospace,monospace;margin:4px 6px 0 0;">hr_attendance</span>
+        </div>
+      </div>
+      <div style="display:table-cell;width:45%;vertical-align:middle;">
+        <div style="background-color:#F4EFE6;border-radius:12px;padding:24px;border:1px solid rgba(58,74,92,0.14);">
+          <div style="margin-bottom:16px;">
+            <div style="display:inline-block;vertical-align:middle;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;">Module</div>
+              <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.95rem;color:#0E1E2B;font-weight:500;margin-top:4px;">eh_hr_attendance_base</div>
+            </div>
+          </div>
+          <div style="display:table;width:100%;border-collapse:separate;border-spacing:10px;">
+            <div style="display:table-row;">
+              <div style="display:table-cell;width:50%;background-color:#FBF8F2;padding:14px;border-radius:8px;border:1px solid rgba(58,74,92,0.14);">
+                <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#2C3845;">VERSION</div>
+                <div style="font-weight:500;color:#0E1E2B;">19.0.1.0.0</div>
+              </div>
+              <div style="display:table-cell;width:50%;background-color:#FBF8F2;padding:14px;border-radius:8px;border:1px solid rgba(58,74,92,0.14);">
+                <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#2C3845;">LICENCE</div>
+                <div style="font-weight:500;color:#0E1E2B;">LGPL-3</div>
+              </div>
+            </div>
+            <div style="display:table-row;">
+              <div style="display:table-cell;background-color:#FBF8F2;padding:14px;border-radius:8px;border:1px solid rgba(58,74,92,0.14);">
+                <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#2C3845;">DEPENDS ON</div>
+                <div style="font-weight:500;color:#0E1E2B;">hr_attendance + 3</div>
+              </div>
+              <div style="display:table-cell;background-color:#FBF8F2;padding:14px;border-radius:8px;border:1px solid rgba(58,74,92,0.14);">
+                <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#2C3845;">CATEGORY</div>
+                <div style="font-weight:500;color:#0E1E2B;">Attendances</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Capabilities</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">Ten things this module gives you, with no padding.</h3>
+    <div style="display:table;width:100%;border-collapse:separate;border-spacing:18px;">
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-shield" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 01</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Per employee consent lifecycle</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">eh.hr.consent records pending, granted, withdrawn, and expired states with explicit transitions. Configurable validity and retention windows per company. Withdrawing consent cascades to the matching biometric template the next time the kiosk runs.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-desktop" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 02</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Kiosk site and device registry</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">A first class site model for each clock in location, optional geofence radius and centre. A device registry with rotating opaque tokens, last seen tracking, IP and user agent on every heartbeat. Revoke a lost or pinched tablet from one screen.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-key" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 03</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">One shot device pairing PIN</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Issue a short lived numeric PIN, the device redeems it once for a long lived opaque token. PINs cannot be replayed and never live in the same row as the issued token. Re pair a refurbished tablet without rebooting the kiosk service.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-history" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 04</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Append only kiosk audit trail</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Every register, heartbeat, match attempt, success, failure, geofence pass, geofence fail, consent transition, and exception raise lands in eh.hr.kiosk.event with timestamp, device, employee, confidence, and IP. Read only for managers and auditors; no edit, no delete, no rewrite.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 05</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">First class exception model</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Late, no show, missed check out, location mismatch, low match confidence, geofence violation. Each exception carries severity, employee, kind, message, and resolution state. Future modules raise to it; managers triage from one place.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-recycle" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 06</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Daily retention sweeps</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">A daily cron expires consents past their validity, deletes withdrawn consents past retention, and trims the kiosk audit trail to the configured horizon. Compliance is a background process, not a Friday afternoon checklist.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-building" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 07</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Multi company isolation by record rule</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Every model is company scoped. Global ir.rule entries enforce per company isolation on read, write, and delete. A consultant working across three tenants never sees one tenant's audit trail bleed into another.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-users" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 08</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Privilege based group system</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Suite namespaced groups for User, Manager, Admin, and Auditor. ACL CSVs reference these groups, never upstream HR groups directly. Migration scripts promote existing users so an upgrade does not lock anyone out.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-code" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 09</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Stable public APIs for downstream modules</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">log() for audit events, raise_exception() for attendance exceptions, issue_pairing_pin() for device pairing. Sibling modules import these by name and stay decoupled from each other. New modules slot in without surgery.</p>
+          </div>
+        </div>
+        <div style="display:table-cell;width:50%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);padding:22px;border-radius:10px;">
+            <div style="width:48px;height:48px;background-color:#FBF8F2;border-radius:10px;border:1px solid rgba(58,74,92,0.14);margin-bottom:12px;text-align:center;line-height:48px;"><i class="fa fa-eye-slash" aria-hidden="true" style="color:#A07A3F;font-size:22px;line-height:1;"></i></div>
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.78rem;letter-spacing:0.2em;color:#A07A3F;margin-bottom:6px;">CAPABILITY 10</div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 8px 0;color:#0E1E2B;">Privacy by design throughout</h3>
+            <p style="font-size:1.0rem;color:#2C3845;line-height:1.6;margin:0;">Raw biometric images never persist on the server. Only embeddings live in the database, tied to a granted consent. No third party cloud dependency. No phone home telemetry. Your database, your roof, your rules.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Compared</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">How this module stacks up.</h3>
+    <div style="display:table;width:100%;border-collapse:separate;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;overflow:hidden;">
+      <div style="display:table-row;background-color:#1A2C3D;">
+        <div style="display:table-cell;padding:14px 16px;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;">FEATURE</div>
+        <div style="display:table-cell;padding:14px 16px;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">STOCK HR_ATTENDANCE</div>
+        <div style="display:table-cell;padding:14px 16px;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">SAAS KIOSK SUBSCRIPTION</div>
+        <div style="display:table-cell;padding:14px 16px;color:#C9A372;font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.18em;text-transform:uppercase;text-align:center;background-color:#A07A3F;">THIS MODULE</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;font-weight:500;">Biometric consent</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Not modelled</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Tickbox at sign up</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">First class lifecycle with retention</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;font-weight:500;">Audit trail</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Stock chatter</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Vendor managed cloud log</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">Append only, in your database, queryable</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;font-weight:500;">Where data lives</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Your database</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Vendor's cloud</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">Your database, on your servers</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;font-weight:500;">Consent record</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Not modelled</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#2C3845;text-align:center;">Tickbox at sign up</div>
+        <div style="display:table-cell;padding:14px 16px;border-bottom:1px solid rgba(58,74,92,0.14);color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">eh.hr.consent with snapshot of the prose shown</div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;padding:14px 16px;color:#0E1E2B;font-weight:500;">Multi company isolation</div>
+        <div style="display:table-cell;padding:14px 16px;color:#2C3845;text-align:center;">Standard company_id</div>
+        <div style="display:table-cell;padding:14px 16px;color:#2C3845;text-align:center;">Tenant per organisation</div>
+        <div style="display:table-cell;padding:14px 16px;color:#0E1E2B;text-align:center;background-color:rgba(160,122,63,0.10);font-weight:600;">Global ir.rule on every model</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:0;background-color:#F4EFE6;border-top:1px solid rgba(58,74,92,0.10);border-bottom:1px solid rgba(58,74,92,0.10);">
+  <div style="max-width:1180px;margin:0 auto;display:table;width:100%;">
+    <div style="display:table-cell;width:33.33%;padding:32px 22px;vertical-align:top;text-align:center;border-right:1px solid rgba(58,74,92,0.14);">
+      <div style="font-size:3rem;font-weight:700;color:#A07A3F;line-height:1;">5</div>
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#2C3845;margin:12px 0 6px 0;">Core models</div>
+      <div style="font-size:0.96rem;color:#2C3845;line-height:1.6;">Consent, kiosk site, kiosk device, kiosk event, attendance exception.</div>
+    </div>
+    <div style="display:table-cell;width:33.33%;padding:32px 22px;vertical-align:top;text-align:center;border-right:1px solid rgba(58,74,92,0.14);">
+      <div style="font-size:3rem;font-weight:700;color:#A07A3F;line-height:1;">18</div>
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#2C3845;margin:12px 0 6px 0;">Audit event types</div>
+      <div style="font-size:0.96rem;color:#2C3845;line-height:1.6;">From device register and heartbeat through match, attendance, consent, geofence, liveness, exception, and error events.</div>
+    </div>
+    <div style="display:table-cell;width:33.33%;padding:32px 22px;vertical-align:top;text-align:center;">
+      <div style="font-size:3rem;font-weight:700;color:#A07A3F;line-height:1;">12</div>
+      <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#2C3845;margin:12px 0 6px 0;">Sibling modules in the suite</div>
+      <div style="font-size:0.96rem;color:#2C3845;line-height:1.6;">Every other module in the suite plugs into the primitives this base provides.</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#F4EFE6;border-top:1px solid rgba(58,74,92,0.10);border-bottom:1px solid rgba(58,74,92,0.10);">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Workflow</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">Install. Configure. Pair. Forget.</h3>
+    <p style="font-size:1rem;max-width:880px;color:#2C3845;line-height:1.7;">Four steps; the same shape every other module in the suite uses, so a finance or HR team learns the pattern once.</p>
+    <div style="margin-top:24px;">
+      <div style="display:table;width:100%;border-collapse:separate;border-spacing:14px 0;">
+        <div style="display:table-row;">
+          <div style="display:table-cell;width:25%;vertical-align:top;">
+            <div style="background-color:#FBF8F2;padding:20px;border-radius:10px;border:1px solid rgba(58,74,92,0.14);height:100%;box-sizing:border-box;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;background-color:#0E1E2B;color:#FBF8F2;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;font-size:0.92rem;font-weight:600;margin-bottom:12px;">1</div>
+              <h4 style="font-size:1rem;font-weight:600;margin:0 0 6px 0;">Install</h4>
+              <p style="font-size:0.88rem;color:#2C3845;margin:0;line-height:1.5;">Every sibling module in the suite declares this base as a dependency, so installing any of them pulls the base in. You can also install it on its own to lay the data model first.</p>
+            </div>
+          </div>
+          <div style="display:table-cell;width:25%;vertical-align:top;">
+            <div style="background-color:#FBF8F2;padding:20px;border-radius:10px;border:1px solid rgba(58,74,92,0.14);height:100%;box-sizing:border-box;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;background-color:#0E1E2B;color:#FBF8F2;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;font-size:0.92rem;font-weight:600;margin-bottom:12px;">2</div>
+              <h4 style="font-size:1rem;font-weight:600;margin:0 0 6px 0;">Configure</h4>
+              <p style="font-size:0.88rem;color:#2C3845;margin:0;line-height:1.5;">Set retention windows, default consent text, match threshold, and kiosk idle reset under People Operations &gt; Settings.</p>
+            </div>
+          </div>
+          <div style="display:table-cell;width:25%;vertical-align:top;">
+            <div style="background-color:#FBF8F2;padding:20px;border-radius:10px;border:1px solid rgba(58,74,92,0.14);height:100%;box-sizing:border-box;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;background-color:#0E1E2B;color:#FBF8F2;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;font-size:0.92rem;font-weight:600;margin-bottom:12px;">3</div>
+              <h4 style="font-size:1rem;font-weight:600;margin:0 0 6px 0;">Pair</h4>
+              <p style="font-size:0.88rem;color:#2C3845;margin:0;line-height:1.5;">Create a kiosk site for each clock in location. Issue a one shot PIN. The tablet pairs and rotates its own token from then on.</p>
+            </div>
+          </div>
+          <div style="display:table-cell;width:25%;vertical-align:top;">
+            <div style="background-color:#FBF8F2;padding:20px;border-radius:10px;border:1px solid rgba(58,74,92,0.14);height:100%;box-sizing:border-box;">
+              <div style="font-family:'DM Mono',ui-monospace,monospace;background-color:#0E1E2B;color:#FBF8F2;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;font-size:0.92rem;font-weight:600;margin-bottom:12px;">4</div>
+              <h4 style="font-size:1rem;font-weight:600;margin:0 0 6px 0;">Forget</h4>
+              <p style="font-size:0.88rem;color:#2C3845;margin:0;line-height:1.5;">The retention crons run on schedule. Sibling modules build on the primitives. The base hums quietly behind the curtain.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Why Heritage</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">Where this module leads, where it matches, what we are honest about.</h3>
+    <div style="display:table;width:100%;border-collapse:separate;border-spacing:18px;">
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:33%;vertical-align:top;">
+          <div style="background-color:#0E1E2B;color:#FBF8F2;border-radius:10px;padding:24px;border:1px solid #A07A3F;">
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#C9A372;margin:0 0 12px 0;font-weight:500;">Where it leads</div>
+            <ul style="list-style:none;margin:0;padding:0;">
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;border-bottom:1px solid rgba(255,255,255,0.10);color:rgba(251,248,242,0.86);"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>Privacy primitives baked into the data model, not bolted on</li>
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;border-bottom:1px solid rgba(255,255,255,0.10);color:rgba(251,248,242,0.86);"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>Append only audit, never edited, never silently mutated</li>
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;color:rgba(251,248,242,0.86);"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>One shared engine for a dozen sibling modules</li>
+            </ul>
+          </div>
+        </div>
+        <div style="display:table-cell;width:33%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border-radius:10px;padding:24px;border:1px solid rgba(58,74,92,0.14);">
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;margin:0 0 12px 0;font-weight:500;">Where it matches</div>
+            <ul style="list-style:none;margin:0;padding:0;">
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;border-bottom:1px solid rgba(58,74,92,0.12);color:#0E1E2B;"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>Standard kanban, list, form, and search views</li>
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;border-bottom:1px solid rgba(58,74,92,0.12);color:#0E1E2B;"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>Multi company isolation via global ir.rule</li>
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;color:#0E1E2B;"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>Suite namespaced privilege groups</li>
+            </ul>
+          </div>
+        </div>
+        <div style="display:table-cell;width:33%;vertical-align:top;">
+          <div style="background-color:#F4EFE6;border-radius:10px;padding:24px;border:1px solid rgba(58,74,92,0.14);">
+            <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#A07A3F;margin:0 0 12px 0;font-weight:500;">Honest about</div>
+            <ul style="list-style:none;margin:0;padding:0;">
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;border-bottom:1px solid rgba(58,74,92,0.12);color:#0E1E2B;"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>This is plumbing; pair it with a kiosk module to clock in</li>
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;border-bottom:1px solid rgba(58,74,92,0.12);color:#0E1E2B;"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>No third party cloud; on prem only</li>
+              <li style="padding:8px 0 8px 18px;font-size:1.0rem;line-height:1.5;color:#0E1E2B;"><span style="display:inline-block;width:8px;height:2px;background-color:#A07A3F;vertical-align:middle;margin-right:10px;"></span>Privacy is enforced in code; the legal review is yours</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#1A2C3D;color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#C9A372;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Engineering</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#FBF8F2;">Eight engineering rules we hold ourselves to.</h3>
+    <div style="display:table;width:100%;border-collapse:separate;border-spacing:18px 14px;margin-top:24px;">
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;"><p style="margin:0;font-size:0.95rem;line-height:1.6;color:#FBF8F2;"><strong style="color:#C9A372;display:block;">Privacy by design.</strong>Raw biometric images never persist on the server. Only embeddings live in the database, tied to a granted consent.</p></div>
+        <div style="display:table-cell;width:50%;vertical-align:top;"><p style="margin:0;font-size:0.95rem;line-height:1.6;color:#FBF8F2;"><strong style="color:#C9A372;display:block;">No silent fallbacks.</strong>Missing consent, missing site, missing device token each surface explicit messages naming the unresolved field.</p></div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;"><p style="margin:0;font-size:0.95rem;line-height:1.6;color:#FBF8F2;"><strong style="color:#C9A372;display:block;">Append only audit.</strong>Kiosk events are read only for managers and auditors. No edit, no delete, no rewrite. The trail tells the truth.</p></div>
+        <div style="display:table-cell;width:50%;vertical-align:top;"><p style="margin:0;font-size:0.95rem;line-height:1.6;color:#FBF8F2;"><strong style="color:#C9A372;display:block;">Multi company aware throughout.</strong>Every model is company scoped. Global ir.rule entries enforce per company isolation on every operation.</p></div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;"><p style="margin:0;font-size:0.95rem;line-height:1.6;color:#FBF8F2;"><strong style="color:#C9A372;display:block;">Per record savepoints in crons.</strong>Retention sweeps wrap each iteration in a savepoint so one bad row never stops the batch.</p></div>
+        <div style="display:table-cell;width:50%;vertical-align:top;"><p style="margin:0;font-size:0.95rem;line-height:1.6;color:#FBF8F2;"><strong style="color:#C9A372;display:block;">Stable public APIs.</strong>log(), raise_exception(), issue_pairing_pin(). Sibling modules import these by name and stay decoupled from each other.</p></div>
+      </div>
+      <div style="display:table-row;">
+        <div style="display:table-cell;width:50%;vertical-align:top;"><p style="margin:0;font-size:0.95rem;line-height:1.6;color:#FBF8F2;"><strong style="color:#C9A372;display:block;">Plain Python and OWL.</strong>No third party cloud dependency, no proprietary ML server, no vendor lock in. Your stack stays portable.</p></div>
+        <div style="display:table-cell;width:50%;vertical-align:top;"><p style="margin:0;font-size:0.95rem;line-height:1.6;color:#FBF8F2;"><strong style="color:#C9A372;display:block;">Capability focused descriptions.</strong>No competitor names in code or docs. Every claim describes what the module does, not what it replaces.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#FBF8F2;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">Frequently asked questions</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">Honest answers to the questions a buyer asks.</h3>
+    <div style="margin-top:24px;">
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">Does this run on Odoo 19 Community?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">Yes. The module targets Odoo 19 Community and uses only standard ORM and view APIs. No Enterprise dependencies, no proprietary modules required.</p>
+      </div>
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">Do I need to install this on its own?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">No. Pick any sibling module in the ERP Heritage attendance suite and the base auto installs. You only ever tick this one if you want the data model in place before the kiosk modules.</p>
+      </div>
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">Does it touch the standard hr.attendance model?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">Only by reference. The base ships its own consent, kiosk, and exception models, and it sits alongside hr.attendance rather than rewriting it. Sibling modules write to hr.attendance directly through the standard API.</p>
+      </div>
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">What does the audit trail look like?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">Each kiosk event records timestamp, device, employee, event kind, optional confidence, and optional IP. ACLs make the trail read only for managers and auditors; nobody can edit or delete a row. A daily cron trims past the configured retention horizon, and the trim itself is logged.</p>
+      </div>
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">What happens when an employee withdraws consent?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">The consent row transitions to withdrawn and the matching biometric template is deactivated the next time the kiosk runs. The cascade is logged in the audit trail. After the retention horizon the withdrawn row itself is removed by the daily cron.</p>
+      </div>
+      <div style="margin-bottom:18px;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">How is multi company isolation enforced?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">Every model carries a company_id and a global ir.rule that restricts read, write, and delete to the user's allowed companies. Site, device, audit, exception, and consent rows are all scoped per company. A consultant rolling out three tenants on one Odoo never sees the trails cross.</p>
+      </div>
+      <div style="margin-bottom:0;padding:18px 22px;background-color:#F4EFE6;border:1px solid rgba(58,74,92,0.14);border-radius:10px;">
+        <h3 style="font-size:1.05rem;font-weight:600;color:#0E1E2B;margin:0 0 6px 0;">Can I extend the audit trail with my own event types?</h3>
+        <p style="margin:0;font-size:1.0rem;color:#2C3845;line-height:1.6;">Yes. Inherit eh.hr.kiosk.event in your own module and extend the kind selection. The log() public API accepts the new kind by name; the rest of the audit pipeline picks it up without further work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0;background-color:#F4EFE6;border-top:1px solid rgba(58,74,92,0.10);">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h2 style="font-size:0.92rem;text-transform:uppercase;letter-spacing:0.22em;color:#2C3845;margin:0 0 14px 0;font-weight:500;font-family:'DM Mono',ui-monospace,monospace;">The full ERP Heritage attendance suite</h2>
+    <h3 style="font-size:1.85rem;margin:0 0 16px 0;font-weight:600;letter-spacing:-0.005em;color:#0E1E2B;">Thirteen modules, one data model, one audit trail.</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:24px;">
+      <div style="background-color:#A07A3F;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#FBF8F2;margin-bottom:4px;opacity:0.85;">eh_hr_attendance_base</div><div style="font-size:0.95rem;font-weight:600;color:#FBF8F2;margin-bottom:2px;">Attendance Suite Base</div><div style="font-size:0.82rem;color:#FBF8F2;opacity:0.95;">You are here</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_face_kiosk</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Face Kiosk Attendance</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Browser face match clock in</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_face_liveness</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Face Liveness</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Active blink anti spoof gate</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_attendance_geofence</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Mobile Geofence Clock-in</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Per employee mobile and GPS</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_attendance_jobcost</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Attendance Job Costing</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Analytic and project punch</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_attendance_reports</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Attendance Reports</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Exception detection plus dashboards</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_attendance_roster</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Attendance Roster</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Weekly shift templates</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_attendance_award_au</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">AU Award Engine</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Modern Award penalty and OT split</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_attendance_payroll_export</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Payroll Export</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Five vendor CSV formats</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_attendance_migrate</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Attendance Migration</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">CSV importer for switching</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_health_screen</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Health Screen</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Pre clock in declaration with deny</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_attendance_access_control</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Door Access Control</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Webhook door unlock on match</div></div>
+      <div style="background-color:#FBF8F2;padding:14px 16px;border-radius:6px;border:1px solid rgba(58,74,92,0.14);"><div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:#3A4A5C;margin-bottom:4px;opacity:0.7;">eh_hr_visitor</div><div style="font-size:0.95rem;font-weight:600;color:#0E1E2B;margin-bottom:2px;">Visitor Management</div><div style="font-size:0.82rem;color:#3A4A5C;opacity:0.85;">Front desk sign in with NDA</div></div>
+    </div>
+  </div>
+</section>
+
+<footer style="background-color:#0E1E2B;color:#FBF8F2;padding:48px 24px;border-top:4px solid #A07A3F;">
+  <div style="max-width:1180px;margin:0 auto;text-align:center;">
+    <div style="font-family:'DM Mono',ui-monospace,monospace;font-size:0.86rem;letter-spacing:0.22em;text-transform:uppercase;color:#C9A372;margin-bottom:12px;">ERP Heritage</div>
+    <p style="font-size:1.0rem;color:rgba(251,248,242,0.7);margin:0 0 16px 0;">Questions about the suite or this module:</p>
+    <a href="mailto:info@erpheritage.com.au" style="color:#A07A3F;text-decoration:none;font-weight:500;">info@erpheritage.com.au</a>
+    <p style="margin:24px 0 0 0;font-size:0.86rem;color:rgba(251,248,242,0.5);">Module: <span style="font-family:'DM Mono',ui-monospace,monospace;">eh_hr_attendance_base</span> &middot; Version 19.0.1.0.0 &middot; Licence LGPL-3</p>
+  </div>
+</footer>
+
+</body>
+</html>

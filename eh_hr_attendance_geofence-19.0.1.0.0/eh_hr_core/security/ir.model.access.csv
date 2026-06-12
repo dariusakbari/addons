@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_audit_log_admin,access.eh.hr.audit.log.admin,model_eh_hr_audit_log,group_hr_admin,1,0,0,0
+access_hr_audit_log_auditor,access.eh.hr.audit.log.auditor,model_eh_hr_audit_log,group_hr_auditor,1,0,0,0
+access_hr_audit_log_officer,access.eh.hr.audit.log.officer,model_eh_hr_audit_log,group_hr_officer,1,0,0,0
+access_hr_settings_entry_admin,access.eh.hr.settings.entry.admin,model_eh_hr_settings_entry,group_hr_admin,1,1,1,0
+access_hr_settings_entry_officer,access.eh.hr.settings.entry.officer,model_eh_hr_settings_entry,group_hr_officer,1,0,0,0
+access_hr_feature_flag_admin,access.eh.hr.feature.flag.admin,model_eh_hr_feature_flag,group_hr_admin,1,1,1,1
+access_hr_feature_flag_officer,access.eh.hr.feature.flag.officer,model_eh_hr_feature_flag,group_hr_officer,1,0,0,0
+access_hr_rate_limit_admin,access.eh.hr.rate.limit.admin,model_eh_hr_rate_limit,group_hr_admin,1,1,1,1

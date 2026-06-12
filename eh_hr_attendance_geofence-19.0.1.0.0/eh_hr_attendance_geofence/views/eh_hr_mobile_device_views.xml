@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_eh_hr_mobile_device_list" model="ir.ui.view">
+            <field name="name">eh.hr.mobile.device.list</field>
+            <field name="model">eh.hr.mobile.device</field>
+            <field name="arch" type="xml">
+                <list string="Mobile devices" sample="1" decoration-muted="not active">
+                    <field name="employee_id"/>
+                    <field name="name"/>
+                    <field name="last_seen"/>
+                    <field name="last_ip" optional="hide"/>
+                    <field name="active"/>
+                    <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_eh_hr_mobile_device_form" model="ir.ui.view">
+            <field name="name">eh.hr.mobile.device.form</field>
+            <field name="model">eh.hr.mobile.device</field>
+            <field name="arch" type="xml">
+                <form string="Mobile device">
+                    <header>
+                        <button name="action_rotate_token" type="object" string="Rotate token" groups="eh_hr_attendance_base.group_eh_hr_admin" confirm="Rotating the token immediately invalidates the phone's current credentials. The employee must re-pair. Continue?"/>
+                        <button name="action_revoke" type="object" string="Revoke" groups="eh_hr_attendance_base.group_eh_hr_admin" invisible="not active" confirm="Revoking the device prevents it from making any further mobile clock requests. Continue?"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Revoked" bg_color="bg-danger" invisible="active"/>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Alice's iPhone, work Android..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+                                <field name="active" invisible="1"/>
+                                <field name="device_token" groups="eh_hr_attendance_base.group_eh_hr_admin"/>
+                            </group>
+                            <group>
+                                <field name="registered_on"/>
+                                <field name="last_seen"/>
+                                <field name="last_ip"/>
+                                <field name="user_agent"/>
+                                <field name="last_lat"/>
+                                <field name="last_lng"/>
+                            </group>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes" nolabel="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_eh_hr_mobile_device" model="ir.actions.act_window">
+            <field name="name">Mobile devices</field>
+            <field name="res_model">eh.hr.mobile.device</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No mobile devices paired yet.</p>
+                <p>To pair an employee's phone: open the employee record, click "Issue mobile pairing PIN", then have the employee open <code>/eh_hr/mobile</code> on their phone and enter the PIN within 5 minutes.</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

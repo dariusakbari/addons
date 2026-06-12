@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="view_employee_form_eh_geofence" model="ir.ui.view">
+            <field name="name">hr.employee.form.eh.geofence</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="eh_hr_attendance_base.view_employee_form_eh_hr_attendance"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='page_eh_hr_attendance']" position="inside">
+                    <separator string="Mobile clock-in"/>
+                    <group>
+                        <group>
+                            <field name="eh_mobile_device_count" readonly="1"/>
+                            <field name="eh_mobile_geofence_required"/>
+                        </group>
+                        <group>
+                            <button name="action_eh_issue_mobile_pairing_pin" type="object" string="Issue mobile pairing PIN" class="oe_highlight" groups="eh_hr_attendance_base.group_eh_hr_manager"/>
+                            <button name="action_eh_view_mobile_devices" type="object" string="View paired devices" groups="eh_hr_attendance_base.group_eh_hr_manager"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

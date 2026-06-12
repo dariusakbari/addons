@@ -1,0 +1,48 @@
+/* EH mobile shell styles. Same dark mint palette as the kiosk; mobile sizing and spacing. */
+* { box-sizing: border-box; }
+
+html, body.eh-mobile-body { margin: 0; padding: 0; min-height: 100%; width: 100%; background: #0d1117; color: #e6edf3; font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+
+#eh-mobile-root { min-height: 100vh; display: flex; align-items: stretch; justify-content: center; padding: 16px; }
+
+.eh-screen { width: 100%; max-width: 480px; margin: 0 auto; display: flex; align-items: center; }
+
+.eh-screen.eh-hidden { display: none; }
+
+.eh-card { background: #161b22; border-radius: 16px; padding: 28px 24px; width: 100%; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4); }
+
+.eh-card.eh-card-result { text-align: center; }
+
+.eh-h1 { font-size: 28px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em; }
+
+.eh-p { margin: 0 0 16px; font-size: 16px; line-height: 1.5; }
+
+.eh-p.eh-p-large { font-size: 22px; font-weight: 500; }
+
+.eh-p.eh-p-muted { color: #8b949e; }
+
+.eh-form { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+.eh-label { font-size: 12px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.04em; }
+
+.eh-input { background: #1f242c; color: #e6edf3; border: 1px solid transparent; border-radius: 8px; padding: 14px 14px; font-size: 16px; font-family: inherit; width: 100%; }
+
+.eh-input:focus { outline: none; border-color: #7ee8b8; }
+
+.eh-input.eh-input-pin { font-family: "DM Mono", "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.4em; text-align: center; font-size: 24px; }
+
+.eh-button { background: #1f242c; color: #e6edf3; border: 0; border-radius: 10px; padding: 14px 18px; font-size: 16px; font-weight: 500; width: 100%; cursor: pointer; margin-top: 8px; }
+
+.eh-button.eh-button-primary { background: #7ee8b8; color: #0d1117; }
+
+.eh-button.eh-button-large { padding: 22px; font-size: 22px; }
+
+.eh-button:active { transform: translateY(1px); }
+
+.eh-button-link { background: transparent; color: #8b949e; border: 0; margin-top: 16px; font-size: 14px; text-decoration: underline; cursor: pointer; }
+
+.eh-status { text-align: center; color: #7ee8b8; font-family: "DM Mono", monospace; font-size: 13px; min-height: 1.4em; margin-top: 12px; }
+
+.eh-error { color: #ff6b6b; font-size: 13px; margin: 6px 0 0; min-height: 1em; }
+
+.eh-footer { margin-top: 20px; text-align: center; }

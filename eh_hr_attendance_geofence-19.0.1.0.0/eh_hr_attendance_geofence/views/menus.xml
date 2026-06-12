@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_eh_hr_mobile_devices"
+                  name="Mobile devices"
+                  parent="eh_hr_attendance_base.menu_eh_hr_kiosk_root"
+                  action="action_eh_hr_mobile_device"
+                  sequence="40"
+                  groups="eh_hr_attendance_base.group_eh_hr_manager,eh_hr_attendance_base.group_eh_hr_auditor"/>
+
+    </data>
+</odoo>

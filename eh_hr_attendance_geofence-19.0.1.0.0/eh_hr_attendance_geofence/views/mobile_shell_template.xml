@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <template id="mobile_shell" name="EH Mobile Shell">
+            <html>
+                <head>
+                    <meta charset="utf-8"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+                    <meta name="format-detection" content="telephone=no"/>
+                    <title>Mobile clock-in</title>
+                    <link rel="stylesheet" href="/eh_hr_attendance_geofence/static/src/scss/mobile.css"/>
+                    <script src="/eh_hr_attendance_geofence/static/src/js/mobile_shell.js" defer="defer"></script>
+                </head>
+                <body class="eh-mobile-body">
+                    <div id="eh-mobile-root">
+                        <section class="eh-screen eh-screen-pair" data-screen="pair">
+                            <div class="eh-card">
+                                <h1 class="eh-h1">Pair this phone</h1>
+                                <p class="eh-p">Ask your manager to issue a 6-digit pairing PIN, then enter it here.</p>
+                                <div class="eh-form">
+                                    <label class="eh-label">Device label</label>
+                                    <input class="eh-input" id="eh-pair-label" type="text" placeholder="My iPhone"/>
+                                    <label class="eh-label">PIN</label>
+                                    <input class="eh-input eh-input-pin" id="eh-pair-pin" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code"/>
+                                    <button class="eh-button eh-button-primary" id="eh-pair-submit">Pair</button>
+                                    <p class="eh-error" id="eh-pair-error"></p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="eh-screen eh-screen-clock eh-hidden" data-screen="clock">
+                            <div class="eh-card">
+                                <h1 class="eh-h1" id="eh-clock-name">Welcome</h1>
+                                <p class="eh-p eh-p-muted">Tap the button below to clock in or out. Your phone will ask permission to share its location.</p>
+                                <button class="eh-button eh-button-primary eh-button-large" id="eh-clock-action">Clock in / out</button>
+                                <p class="eh-status" id="eh-clock-status"></p>
+                                <div class="eh-footer">
+                                    <button class="eh-button-link" id="eh-clock-unpair">Unpair this phone</button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="eh-screen eh-screen-result eh-hidden" data-screen="result">
+                            <div class="eh-card eh-card-result">
+                                <h1 class="eh-h1" id="eh-result-title">Clocked in</h1>
+                                <p class="eh-p eh-p-large" id="eh-result-time"></p>
+                                <p class="eh-p eh-p-muted" id="eh-result-detail"></p>
+                                <button class="eh-button" id="eh-result-back">Back</button>
+                            </div>
+                        </section>
+                    </div>
+                </body>
+            </html>
+        </template>
+
+    </data>
+</odoo>
