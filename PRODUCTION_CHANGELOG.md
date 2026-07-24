@@ -81,3 +81,16 @@ or restore the 14:53 backup via OSM.
     date fields; every record links back to its original task.
     All 189 original tagged tasks remain active and untouched — archive only
     after reconciliation sign-off per safeguards.
+
+## HSE app retirement — 24 July 2026 (evening)
+
+12. Upgraded gte_hse to 19.0.0.2.0: Incident Reports (INC-), Equipment
+    Inspections (EQI-), Work Permits (WP- with expiry cron), Risk Register
+    (RSK- with computed 5x5 score). All validation gates and escalation
+    activities production-tested; test records on TEMPLATE project.
+13. Hidden the old Studio "HSE & Safety" app root menu (id 685,
+    active=false — reversible). Its x_hse_* models and 3 legacy records
+    remain intact in the database. Project app retained (Construction is
+    built on it). Construction → Field & Safety now carries: Daily Site
+    Logs, FLHAs, Toolbox Talks, Incidents, Equipment Inspections, Work
+    Permits, Risk Register.
