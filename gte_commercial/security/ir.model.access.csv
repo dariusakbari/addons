@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_budget_pm,gte.project.budget pm,model_gte_project_budget,gte_core.group_gte_pm,1,1,1,0
+access_budget_acct,gte.project.budget accounting,model_gte_project_budget,gte_core.group_gte_accounting,1,1,1,0
+access_budget_admin,gte.project.budget admin,model_gte_project_budget,gte_core.group_gte_admin,1,1,1,1
+access_budget_line_pm,gte.project.budget.line pm,model_gte_project_budget_line,gte_core.group_gte_pm,1,1,1,1
+access_budget_line_acct,gte.project.budget.line accounting,model_gte_project_budget_line,gte_core.group_gte_accounting,1,1,1,1
+access_rate_acct,gte.labour.rate accounting,model_gte_labour_rate,gte_core.group_gte_accounting,1,1,1,0
+access_rate_pm,gte.labour.rate pm,model_gte_labour_rate,gte_core.group_gte_pm,1,0,0,0
+access_rate_admin,gte.labour.rate admin,model_gte_labour_rate,gte_core.group_gte_admin,1,1,1,1
+access_cert_field,gte.worker.cert field,model_gte_worker_cert,gte_core.group_gte_field,1,0,0,0
+access_cert_safety,gte.worker.cert safety,model_gte_worker_cert,gte_core.group_gte_safety,1,1,1,0
+access_cert_pm,gte.worker.cert pm,model_gte_worker_cert,gte_core.group_gte_pm,1,1,1,0
+access_cert_admin,gte.worker.cert admin,model_gte_worker_cert,gte_core.group_gte_admin,1,1,1,1
