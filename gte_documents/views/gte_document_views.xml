@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gte_doc_register_list" model="ir.ui.view">
+        <field name="name">documents.document.gte.list</field>
+        <field name="model">documents.document</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="gte_doc_status == 'superseded'">
+                <field name="gte_doc_number"/>
+                <field name="name"/>
+                <field name="gte_doc_type"/>
+                <field name="gte_discipline" optional="show"/>
+                <field name="gte_revision"/>
+                <field name="gte_doc_status" widget="badge"/>
+                <field name="gte_issue_date" optional="show"/>
+                <field name="folder_id"/>
+                <field name="gte_rfi_id" optional="hide"/>
+                <field name="gte_co_id" optional="hide"/>
+                <field name="gte_submittal_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_gte_doc_register_form" model="ir.ui.view">
+        <field name="name">documents.document.gte.form</field>
+        <field name="model">documents.document</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form string="Document">
+                <header>
+                    <button name="action_gte_register_revision" string="Register Revision" type="object" class="btn-primary" invisible="gte_doc_status == 'superseded'"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="gte_doc_number"/>
+                            <field name="gte_doc_type"/>
+                            <field name="gte_discipline"/>
+                            <field name="gte_revision"/>
+                            <field name="gte_doc_status"/>
+                            <field name="gte_superseded_by_id" invisible="not gte_superseded_by_id"/>
+                        </group>
+                        <group>
+                            <field name="folder_id"/>
+                            <field name="gte_issue_date"/>
+                            <field name="gte_source"/>
+                        </group>
+                    </group>
+                    <group string="Links">
+                        <group>
+                            <field name="gte_rfi_id"/>
+                            <field name="gte_co_id"/>
+                        </group>
+                        <group>
+                            <field name="gte_submittal_id"/>
+                            <field name="gte_task_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_gte_doc_register_search" model="ir.ui.view">
+        <field name="name">documents.document.gte.search</field>
+        <field name="model">documents.document</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="gte_doc_number"/>
+                <field name="name"/>
+                <field name="folder_id"/>
+                <filter name="current" string="Current" domain="[('gte_doc_status', '=', 'current')]"/>
+                <filter name="superseded" string="Superseded" domain="[('gte_doc_status', '=', 'superseded')]"/>
+                <filter name="drawings" string="Drawings" domain="[('gte_doc_type', '=', 'drawing')]"/>
+                <separator/>
+                <filter name="by_folder" string="Folder" context="{'group_by': 'folder_id'}"/>
+                <filter name="by_type" string="Type" context="{'group_by': 'gte_doc_type'}"/>
+                <filter name="by_discipline" string="Discipline" context="{'group_by': 'gte_discipline'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_gte_doc_register" model="ir.actions.act_window">
+        <field name="name">Drawings and Documents</field>
+        <field name="res_model">documents.document</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type', '=', 'binary')]</field>
+        <field name="view_id" ref="view_gte_doc_register_list"/>
+        <field name="search_view_id" ref="view_gte_doc_register_search"/>
+        <field name="context">{'search_default_current': 1}</field>
+    </record>
+    <record id="action_gte_doc_register_form_view" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref="action_gte_doc_register"/>
+        <field name="view_id" ref="view_gte_doc_register_form"/>
+        <field name="view_mode">form</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="view_gte_doc_rev_wizard_form" model="ir.ui.view">
+        <field name="name">gte.document.revision.wizard.form</field>
+        <field name="model">gte.document.revision.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Register Revision">
+                <group>
+                    <field name="new_document_id"/>
+                    <field name="predecessor_id"/>
+                    <field name="revision"/>
+                </group>
+                <footer>
+                    <button name="action_apply" string="Register" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <menuitem id="menu_gte_documents" name="Drawings &amp; Documents" parent="gte_controls.menu_gte_root" action="action_gte_doc_register" sequence="37"/>
+</odoo>
