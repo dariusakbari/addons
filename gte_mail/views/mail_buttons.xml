@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gte_rfi_form_mail" model="ir.ui.view">
+        <field name="name">gte.rfi.form.mail</field>
+        <field name="model">gte.rfi</field>
+        <field name="inherit_id" ref="gte_controls.view_gte_rfi_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email RFI" type="object" invisible="state in ('draft','cancelled')"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_gte_co_form_mail" model="ir.ui.view">
+        <field name="name">gte.change.order.form.mail</field>
+        <field name="model">gte.change.order</field>
+        <field name="inherit_id" ref="gte_controls.view_gte_co_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email to Client" type="object" invisible="state in ('draft','pricing','cancelled')"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_gte_submittal_form_mail" model="ir.ui.view">
+        <field name="name">gte.submittal.form.mail</field>
+        <field name="model">gte.submittal</field>
+        <field name="inherit_id" ref="gte_controls.view_gte_submittal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email Request" type="object" invisible="state in ('draft','cancelled','closed')"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_gte_dsl_form_mail" model="ir.ui.view">
+        <field name="name">gte.daily.log.form.mail</field>
+        <field name="model">gte.daily.log</field>
+        <field name="inherit_id" ref="gte_field.view_gte_dsl_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email Report" type="object" invisible="state == 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
