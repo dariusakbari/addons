@@ -22,14 +22,17 @@ class TestGteControls(TransactionCase):
         with self.assertRaises(ValidationError):
             rfi1.action_send()  # question + addressed_to missing
         rfi1.write({"question": "<p>Clarify circuit 12</p>",
-                    "addressed_to_id": self.partner.id})
+                    "addressed_to_id": self.partner.id,
+                    "raised_by_id": self.partner.id,
+                    "date_required": "2030-01-01",
+                    "distribution_ids": [(4, self.partner.id)]})
         rfi1.action_send()
         with self.assertRaises(ValidationError):
             rfi1.action_answer()  # response missing
         rfi1.response = "<p>Use drawing E-402 rev 2</p>"
         rfi1.action_answer()
-        rfi1.distribution_ids = [(4, self.partner.id)]
         rfi1.action_distribute()
+        rfi1.responded_by_id = self.partner.id
         rfi1.action_close()
         self.assertEqual(rfi1.state, "closed")
 
@@ -42,8 +45,10 @@ class TestGteControls(TransactionCase):
         self.assertAlmostEqual(co.amount_proposed, 1100.0)
         co.action_price()
         co.action_review()
+        co.write({"scope": "<p>scope</p>", "doc_exception_reason": "test exception"})
         co.action_submit()
         self.assertAlmostEqual(co.amount_submitted, 1100.0)
+        co.approval_reference = "PO-TEST-1"
         co.action_approve()
         self.assertAlmostEqual(co.amount_approved, 1100.0)
         self.assertAlmostEqual(co.exposure, 1100.0)
@@ -52,6 +57,11 @@ class TestGteControls(TransactionCase):
         sub = self.env["gte.submittal"].create({
             "title": "Lighting fixtures", "project_id": self.project.id,
             "supplier_id": self.partner.id})
+        sub.write({"reviewer_id": self.partner.id,
+                   "date_required_onsite": "2030-01-01"})
+        self.env["ir.attachment"].create({
+            "name": "spec.pdf", "res_model": "gte.submittal", "res_id": sub.id,
+            "datas": "dGVzdA=="})
         sub.action_request()
         sub.action_receive()
         sub.action_review()

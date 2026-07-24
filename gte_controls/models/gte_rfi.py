@@ -46,6 +46,11 @@ class GteRfi(models.Model):
         ("closed", "Closed"), ("cancelled", "Cancelled")],
         default="draft", tracking=True, index=True, copy=False)
     is_overdue = fields.Boolean(compute="_compute_is_overdue", search="_search_is_overdue")
+    responded_by_id = fields.Many2one("res.partner", string="Responder", tracking=True)
+    not_distributed_reason = fields.Char(
+        string="Reason Not Distributed", tracking=True,
+        help="Required to close an RFI that was never distributed.")
+    active = fields.Boolean(default=True)
 
     _rfi_number_project_uniq = models.Constraint(
         "unique(project_id, name)",
@@ -94,9 +99,17 @@ class GteRfi(models.Model):
 
     def action_send(self):
         for rec in self:
-            if not rec.question or not rec.addressed_to_id:
+            missing = []
+            if not rec.subject: missing.append("subject")
+            if not rec.question: missing.append("complete question")
+            if not rec.raised_by_id: missing.append("raised by")
+            if not rec.addressed_to_id: missing.append("addressed to")
+            if not rec.coordinator_id: missing.append("coordinator")
+            if not rec.date_required: missing.append("required response date")
+            if not rec.distribution_ids: missing.append("distribution recipients")
+            if missing:
                 raise ValidationError(
-                    "Question and Addressed To are required before sending %s." % rec.name)
+                    "%s cannot be sent. Missing: %s." % (rec.name, ", ".join(missing)))
         self._set_state(("open",), "sent")
 
     def action_answer(self):
@@ -114,7 +127,26 @@ class GteRfi(models.Model):
                         {"date_distributed": fields.Date.context_today(self)})
 
     def action_close(self):
+        for rec in self:
+            missing = []
+            if not rec.response: missing.append("response")
+            if not rec.responded_by_id: missing.append("responder")
+            if not rec.date_answered: missing.append("response date")
+            if not rec.date_distributed and not rec.not_distributed_reason:
+                missing.append("distribution date or a documented reason not distributed")
+            if missing:
+                raise ValidationError(
+                    "%s cannot be closed. Missing: %s." % (rec.name, ", ".join(missing)))
         self._set_state(("distributed", "answered"), "closed")
+
+    def action_reopen(self):
+        if not self.env.user.has_group("gte_core.group_gte_pm"):
+            raise ValidationError("Only project managers can reopen an RFI.")
+        self._set_state(("closed", "cancelled"), "open")
+
+    def unlink(self):
+        self._gte_unlink_guard()
+        return super().unlink()
 
     def action_cancel(self):
         self._set_state(("draft", "open", "sent"), "cancelled")

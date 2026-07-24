@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gte_reason_wizard,gte.reason.wizard,model_gte_reason_wizard,gte_core.group_gte_field,1,1,1,1

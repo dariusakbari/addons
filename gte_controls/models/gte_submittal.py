@@ -49,6 +49,7 @@ class GteSubmittal(models.Model):
     task_ids = fields.Many2many("project.task", string="Related Tasks")
     distribution_ids = fields.Many2many("res.partner", "gte_submittal_distribution_rel",
                                         string="Distribution List")
+    active = fields.Boolean(default=True)
     state = fields.Selection([
         ("draft", "Draft"), ("requested", "Requested"), ("received", "Received"),
         ("review", "Internal Review"), ("submitted", "Submitted"),
@@ -101,6 +102,18 @@ class GteSubmittal(models.Model):
         overwrites the previous revision's files or response."""
         today = fields.Date.context_today(self)
         for rec in self:
+            missing = []
+            if not rec.supplier_id and not rec.contractor_id:
+                missing.append("supplier or responsible contractor")
+            if not rec.reviewer_id: missing.append("reviewer")
+            if not rec.date_required_onsite: missing.append("required-on-site date")
+            if not self.env["ir.attachment"].search_count(
+                    [("res_model", "=", rec._name), ("res_id", "=", rec.id)]):
+                missing.append("attached submission document")
+            if missing:
+                raise ValidationError(
+                    "%s cannot be submitted. Missing: %s." % (rec.name, ", ".join(missing)))
+        for rec in self:
             rec.env["gte.submittal.revision"].create({
                 "submittal_id": rec.id,
                 "revision": rec.current_revision + (1 if rec.revision_ids else 0),
@@ -131,7 +144,21 @@ class GteSubmittal(models.Model):
         self._action_return("rejected")
 
     def action_close(self):
+        for rec in self:
+            if not rec.outcome or not rec.date_returned:
+                raise ValidationError(
+                    "%s cannot be closed without a review outcome and "
+                    "returned date." % rec.name)
         self._set_state(("approved", "approved_noted", "rejected"), "closed")
+
+    def action_reopen(self):
+        if not self.env.user.has_group("gte_core.group_gte_pm"):
+            raise ValidationError("Only project managers can reopen a submittal.")
+        self._set_state(("closed", "cancelled"), "draft")
+
+    def unlink(self):
+        self._gte_unlink_guard()
+        return super().unlink()
 
     def action_cancel(self):
         self._set_state(("draft", "requested", "received"), "cancelled")

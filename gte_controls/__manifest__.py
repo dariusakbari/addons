@@ -1,7 +1,7 @@
 {
     "name": "GTE Construction Controls",
     "summary": "RFIs, Change Orders and Submittals as dedicated business records",
-    "version": "19.0.0.6.0",
+    "version": "19.0.0.7.0",
     "author": "Green Tech Electric",
     "license": "OPL-1",
     "category": "Construction",

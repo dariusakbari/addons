@@ -55,6 +55,13 @@ class GteChangeOrder(models.Model):
     sale_order_id = fields.Many2one("sale.order", copy=False)
     invoice_ids = fields.Many2many("account.move", string="Invoices", copy=False)
     analytic_account_id = fields.Many2one("account.analytic.account", copy=False)
+    approval_reference = fields.Char(
+        string="Approval Reference", tracking=True,
+        help="Client PO / approval letter number, or attach the approval.")
+    doc_exception_reason = fields.Char(
+        string="Missing-Documents Exception", tracking=True,
+        help="Required when submitting without supporting documents.")
+    active = fields.Boolean(default=True)
     state = fields.Selection([
         ("draft", "Draft"), ("pricing", "Pricing"), ("review", "Internal Review"),
         ("submitted", "Submitted"), ("changes", "Changes Requested"),
@@ -114,8 +121,24 @@ class GteChangeOrder(models.Model):
                 raise ValidationError("Cost lines are required before review on %s." % rec.name)
         self._set_state(("pricing",), "review")
 
+    def _attachment_count(self):
+        self.ensure_one()
+        return self.env["ir.attachment"].search_count(
+            [("res_model", "=", self._name), ("res_id", "=", self.id)])
+
     def action_submit(self):
         for rec in self:
+            missing = []
+            if not rec.scope: missing.append("description and scope")
+            if not rec.source_type: missing.append("source")
+            if not rec.line_ids: missing.append("cost breakdown")
+            if rec.amount_proposed <= 0: missing.append("proposed amount")
+            if not rec.partner_id: missing.append("client contact")
+            if not rec._attachment_count() and not rec.doc_exception_reason:
+                missing.append("supporting documents or a documented exception")
+            if missing:
+                raise ValidationError(
+                    "%s cannot be submitted. Missing: %s." % (rec.name, ", ".join(missing)))
             rec.amount_submitted = rec.amount_proposed
         self._set_state(("review",), "submitted",
                         {"date_submitted": fields.Date.context_today(self)})
@@ -124,9 +147,22 @@ class GteChangeOrder(models.Model):
         self._set_state(("submitted",), "changes")
 
     def action_approve(self):
+        limit = float(self.env["ir.config_parameter"].sudo().get_param(
+            "gte.co_approval_limit", "0") or 0)
         for rec in self:
             if not rec.amount_approved:
                 rec.amount_approved = rec.amount_submitted or rec.amount_proposed
+            missing = []
+            if not rec.amount_approved: missing.append("approved amount")
+            if not rec.approval_reference and not rec._attachment_count():
+                missing.append("approval reference or attached approval")
+            if missing:
+                raise ValidationError(
+                    "%s cannot be approved. Missing: %s." % (rec.name, ", ".join(missing)))
+            if limit and rec.amount_approved > limit and                     not self.env.user.has_group("gte_core.group_gte_admin"):
+                raise ValidationError(
+                    "%s exceeds the approval limit (%.2f). A Construction "
+                    "Administrator must approve it." % (rec.name, limit))
         self._set_state(("submitted",), "approved",
                         {"date_decision": fields.Date.context_today(self)})
 
@@ -135,12 +171,30 @@ class GteChangeOrder(models.Model):
                         {"date_decision": fields.Date.context_today(self)})
 
     def action_billed(self):
+        for rec in self:
+            if not rec.invoice_ids and not rec.sale_order_id:
+                raise ValidationError(
+                    "%s cannot be marked billed without a linked sales order "
+                    "or invoice." % rec.name)
         self._set_state(("approved",), "billed",
                         {"billing_status": "billed",
                          "date_billed": fields.Date.context_today(self)})
 
     def action_paid(self):
+        for rec in self:
+            if not rec.invoice_ids:
+                raise ValidationError(
+                    "%s cannot be marked paid without linked invoices." % rec.name)
         self._set_state(("billed",), "paid", {"payment_status": "paid"})
+
+    def action_reopen(self):
+        if not self.env.user.has_group("gte_core.group_gte_pm"):
+            raise ValidationError("Only project managers can reopen a change order.")
+        self._set_state(("closed", "cancelled", "rejected"), "draft")
+
+    def unlink(self):
+        self._gte_unlink_guard()
+        return super().unlink()
 
     def action_close(self):
         self._set_state(("paid", "rejected", "approved", "billed"), "closed")

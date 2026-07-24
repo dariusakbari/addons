@@ -11,7 +11,8 @@
                     <button name="action_answer" string="Record Answer" type="object" class="btn-primary" invisible="state != 'sent'"/>
                     <button name="action_distribute" string="Distribute" type="object" class="btn-primary" invisible="state != 'answered'"/>
                     <button name="action_close" string="Close" type="object" invisible="state not in ('answered','distributed')"/>
-                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','open','sent')"/>
+                    <button name="action_open_reason_wizard" string="Cancel" type="object" context="{'gte_action': 'cancel'}" invisible="state not in ('draft','open','sent')"/>
+                    <button name="action_open_reason_wizard" string="Reopen" type="object" context="{'gte_action': 'reopen'}" invisible="state not in ('closed','cancelled')" groups="gte_core.group_gte_pm"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,open,sent,answered,distributed,closed"/>
                 </header>
                 <sheet>
@@ -36,7 +37,17 @@
                     </group>
                     <notebook>
                         <page string="Question"><field name="question"/></page>
-                        <page string="Response"><field name="response"/></page>
+                        <page string="Response">
+                            <group>
+                                <group>
+                                    <field name="responded_by_id"/>
+                                </group>
+                                <group>
+                                    <field name="not_distributed_reason" invisible="date_distributed != False"/>
+                                </group>
+                            </group>
+                            <field name="response"/>
+                        </page>
                         <page string="Impacts">
                             <group>
                                 <group>

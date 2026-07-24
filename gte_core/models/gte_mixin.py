@@ -25,16 +25,43 @@ class GteLegacyMixin(models.AbstractModel):
 
     @api.model
     def _gte_next_number(self, project, code, prefix):
-        """Project-scoped sequence, created on first use. Idempotent."""
+        """Project-scoped sequence producing {project_code}-{TYPE}-###
+        (e.g. 0476-RFI-001). Created on first use; prefix follows the
+        project code if it changes. Idempotent."""
         seq_code = "%s.p%s" % (code, project.id)
+        full_prefix = "%s-%s-" % (project.gte_code or "PRJ", prefix)
         seq = self.env["ir.sequence"].sudo().search(
             [("code", "=", seq_code)], limit=1)
         if not seq:
             seq = self.env["ir.sequence"].sudo().create({
                 "name": "%s %s" % (prefix, project.display_name),
                 "code": seq_code,
-                "prefix": prefix + "-",
+                "prefix": full_prefix,
                 "padding": 3,
                 "company_id": project.company_id.id or False,
             })
+        elif seq.prefix != full_prefix:
+            seq.prefix = full_prefix
         return seq.next_by_id()
+
+    def _gte_unlink_guard(self, deletable_states=("draft", "cancelled")):
+        from odoo.exceptions import ValidationError
+        for rec in self:
+            if rec.state not in deletable_states:
+                raise ValidationError(
+                    "%s is issued/active and cannot be deleted. Archive it "
+                    "instead (a Construction Administrator can archive from "
+                    "the record's action menu)." % rec.display_name)
+
+    def action_open_reason_wizard(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "gte.reason.wizard",
+            "view_mode": "form", "target": "new",
+            "context": {
+                "default_res_model": self._name,
+                "default_res_id": self.id,
+                "default_action": self.env.context.get("gte_action", "cancel"),
+            },
+        }

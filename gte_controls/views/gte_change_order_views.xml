@@ -15,7 +15,8 @@
                     <button name="action_billed" string="Mark Billed" type="object" invisible="state != 'approved'"/>
                     <button name="action_paid" string="Mark Paid" type="object" invisible="state != 'billed'"/>
                     <button name="action_close" string="Close" type="object" invisible="state not in ('paid','rejected','approved','billed')"/>
-                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','pricing','review')"/>
+                    <button name="action_open_reason_wizard" string="Cancel" type="object" context="{'gte_action': 'cancel'}" invisible="state not in ('draft','pricing','review')"/>
+                    <button name="action_open_reason_wizard" string="Reopen" type="object" context="{'gte_action': 'reopen'}" invisible="state not in ('closed','cancelled','rejected')" groups="gte_core.group_gte_pm"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,pricing,review,submitted,approved,billed,paid,closed"/>
                 </header>
                 <sheet>
@@ -29,6 +30,8 @@
                             <field name="source_type"/>
                             <field name="origin_rfi_id"/>
                             <field name="origin_ref"/>
+                            <field name="approval_reference"/>
+                            <field name="doc_exception_reason"/>
                         </group>
                         <group>
                             <field name="amount_proposed"/>

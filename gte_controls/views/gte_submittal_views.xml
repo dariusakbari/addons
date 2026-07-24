@@ -15,7 +15,8 @@
                     <button name="action_revise" string="Revise and Resubmit" type="object" invisible="state != 'submitted'"/>
                     <button name="action_reject" string="Rejected" type="object" invisible="state != 'submitted'"/>
                     <button name="action_close" string="Close" type="object" invisible="state not in ('approved','approved_noted','rejected')"/>
-                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','requested','received')"/>
+                    <button name="action_open_reason_wizard" string="Cancel" type="object" context="{'gte_action': 'cancel'}" invisible="state not in ('draft','requested','received')"/>
+                    <button name="action_open_reason_wizard" string="Reopen" type="object" context="{'gte_action': 'reopen'}" invisible="state not in ('closed','cancelled')" groups="gte_core.group_gte_pm"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,requested,received,review,submitted,approved,closed"/>
                 </header>
                 <sheet>
