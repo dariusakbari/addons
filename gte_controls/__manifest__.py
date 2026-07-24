@@ -5,7 +5,7 @@
     "author": "Green Tech Electric",
     "license": "OPL-1",
     "category": "Construction",
-    "depends": ["gte_core", "account"],
+    "depends": ["gte_core", "sale", "account"],
     "data": [
         "security/ir.model.access.csv",
         "security/gte_rules.xml",
