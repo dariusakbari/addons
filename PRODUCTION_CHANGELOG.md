@@ -137,3 +137,15 @@ or restore the 14:53 backup via OSM.
     all 7. Production-tested: all gates block, NCR-001/GI-001/ATT-001/
     VIS-001/TR-001/SD-001/GP-001 created on TEMPLATE project ("TEST — …").
     All 14 Phase 4 record classes from the mission are now implemented.
+
+## Mail + deliverable docs — 24 July 2026 (night)
+
+20. Installed gte_mail 0.1.0: four mail templates (RFI to consultant,
+    CO to client, submittal request to supplier, daily-log distribution)
+    with the matching PDF auto-attached; Email buttons on all four forms
+    open the composer preloaded (verified in production). Sending remains
+    INERT until outgoing/incoming mail servers are configured — external
+    delivery, replies, bounces and aliases still untested (Phase 6 gate).
+21. Added docs/: DATA_DICTIONARY.md (generated from source, all gte.*
+    models), ACCESS_CONTROL_MATRIX.md (generated from ACL files),
+    ADMIN_GUIDE.md, FIELD_USER_GUIDE.md.
