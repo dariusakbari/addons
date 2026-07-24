@@ -62,3 +62,22 @@ or restore the 14:53 backup via OSM.
    raised), TBT-001 (submitted), DSL-001 (reviewed, 8.0 hrs). All PDFs
    HTTP 200. Test records on TEMPLATE project, titled "TEST — …".
    NOT yet verified: phone-sized rendering (verify on a real phone).
+
+## Overlap fix + legacy migration — 24 July 2026 (evening)
+
+10. Hidden superseded Studio menus (ir.ui.menu active=false — reverse by
+    setting active=true): Project/RFIs (691), Project/Change Management (692),
+    Project/Submittals (693), Project/Safety Sheets (694), HSE FLHA Daily (696),
+    HSE New Safety Sheet (695), HSE Toolbox Talks (687). Old HSE registers with
+    no replacement yet (Equipment, Incidents, Permits, Risk, Overview) left visible.
+11. Installed gte_migration and executed tagged-task migration:
+    RFI 64/64 (Bayview 50, Meadowvale 14), Change Orders 84/84 (Airport 1,
+    Bayview 70, Meadowvale 13), Submittals 41/41 (Airport 5, Bayview 24,
+    Meadowvale 12), Standard Submittal specs 98/98. Re-run test: 0 duplicates
+    (idempotency proven in production). All 189 records carry
+    migration_incomplete=true pending SmartBuild-export enrichment
+    (question/response text, parties, pricing, attachments do not exist in Odoo).
+    SmartBuild IDs preserved in legacy_source_id; received dates parsed into
+    date fields; every record links back to its original task.
+    All 189 original tagged tasks remain active and untouched — archive only
+    after reconciliation sign-off per safeguards.
