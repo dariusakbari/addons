@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_gte_flha" model="ir.actions.report">
+        <field name="name">FLHA</field>
+        <field name="model">gte.flha</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gte_hse.report_gte_flha</field>
+        <field name="report_file">gte_hse.report_gte_flha</field>
+        <field name="print_report_name">'%s - FLHA' % (object.name)</field>
+        <field name="binding_model_id" ref="model_gte_flha"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_gte_flha">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Field Level Hazard Assessment <span t-field="o.name"/></h2>
+                        <table class="table table-sm o_main_table">
+                            <tr><td style="width:30%"><strong>Project</strong></td><td><span t-field="o.project_id.display_name"/></td></tr>
+                            <tr><td><strong>Date</strong></td><td><span t-field="o.date"/></td></tr>
+                            <tr><td><strong>Foreman</strong></td><td><span t-field="o.foreman_id"/></td></tr>
+                            <tr><td><strong>Location</strong></td><td><span t-field="o.location"/></td></tr>
+                            <tr><td><strong>Overall Risk</strong></td><td><span t-field="o.overall_risk"/></td></tr>
+                            <tr><td><strong>Status</strong></td><td><span t-field="o.state"/></td></tr>
+                        </table>
+                        <h4>Task / Activity</h4>
+                        <p t-field="o.task_description"/>
+                        <h4>PPE Required</h4>
+                        <p>
+                            <t t-if="o.ppe_hard_hat">Hard Hat; </t><t t-if="o.ppe_safety_glasses">Safety Glasses; </t>
+                            <t t-if="o.ppe_gloves">Gloves; </t><t t-if="o.ppe_boots">Safety Boots; </t>
+                            <t t-if="o.ppe_vest">Hi-Vis Vest; </t><t t-if="o.ppe_hearing">Hearing Protection; </t>
+                            <t t-if="o.ppe_other"><span t-field="o.ppe_other"/></t>
+                        </p>
+                        <h4>Hazards and Controls</h4>
+                        <table class="table table-sm">
+                            <thead><tr><th>Hazard</th><th>Risk</th><th>Control</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="o.hazard_ids" t-as="h">
+                                    <td><span t-field="h.description"/></td>
+                                    <td><span t-field="h.risk"/></td>
+                                    <td><span t-field="h.control"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4>Crew Acknowledgement</h4>
+                        <table class="table table-sm">
+                            <thead><tr><th>Worker</th><th>Signature</th><th>Signed</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="o.signoff_ids" t-as="s">
+                                    <td><span t-field="s.worker_name"/></td>
+                                    <td><img t-if="s.signature" t-att-src="image_data_uri(s.signature)" style="max-height: 40px;"/></td>
+                                    <td><span t-field="s.signed_on"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p t-if="o.reviewed_by_id"><strong>Reviewed by:</strong> <span t-field="o.reviewed_by_id"/> on <span t-field="o.reviewed_date"/></p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_gte_tbt" model="ir.actions.report">
+        <field name="name">Toolbox Talk</field>
+        <field name="model">gte.toolbox.talk</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gte_hse.report_gte_tbt</field>
+        <field name="report_file">gte_hse.report_gte_tbt</field>
+        <field name="print_report_name">'%s - Toolbox Talk' % (object.name)</field>
+        <field name="binding_model_id" ref="model_gte_toolbox_talk"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_gte_tbt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Toolbox Talk <span t-field="o.name"/></h2>
+                        <table class="table table-sm o_main_table">
+                            <tr><td style="width:30%"><strong>Topic</strong></td><td><span t-field="o.topic"/></td></tr>
+                            <tr><td><strong>Project</strong></td><td><span t-field="o.project_id.display_name"/></td></tr>
+                            <tr><td><strong>Date</strong></td><td><span t-field="o.date"/></td></tr>
+                            <tr><td><strong>Presenter</strong></td><td><span t-field="o.presenter_id"/></td></tr>
+                            <tr><td><strong>Duration (min)</strong></td><td><span t-field="o.duration_minutes"/></td></tr>
+                        </table>
+                        <h4>Notes</h4>
+                        <div t-field="o.notes"/>
+                        <h4>Attendees</h4>
+                        <table class="table table-sm">
+                            <thead><tr><th>Worker</th><th>Signature</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="o.attendee_ids" t-as="a">
+                                    <td><span t-field="a.worker_name"/></td>
+                                    <td><img t-if="a.signature" t-att-src="image_data_uri(a.signature)" style="max-height: 40px;"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

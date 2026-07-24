@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gte_flha_form" model="ir.ui.view">
+        <field name="name">gte.flha.form</field>
+        <field name="model">gte.flha</field>
+        <field name="arch" type="xml">
+            <form string="FLHA">
+                <header>
+                    <button name="action_submit" string="Finalize" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_review" string="Supervisor Review" type="object" class="btn-primary" invisible="state != 'submitted'" groups="gte_core.group_gte_pm,gte_core.group_gte_safety"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','submitted')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,reviewed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="date"/>
+                            <field name="foreman_id"/>
+                            <field name="location"/>
+                            <field name="site_contact"/>
+                        </group>
+                        <group>
+                            <field name="overall_risk" widget="radio" options="{'horizontal': true}"/>
+                            <field name="reviewed_by_id" invisible="not reviewed_by_id"/>
+                            <field name="reviewed_date" invisible="not reviewed_date"/>
+                        </group>
+                    </group>
+                    <group string="Task / Activity">
+                        <field name="task_description" nolabel="1" colspan="2" placeholder="Describe today's task before assessing hazards…"/>
+                    </group>
+                    <group string="PPE Required (select what applies — nothing is prechecked)">
+                        <group>
+                            <field name="ppe_hard_hat"/>
+                            <field name="ppe_safety_glasses"/>
+                            <field name="ppe_gloves"/>
+                            <field name="ppe_boots"/>
+                        </group>
+                        <group>
+                            <field name="ppe_vest"/>
+                            <field name="ppe_hearing"/>
+                            <field name="ppe_other"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Hazards and Controls">
+                            <field name="hazard_ids">
+                                <list editable="bottom">
+                                    <field name="description"/>
+                                    <field name="risk"/>
+                                    <field name="control" placeholder="Required before finalizing"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Crew Sign-off">
+                            <field name="signoff_ids">
+                                <list editable="bottom">
+                                    <field name="worker_name"/>
+                                    <field name="signature" widget="signature"/>
+                                    <field name="signed_on"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_gte_flha_list" model="ir.ui.view">
+        <field name="name">gte.flha.list</field>
+        <field name="model">gte.flha</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="date"/>
+                <field name="foreman_id"/>
+                <field name="overall_risk" widget="badge" decoration-danger="overall_risk == 'high'" decoration-warning="overall_risk == 'medium'"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_gte_flha" model="ir.actions.act_window">
+        <field name="name">FLHAs</field>
+        <field name="res_model">gte.flha</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_gte_tbt_form" model="ir.ui.view">
+        <field name="name">gte.toolbox.talk.form</field>
+        <field name="model">gte.toolbox.talk</field>
+        <field name="arch" type="xml">
+            <form string="Toolbox Talk">
+                <header>
+                    <button name="action_submit" string="Finalize" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="topic" placeholder="Required — e.g. Ladder safety"/>
+                            <field name="project_id"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="presenter_id"/>
+                            <field name="duration_minutes"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes"><field name="notes"/></page>
+                        <page string="Attendees">
+                            <field name="attendee_ids">
+                                <list editable="bottom">
+                                    <field name="worker_name"/>
+                                    <field name="signature" widget="signature"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_gte_tbt_list" model="ir.ui.view">
+        <field name="name">gte.toolbox.talk.list</field>
+        <field name="model">gte.toolbox.talk</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="topic"/>
+                <field name="project_id"/>
+                <field name="date"/>
+                <field name="presenter_id"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_gte_tbt" model="ir.actions.act_window">
+        <field name="name">Toolbox Talks</field>
+        <field name="res_model">gte.toolbox.talk</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_gte_field_safety" name="Field &amp; Safety" parent="gte_controls.menu_gte_root" sequence="35"/>
+    <menuitem id="menu_gte_flha" name="FLHAs" parent="menu_gte_field_safety" action="action_gte_flha" sequence="10"/>
+    <menuitem id="menu_gte_tbt" name="Toolbox Talks" parent="menu_gte_field_safety" action="action_gte_tbt" sequence="20"/>
+</odoo>

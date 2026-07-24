@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dsl_field,gte.daily.log field,model_gte_daily_log,gte_core.group_gte_field,1,1,1,0
+access_dsl_admin,gte.daily.log admin,model_gte_daily_log,gte_core.group_gte_admin,1,1,1,1
+access_dsl_labour_field,gte.daily.log.labour field,model_gte_daily_log_labour,gte_core.group_gte_field,1,1,1,1
