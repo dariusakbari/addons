@@ -18,3 +18,22 @@ Rollback point: owner-held backup dated 23 July 2026 (pre-change).
 Not changed (deliberately): tagged tasks, Studio models/records, users, admin
 rights, 2FA, mail settings, demo remnants (e.g. leftover demo-employee Documents
 folders — flagged for the demo-data disposition report).
+
+## Deployment — 24 July 2026 (afternoon)
+
+Rollback point: OSM backup odoo.greentechelectric.ca_20260724_145326.zip
+(taken via panel immediately before deployment).
+
+4. Installed custom addons gte_core and gte_controls (commit e137fb0 via
+   github.com/dariusakbari/addons, pulled through OSM panel).
+   gte_migration present in repo but NOT installed (owner decision:
+   no legacy-task migration for now; can be installed later).
+5. Assigned Construction Administrator group to d.akbari (uid 8) — required
+   even for admins by the new ACLs. m.kazimi has NO construction group yet;
+   assign roles via Settings → Users → Green Tech Construction.
+6. Smoke tests run in production on TEMPLATE — Electrical Job project;
+   test records left in terminal states, clearly titled "TEST — …":
+   RFI-001 (closed), RFI-002 (cancelled), CO-001 (closed), SUB-001 (closed,
+   2 revisions). Safe to archive/delete after review.
+Rollback: uninstall gte_controls then gte_core (removes gte.* models/records),
+or restore the 14:53 backup via OSM.
