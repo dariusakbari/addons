@@ -14,7 +14,7 @@ class GteChangeOrder(models.Model):
     project_id = fields.Many2one("project.project", required=True, index=True,
                                  ondelete="restrict", tracking=True)
     company_id = fields.Many2one(related="project_id.company_id", store=True)
-    currency_id = fields.Many2one(related="company_id.currency_id")
+    currency_id = fields.Many2one("res.currency", compute="_compute_currency_id")
     source_type = fields.Selection([
         ("owner", "Owner Initiated"), ("rfi", "From RFI"),
         ("site", "Site Condition"), ("design", "Design Change"),
@@ -67,6 +67,11 @@ class GteChangeOrder(models.Model):
         ("co_number_project_uniq", "unique(project_id, name)",
          "Change number must be unique per project."),
     ]
+
+    @api.depends("company_id.currency_id")
+    def _compute_currency_id(self):
+        for rec in self:
+            rec.currency_id = rec.company_id.currency_id or rec.env.company.currency_id
 
     @api.depends("project_id.partner_id")
     def _compute_partner_id(self):
