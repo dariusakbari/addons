@@ -48,3 +48,17 @@ or restore the 14:53 backup via OSM.
    Due For Site). All three PDFs render-tested in production (HTTP 200).
    Fixes along the way: sale dependency declared, t-field-on-td removed,
    currency falls back to company currency when a project has no company.
+
+## v0.3 — 24 July 2026 (evening)
+
+8. Installed gte_hse 19.0.0.1.0 (FLHA + Toolbox Talk) and gte_field
+   19.0.0.1.0 (Daily Site Log), commit c8774dd. Construction → Field & Safety
+   menu. Audit remediations built in: PPE never preselected; finalize blocked
+   until hazards+controls, crew signatures, work summary, labour lines and
+   foreman signature are present; high-risk FLHAs and submitted logs raise
+   supervisor activities; signature widgets record timestamps; per-project
+   sequences (FLHA-/TBT-/DSL-); PDF reports on letterhead.
+9. Production tests: FLHA-001 (draft→submitted→reviewed, high-risk activity
+   raised), TBT-001 (submitted), DSL-001 (reviewed, 8.0 hrs). All PDFs
+   HTTP 200. Test records on TEMPLATE project, titled "TEST — …".
+   NOT yet verified: phone-sized rendering (verify on a real phone).
