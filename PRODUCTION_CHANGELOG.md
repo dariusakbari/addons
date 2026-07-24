@@ -126,3 +126,14 @@ or restore the 14:53 backup via OSM.
     Still needed from owner for full Phase 8: employee roster + rates,
     rate-visibility policy, QuickBooks/accounting baseline, billing-flow
     decision.
+
+## Phase 4 complete — 24 July 2026 (night)
+
+19. Upgraded gte_field to 19.0.0.4.0: NCR (assignment activities, close
+    requires corrective action), General Inspection (checklist lines,
+    overall fail escalation), Site Attendance (unique per project/date,
+    float-time in/out), Visitor Log, Transmittal (Document Flow menu),
+    Shop Drawing, Gate Pass (authorize gate). Membership record rules on
+    all 7. Production-tested: all gates block, NCR-001/GI-001/ATT-001/
+    VIS-001/TR-001/SD-001/GP-001 created on TEMPLATE project ("TEST — …").
+    All 14 Phase 4 record classes from the mission are now implemented.
