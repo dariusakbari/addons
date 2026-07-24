@@ -165,3 +165,24 @@ or restore the 14:53 backup via OSM.
     FIX (documented for admins): delete ir.attachment records where url
     like '/web/assets/%', restart via OSM, hard-reload. Applied twice;
     client fully recovered. If it recurs after future upgrades, repeat.
+
+## Role-correct field workflow — 24 July 2026 (v2, late night)
+
+26. Created TEST Field Employee user (id 9, field.test@greentechelectric.ca,
+    Internal + Field Employee + Project User groups, member of Bayview only,
+    NO password — owner sets it via Change Password for phone testing).
+    Structural verification: sees only Bayview records (50 RFIs pre-change),
+    no Settings/admin, no labour-rate access.
+27. Upgraded gte_controls 0.6.0 / gte_field 0.5.0 / gte_hub 0.2.0 per owner
+    workflow direction:
+    - New Field Issues register (FI-): field crews raise site issues with
+      photos/drawing refs; submit notifies the PM; PM "Release RFI" creates
+      the prefilled, linked RFI. Tested: FI-001 → RFI-051 (Bayview), PM
+      activity raised, double-release blocked.
+    - Menu visibility for pure field employees is now exactly:
+      Field & Safety + Drawings & Documents. RFIs/COs/Submittals/Overview/
+      Document Flow are coordinator+ (estimator also sees Change Orders).
+      Construction app opens on Field & Safety for field crews.
+    - Change orders: field-employee ACL removed entirely — no CO records or
+      values reachable by field/foreman roles; CO smart buttons and hub tabs
+      coordinator/estimator only.
