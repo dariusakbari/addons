@@ -91,7 +91,11 @@ P10 Automation: 3 crons (RFI overdue, permit expiry, cert expiry) →
 
 ## 4. Phased implementation estimate (spec order)
 
-Prereq (P0): create STAGING via OSM Clone + prove restore. ~half session.
+Prereq (P0): none — owner decision 24 Jul 2026: NO staging environment.
+Development continues directly in production under the day-one protocol:
+mandatory OSM backup before every phase deploy, additive/reversible
+changes, per-phase commits, test records confined to the TEMPLATE project
+and cleaned after sign-off.
 1. Validation/audit/numbering ....... 1.5 sessions  (largest test surface)
 2. Email + external comms ........... 1–2 sessions  (blocked by D2 creds)
 3. Drawing/document control ......... 1.5 sessions
@@ -102,19 +106,20 @@ Prereq (P0): create STAGING via OSM Clone + prove restore. ~half session.
 8. Scheduling/manpower .............. 1 session
 9. Mobile/field ..................... 1 session     (device tests = owner)
 10. Automation/admin settings ....... 1 session
-"Session" = one working block like today. Each phase: staging upgrade →
-automated tests → role walkthrough (Admin/PM/Field) → screenshots + report
-→ separate commit → owner approval → production deploy.
+"Session" = one working block like today. Each phase: pre-deploy OSM
+backup → deploy → automated tests → role walkthrough (Admin/PM/Field) →
+screenshots + report → separate commit → owner sign-off.
 
 ## 5. Technical limitations & decisions requiring approval
 
-D1 STAGING (approve first): use OSM "Clone" to create a staging instance;
-   all further development lands there; production only after phase
-   sign-off. Changes today's push→prod loop. Also satisfies the
-   restore-proof requirement.
+D1 RESOLVED: owner declined staging. Production-direct development with
+   pre-phase OSM backups. NOTE: the spec's restore-proof requirement is
+   still unmet — a restore test into a throwaway instance remains
+   recommended at any convenient time (it does not create a staging
+   obligation).
 D2 Mail: provider + credentials path, a test consultant mailbox, and
    subdomain for aliases (e.g. rfi@…). P1 acceptance test impossible
-   without it. Staging will use a mail catcher first.
+   without it. First delivery tests will target owner-controlled inboxes.
 D3 Numbering: adopt {project}-RFI-### (e.g. 0476-RFI-001). Existing ~190
    records were numbered per-project this week and not externally
    circulated → recommend one-time renumber for consistency. Approve.
