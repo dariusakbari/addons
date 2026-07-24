@@ -186,3 +186,23 @@ or restore the 14:53 backup via OSM.
     - Change orders: field-employee ACL removed entirely — no CO records or
       values reachable by field/foreman roles; CO smart buttons and hub tabs
       coordinator/estimator only.
+
+## Upgrade spec Phase 1 — 24 July 2026 (v2)
+
+Pre-phase backup: odoo.greentechelectric.ca_20260724_231612.zip.
+28. Deployed gte_core 0.2.0 + gte_controls 0.7.0 (commit ef3d61c):
+    - project.gte_code + numbering format {code}-TYPE-### per D3.
+      Renumbered ALL 210 existing records (68 RFI, 85 CO, 42 SUB, 15
+      field/HSE); sequences re-prefixed with correct next numbers.
+      Legacy SmartBuild IDs untouched in legacy_source_id.
+    - Extended gates per spec P2 (RFI send/close, CO submit/approve/
+      billed/paid, Submittal submit/close) — production-tested; every
+      gate blocked and listed its missing fields, including the
+      "client contact" gate catching TEMPLATE's missing customer.
+    - Mandatory-reason wizard for cancel/reopen/override; reason posted
+      permanently to chatter (tested). Reopen is PM+; override admin-only.
+    - Issued/approved records cannot be deleted (tested); archive via
+      new active fields instead.
+    - Settings → Construction: CO approval limit (currently 0 = disabled,
+      awaiting D4 value), RFI/submittal reminder leads.
+    Test records TMPL-RFI-004/005, TMPL-CO-002, TMPL-SUB-002 on TEMPLATE.
