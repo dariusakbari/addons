@@ -149,3 +149,19 @@ or restore the 14:53 backup via OSM.
 21. Added docs/: DATA_DICTIONARY.md (generated from source, all gte.*
     models), ACCESS_CONTROL_MATRIX.md (generated from ACL files),
     ADMIN_GUIDE.md, FIELD_USER_GUIDE.md.
+
+## Regression test, icon, project hub + incident — 24 July 2026 (late night)
+
+22. Full production regression: 29/29 PASS (docs/UAT_RESULTS.md).
+23. Construction app icon (flat Odoo-style hard hat + bolt) via
+    gte_controls 0.5.0; web_icon on root menu.
+24. Installed gte_hub 0.1.0: SmartBuild-style project-centric navigation.
+    Project form now has RFIs / Change Orders / Submittals / Field & Safety
+    tabs with embedded per-project registers; records created inside a
+    project auto-link. Verified on Bayview (50 RFIs in-form).
+25. INCIDENT + FIX: after repeated module upgrades, Odoo's regenerated web
+    asset bundles were corrupt — backend actions rendered blank pages with
+    no errors (navbar only). Not caused by any gte module (bisect-verified).
+    FIX (documented for admins): delete ir.attachment records where url
+    like '/web/assets/%', restart via OSM, hard-reload. Applied twice;
+    client fully recovered. If it recurs after future upgrades, repeat.
