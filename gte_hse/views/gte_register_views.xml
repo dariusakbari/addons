@@ -224,7 +224,7 @@
         <field name="name">gte.risk.list</field>
         <field name="model">gte.risk</field>
         <field name="arch" type="xml">
-            <list decoration-danger="score >= 15" decoration-warning="score >= 8 and score < 15">
+            <list decoration-danger="score &gt;= 15" decoration-warning="score &gt;= 8 and score &lt; 15">
                 <field name="name"/>
                 <field name="title"/>
                 <field name="project_id"/>
