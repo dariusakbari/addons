@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gte_migration_form" model="ir.ui.view">
+        <field name="name">gte.migration.wizard.form</field>
+        <field name="model">gte.migration.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Tagged-Task Migration">
+                <group>
+                    <field name="dry_run"/>
+                    <field name="result"/>
+                </group>
+                <footer>
+                    <button name="action_run" string="Run" type="object" class="btn-primary"/>
+                    <button string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_gte_migration" model="ir.actions.act_window">
+        <field name="name">Legacy Migration</field>
+        <field name="res_model">gte.migration.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_gte_migration" name="Legacy Migration" parent="gte_controls.menu_gte_config" action="action_gte_migration" sequence="90" groups="base.group_system"/>
+</odoo>

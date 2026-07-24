@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gte_co_form" model="ir.ui.view">
+        <field name="name">gte.change.order.form</field>
+        <field name="model">gte.change.order</field>
+        <field name="arch" type="xml">
+            <form string="Change Order">
+                <header>
+                    <button name="action_price" string="Start Pricing" type="object" invisible="state not in ('draft','changes')"/>
+                    <button name="action_review" string="To Internal Review" type="object" invisible="state != 'pricing'"/>
+                    <button name="action_submit" string="Submit to Client" type="object" class="btn-primary" invisible="state != 'review'"/>
+                    <button name="action_approve" string="Record Approval" type="object" class="btn-primary" invisible="state != 'submitted'"/>
+                    <button name="action_request_changes" string="Changes Requested" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_reject" string="Record Rejection" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_billed" string="Mark Billed" type="object" invisible="state != 'approved'"/>
+                    <button name="action_paid" string="Mark Paid" type="object" invisible="state != 'billed'"/>
+                    <button name="action_close" string="Close" type="object" invisible="state not in ('paid','rejected','approved','billed')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','pricing','review')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,pricing,review,submitted,approved,billed,paid,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="project_id"/>
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
+                            <field name="source_type"/>
+                            <field name="origin_rfi_id"/>
+                            <field name="origin_ref"/>
+                        </group>
+                        <group>
+                            <field name="amount_proposed"/>
+                            <field name="amount_submitted"/>
+                            <field name="amount_approved"/>
+                            <field name="exposure"/>
+                            <field name="schedule_days"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Cost Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="section"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="uom"/>
+                                    <field name="unit_cost"/>
+                                    <field name="markup_pct"/>
+                                    <field name="tax_pct"/>
+                                    <field name="subtotal_cost" sum="Cost"/>
+                                    <field name="price_sell" sum="Sell"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Scope"><field name="scope"/></page>
+                        <page string="Dates and Billing">
+                            <group>
+                                <group>
+                                    <field name="date_quote"/>
+                                    <field name="date_submitted" readonly="1"/>
+                                    <field name="date_required"/>
+                                    <field name="date_decision" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="billing_status"/>
+                                    <field name="date_billed" readonly="1"/>
+                                    <field name="payment_status"/>
+                                    <field name="sale_order_id"/>
+                                    <field name="invoice_ids" widget="many2many_tags"/>
+                                    <field name="analytic_account_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Client Response"><field name="client_response"/></page>
+                        <page string="Links">
+                            <group>
+                                <field name="origin_task_id"/>
+                                <field name="legacy_source_id"/>
+                                <field name="migration_incomplete"/>
+                                <field name="migration_missing_fields" invisible="not migration_incomplete"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_gte_co_list" model="ir.ui.view">
+        <field name="name">gte.change.order.list</field>
+        <field name="model">gte.change.order</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="title"/>
+                <field name="project_id"/>
+                <field name="amount_proposed" sum="Proposed"/>
+                <field name="amount_approved" sum="Approved"/>
+                <field name="exposure" sum="Exposure"/>
+                <field name="state" widget="badge"/>
+                <field name="migration_incomplete" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_gte_co_search" model="ir.ui.view">
+        <field name="name">gte.change.order.search</field>
+        <field name="model">gte.change.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="title"/>
+                <field name="project_id"/>
+                <filter name="awaiting" string="Awaiting Client" domain="[('state', '=', 'submitted')]"/>
+                <filter name="approved_unbilled" string="Approved, Unbilled" domain="[('state', '=', 'approved')]"/>
+                <filter name="mig_exceptions" string="Migration Exceptions" domain="[('migration_incomplete', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
+                    <filter name="by_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_gte_co" model="ir.actions.act_window">
+        <field name="name">Change Orders</field>
+        <field name="res_model">gte.change.order</field>
+        <field name="view_mode">list,form,activity</field>
+    </record>
+</odoo>
