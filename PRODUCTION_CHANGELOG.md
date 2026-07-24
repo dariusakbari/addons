@@ -94,3 +94,16 @@ or restore the 14:53 backup via OSM.
     built on it). Construction → Field & Safety now carries: Daily Site
     Logs, FLHAs, Toolbox Talks, Incidents, Equipment Inspections, Work
     Permits, Risk Register.
+
+## v0.4 + documents — 24 July 2026 (late evening)
+
+14. Upgraded gte_controls 0.3.0 / gte_hse 0.3.0 / gte_field 0.2.0:
+    smart buttons on project and task forms with live counts and filtered
+    click-through (Bayview verified: 50 RFIs / 70 COs / 24 submittals).
+15. Installed gte_documents 0.1.0: construction metadata on every document
+    (number, type, discipline, revision, current/superseded, issue date,
+    source, links to RFI/CO/Submittal/Task), "Register Revision" supersede
+    workflow, Construction → Drawings & Documents register.
+    UAT passed in production: rev 1 superseded rev 0 with rev 0 file
+    byte-intact, statuses and cross-links correct, double-supersede blocked.
+    Test docs "TEST E-401 …" in Bayview / 02 Drawings — remove after review.
