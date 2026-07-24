@@ -37,3 +37,14 @@ Rollback point: OSM backup odoo.greentechelectric.ca_20260724_145326.zip
    2 revisions). Safe to archive/delete after review.
 Rollback: uninstall gte_controls then gte_core (removes gte.* models/records),
 or restore the 14:53 backup via OSM.
+
+## v0.2 — 24 July 2026 (later afternoon)
+
+7. Upgraded gte_controls to 19.0.0.2.0 (commit 2fe7db4): QWeb PDF reports
+   for RFI / Change Order / Submittal (Print menu on each record) and a
+   Construction → Overview menu with work queues (Overdue RFIs, RFIs
+   Awaiting Response / To Distribute, Changes Awaiting Client,
+   Approved-Not-Billed, Open Exposure, Pending Submittals, Submittals
+   Due For Site). All three PDFs render-tested in production (HTTP 200).
+   Fixes along the way: sale dependency declared, t-field-on-td removed,
+   currency falls back to company currency when a project has no company.
