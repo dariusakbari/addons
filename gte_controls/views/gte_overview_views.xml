@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_gte_rfi_overdue" model="ir.actions.act_window">
+        <field name="name">Overdue RFIs</field>
+        <field name="res_model">gte.rfi</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_overdue', '=', True)]</field>
+    </record>
+    <record id="action_gte_rfi_awaiting" model="ir.actions.act_window">
+        <field name="name">RFIs Awaiting Response</field>
+        <field name="res_model">gte.rfi</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'sent')]</field>
+    </record>
+    <record id="action_gte_rfi_to_distribute" model="ir.actions.act_window">
+        <field name="name">RFIs To Distribute</field>
+        <field name="res_model">gte.rfi</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'answered')]</field>
+    </record>
+    <record id="action_gte_co_awaiting" model="ir.actions.act_window">
+        <field name="name">Changes Awaiting Client</field>
+        <field name="res_model">gte.change.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'submitted')]</field>
+    </record>
+    <record id="action_gte_co_unbilled" model="ir.actions.act_window">
+        <field name="name">Approved, Not Billed</field>
+        <field name="res_model">gte.change.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'approved')]</field>
+    </record>
+    <record id="action_gte_co_exposure" model="ir.actions.act_window">
+        <field name="name">Open Exposure</field>
+        <field name="res_model">gte.change.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'not in', ('closed', 'cancelled', 'rejected'))]</field>
+        <field name="context">{'search_default_by_project': 1}</field>
+    </record>
+    <record id="action_gte_sub_pending" model="ir.actions.act_window">
+        <field name="name">Pending Submittals</field>
+        <field name="res_model">gte.submittal</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'in', ('draft','requested','received','review','submitted','revise'))]</field>
+    </record>
+    <record id="action_gte_sub_due" model="ir.actions.act_window">
+        <field name="name">Due Before Required-On-Site</field>
+        <field name="res_model">gte.submittal</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'not in', ('approved','approved_noted','closed','cancelled')), ('date_required_onsite', '!=', False)]</field>
+        <field name="context">{'orderby': 'date_required_onsite'}</field>
+    </record>
+
+    <menuitem id="menu_gte_overview" name="Overview" parent="gte_controls.menu_gte_root" sequence="5"/>
+    <menuitem id="menu_ov_rfi_overdue" name="Overdue RFIs" parent="menu_gte_overview" action="action_gte_rfi_overdue" sequence="10"/>
+    <menuitem id="menu_ov_rfi_awaiting" name="RFIs Awaiting Response" parent="menu_gte_overview" action="action_gte_rfi_awaiting" sequence="20"/>
+    <menuitem id="menu_ov_rfi_distribute" name="RFIs To Distribute" parent="menu_gte_overview" action="action_gte_rfi_to_distribute" sequence="30"/>
+    <menuitem id="menu_ov_co_awaiting" name="Changes Awaiting Client" parent="menu_gte_overview" action="action_gte_co_awaiting" sequence="40"/>
+    <menuitem id="menu_ov_co_unbilled" name="Approved, Not Billed" parent="menu_gte_overview" action="action_gte_co_unbilled" sequence="50"/>
+    <menuitem id="menu_ov_co_exposure" name="Open Exposure" parent="menu_gte_overview" action="action_gte_co_exposure" sequence="60"/>
+    <menuitem id="menu_ov_sub_pending" name="Pending Submittals" parent="menu_gte_overview" action="action_gte_sub_pending" sequence="70"/>
+    <menuitem id="menu_ov_sub_due" name="Submittals Due For Site" parent="menu_gte_overview" action="action_gte_sub_due" sequence="80"/>
+</odoo>
