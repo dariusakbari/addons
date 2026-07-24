@@ -6,3 +6,11 @@ access_flha_signoff_field,gte.flha.signoff field,model_gte_flha_signoff,gte_core
 access_tbt_field,gte.toolbox.talk field,model_gte_toolbox_talk,gte_core.group_gte_field,1,1,1,0
 access_tbt_admin,gte.toolbox.talk admin,model_gte_toolbox_talk,gte_core.group_gte_admin,1,1,1,1
 access_tbt_att_field,gte.toolbox.attendee field,model_gte_toolbox_attendee,gte_core.group_gte_field,1,1,1,1
+access_inc_field,gte.incident field,model_gte_incident,gte_core.group_gte_field,1,1,1,0
+access_inc_admin,gte.incident admin,model_gte_incident,gte_core.group_gte_admin,1,1,1,1
+access_eqi_field,gte.equipment.inspection field,model_gte_equipment_inspection,gte_core.group_gte_field,1,1,1,0
+access_eqi_admin,gte.equipment.inspection admin,model_gte_equipment_inspection,gte_core.group_gte_admin,1,1,1,1
+access_wp_field,gte.work.permit field,model_gte_work_permit,gte_core.group_gte_field,1,1,1,0
+access_wp_admin,gte.work.permit admin,model_gte_work_permit,gte_core.group_gte_admin,1,1,1,1
+access_risk_field,gte.risk field,model_gte_risk,gte_core.group_gte_field,1,1,1,0
+access_risk_admin,gte.risk admin,model_gte_risk,gte_core.group_gte_admin,1,1,1,1
