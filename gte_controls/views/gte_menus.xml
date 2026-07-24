@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_gte_root" name="Construction" sequence="16" groups="gte_core.group_gte_field,base.group_system"/>
+    <menuitem id="menu_gte_root" name="Construction" sequence="16" groups="gte_core.group_gte_field,base.group_system" web_icon="gte_controls,static/description/icon.png"/>
     <menuitem id="menu_gte_rfi" name="RFIs" parent="menu_gte_root" action="action_gte_rfi" sequence="10"/>
     <menuitem id="menu_gte_co" name="Change Orders" parent="menu_gte_root" action="action_gte_co" sequence="20"/>
     <menuitem id="menu_gte_submittal" name="Submittals" parent="menu_gte_root" action="action_gte_submittal" sequence="30"/>
