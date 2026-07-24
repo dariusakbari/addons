@@ -107,3 +107,22 @@ or restore the 14:53 backup via OSM.
     UAT passed in production: rev 1 superseded rev 0 with rev 0 file
     byte-intact, statuses and cross-links correct, double-supersede blocked.
     Test docs "TEST E-401 …" in Bayview / 02 Drawings — remove after review.
+
+## Phase 8 scaffold + integrity fix — 24 July 2026 (night)
+
+16. Created analytic account "250752 - 400 University…" (id 19) and linked
+    it to project 24 — all 4 real projects now have analytic accounts.
+    (S000xx demo-company analytic accounts noted as demo remnants, untouched.)
+17. Installed gte_commercial 0.1.0 → 0.2.0: Project Budgets (sectioned
+    lines; budget vs committed CO-exposure vs analytic actuals vs variance;
+    approve/close), Labour Rates (NO access for field/foreman groups;
+    cost column accounting/admin only), Worker Certifications (expiry
+    states, 30-day reminder cron). Construction → Commercial menu
+    (PM/accounting only). Bayview budget approved: $520,000.
+18. INTEGRITY FIX: Odoo 19 silently ignores _sql_constraints. Converted all
+    7 uniqueness constraints to models.Constraint (gte_controls 0.4.0,
+    gte_field 0.3.0, gte_commercial 0.2.0). Production-verified: duplicate
+    rate, budget, RFI number and daily log all now rejected.
+    Still needed from owner for full Phase 8: employee roster + rates,
+    rate-visibility policy, QuickBooks/accounting baseline, billing-flow
+    decision.
