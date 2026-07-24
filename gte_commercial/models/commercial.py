@@ -32,10 +32,10 @@ class GteProjectBudget(models.Model):
                               ("closed", "Closed")],
                              default="draft", tracking=True, copy=False)
 
-    _sql_constraints = [
-        ("budget_project_uniq", "unique(project_id)",
-         "This project already has a budget."),
-    ]
+    _budget_project_uniq = models.Constraint(
+        "unique(project_id)",
+        "This project already has a budget.",
+    )
 
     @api.depends("project_id.name")
     def _compute_name(self):
@@ -101,10 +101,10 @@ class GteLabourRate(models.Model):
     sell_rate = fields.Monetary(currency_field="currency_id")
     active = fields.Boolean(default=True)
 
-    _sql_constraints = [
-        ("classification_uniq", "unique(classification, company_id)",
-         "A rate already exists for this classification."),
-    ]
+    _classification_uniq = models.Constraint(
+        "unique(classification, company_id)",
+        "A rate already exists for this classification.",
+    )
 
 
 class GteWorkerCert(models.Model):

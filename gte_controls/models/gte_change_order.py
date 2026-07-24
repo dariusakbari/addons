@@ -63,10 +63,10 @@ class GteChangeOrder(models.Model):
         ("cancelled", "Cancelled")],
         default="draft", tracking=True, index=True, copy=False)
 
-    _sql_constraints = [
-        ("co_number_project_uniq", "unique(project_id, name)",
-         "Change number must be unique per project."),
-    ]
+    _co_number_project_uniq = models.Constraint(
+        "unique(project_id, name)",
+        "Change number must be unique per project.",
+    )
 
     @api.depends("company_id.currency_id")
     def _compute_currency_id(self):

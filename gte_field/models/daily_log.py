@@ -37,10 +37,10 @@ class GteDailyLog(models.Model):
         ("reviewed", "Reviewed"), ("cancelled", "Cancelled")],
         default="draft", tracking=True, index=True, copy=False)
 
-    _sql_constraints = [
-        ("daily_log_uniq", "unique(project_id, date, foreman_id)",
-         "A daily log already exists for this project, date and foreman."),
-    ]
+    _daily_log_uniq = models.Constraint(
+        "unique(project_id, date, foreman_id)",
+        "A daily log already exists for this project, date and foreman.",
+    )
 
     @api.depends("labour_ids.hours")
     def _compute_total_hours(self):

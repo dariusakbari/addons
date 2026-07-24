@@ -57,10 +57,10 @@ class GteSubmittal(models.Model):
         ("closed", "Closed"), ("cancelled", "Cancelled")],
         default="draft", tracking=True, index=True, copy=False)
 
-    _sql_constraints = [
-        ("submittal_number_project_uniq", "unique(project_id, name)",
-         "Submittal number must be unique per project."),
-    ]
+    _submittal_number_project_uniq = models.Constraint(
+        "unique(project_id, name)",
+        "Submittal number must be unique per project.",
+    )
 
     @api.depends("revision_ids.revision")
     def _compute_current_revision(self):
@@ -152,7 +152,7 @@ class GteSubmittalRevision(models.Model):
     comments = fields.Html()
     attachment_ids = fields.Many2many("ir.attachment", string="Files")
 
-    _sql_constraints = [
-        ("revision_uniq", "unique(submittal_id, revision)",
-         "Revision numbers must be unique per submittal."),
-    ]
+    _revision_uniq = models.Constraint(
+        "unique(submittal_id, revision)",
+        "Revision numbers must be unique per submittal.",
+    )
