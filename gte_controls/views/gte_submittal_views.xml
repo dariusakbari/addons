@@ -49,7 +49,7 @@
                                     <field name="date_submitted"/>
                                     <field name="date_returned"/>
                                     <field name="outcome"/>
-                                    <field name="attachment_ids" widget="many2many_binary"/>
+                                    <field name="attachment_ids" widget="many2many_tags"/>
                                 </list>
                             </field>
                         </page>
@@ -99,17 +99,16 @@
                 <field name="spec_section"/>
                 <filter name="pending" string="Pending" domain="[('state', 'in', ('draft','requested','received','review','submitted'))]"/>
                 <filter name="mig_exceptions" string="Migration Exceptions" domain="[('migration_incomplete', '=', True)]"/>
-                <group expand="0" string="Group By">
-                    <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
-                    <filter name="by_state" string="Status" context="{'group_by': 'state'}"/>
-                </group>
+                <separator/>
+                <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
+                <filter name="by_state" string="Status" context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
     <record id="action_gte_submittal" model="ir.actions.act_window">
         <field name="name">Submittals</field>
         <field name="res_model">gte.submittal</field>
-        <field name="view_mode">list,form,activity</field>
+        <field name="view_mode">list,form</field>
     </record>
     <record id="action_gte_submittal_spec" model="ir.actions.act_window">
         <field name="name">Standard Submittals</field>

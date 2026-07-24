@@ -93,17 +93,16 @@
                 <filter name="overdue" string="Overdue" domain="[('is_overdue', '=', True)]"/>
                 <filter name="open_states" string="In Progress" domain="[('state', 'in', ('draft','open','sent','answered'))]"/>
                 <filter name="mig_exceptions" string="Migration Exceptions" domain="[('migration_incomplete', '=', True)]"/>
-                <group expand="0" string="Group By">
-                    <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
-                    <filter name="by_state" string="Status" context="{'group_by': 'state'}"/>
-                </group>
+                <separator/>
+                <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
+                <filter name="by_state" string="Status" context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
     <record id="action_gte_rfi" model="ir.actions.act_window">
         <field name="name">RFIs</field>
         <field name="res_model">gte.rfi</field>
-        <field name="view_mode">list,form,activity</field>
+        <field name="view_mode">list,form</field>
         <field name="context">{'search_default_open_states': 1}</field>
     </record>
 </odoo>
