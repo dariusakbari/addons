@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="RFIs" name="gte_rfis">
+                <page string="RFIs" name="gte_rfis" groups="gte_core.group_gte_coordinator">
                     <field name="gte_rfi_ids" context="{'default_project_id': id}">
                         <list decoration-danger="is_overdue">
                             <field name="name"/>
@@ -18,7 +18,7 @@
                         </list>
                     </field>
                 </page>
-                <page string="Change Orders" name="gte_cos">
+                <page string="Change Orders" name="gte_cos" groups="gte_core.group_gte_coordinator,gte_core.group_gte_estimator">
                     <field name="gte_co_ids" context="{'default_project_id': id}">
                         <list>
                             <field name="name"/>
@@ -30,7 +30,7 @@
                         </list>
                     </field>
                 </page>
-                <page string="Submittals" name="gte_submittals">
+                <page string="Submittals" name="gte_submittals" groups="gte_core.group_gte_coordinator">
                     <field name="gte_submittal_ids" context="{'default_project_id': id}">
                         <list>
                             <field name="name"/>

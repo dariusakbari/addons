@@ -51,7 +51,7 @@
         <field name="context">{'orderby': 'date_required_onsite'}</field>
     </record>
 
-    <menuitem id="menu_gte_overview" name="Overview" parent="gte_controls.menu_gte_root" sequence="5"/>
+    <menuitem id="menu_gte_overview" name="Overview" parent="gte_controls.menu_gte_root" sequence="5" groups="gte_core.group_gte_coordinator"/>
     <menuitem id="menu_ov_rfi_overdue" name="Overdue RFIs" parent="menu_gte_overview" action="action_gte_rfi_overdue" sequence="10"/>
     <menuitem id="menu_ov_rfi_awaiting" name="RFIs Awaiting Response" parent="menu_gte_overview" action="action_gte_rfi_awaiting" sequence="20"/>
     <menuitem id="menu_ov_rfi_distribute" name="RFIs To Distribute" parent="menu_gte_overview" action="action_gte_rfi_to_distribute" sequence="30"/>

@@ -3,12 +3,10 @@ access_gte_rfi_field,gte.rfi field,model_gte_rfi,gte_core.group_gte_field,1,0,0,
 access_gte_rfi_foreman,gte.rfi foreman,model_gte_rfi,gte_core.group_gte_foreman,1,1,1,0
 access_gte_rfi_coord,gte.rfi coordinator,model_gte_rfi,gte_core.group_gte_coordinator,1,1,1,0
 access_gte_rfi_admin,gte.rfi admin,model_gte_rfi,gte_core.group_gte_admin,1,1,1,1
-access_gte_co_field,gte.co field,model_gte_change_order,gte_core.group_gte_field,1,0,0,0
 access_gte_co_estimator,gte.co estimator,model_gte_change_order,gte_core.group_gte_estimator,1,1,1,0
 access_gte_co_coord,gte.co coordinator,model_gte_change_order,gte_core.group_gte_coordinator,1,1,1,0
 access_gte_co_accounting,gte.co accounting,model_gte_change_order,gte_core.group_gte_accounting,1,1,0,0
 access_gte_co_admin,gte.co admin,model_gte_change_order,gte_core.group_gte_admin,1,1,1,1
-access_gte_co_line_field,gte.co.line field,model_gte_change_order_line,gte_core.group_gte_field,1,0,0,0
 access_gte_co_line_estimator,gte.co.line estimator,model_gte_change_order_line,gte_core.group_gte_estimator,1,1,1,1
 access_gte_co_line_coord,gte.co.line coordinator,model_gte_change_order_line,gte_core.group_gte_coordinator,1,1,1,1
 access_gte_co_line_accounting,gte.co.line accounting,model_gte_change_order_line,gte_core.group_gte_accounting,1,1,0,0

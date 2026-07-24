@@ -1,7 +1,7 @@
 {
     "name": "GTE Field Operations",
     "summary": "Daily Site Logs with labour, quantities, photos, signature and supervisor review",
-    "version": "19.0.0.4.0",
+    "version": "19.0.0.5.0",
     "author": "Green Tech Electric",
     "license": "OPL-1",
     "category": "Construction",
@@ -13,6 +13,7 @@
         "views/gte_field_views.xml",
         "views/project_link_views.xml",
         "views/gte_site_record_views.xml",
+        "views/gte_field_issue_views.xml",
         "report/gte_field_reports.xml",
     ],
     "installable": True,

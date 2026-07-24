@@ -19,3 +19,5 @@ access_sd_field,gte.shop.drawing field,model_gte_shop_drawing,gte_core.group_gte
 access_sd_admin,gte.shop.drawing admin,model_gte_shop_drawing,gte_core.group_gte_admin,1,1,1,1
 access_gp_field,gte.gate.pass field,model_gte_gate_pass,gte_core.group_gte_field,1,1,1,0
 access_gp_admin,gte.gate.pass admin,model_gte_gate_pass,gte_core.group_gte_admin,1,1,1,1
+access_fi_field,gte.field.issue field,model_gte_field_issue,gte_core.group_gte_field,1,1,1,0
+access_fi_admin,gte.field.issue admin,model_gte_field_issue,gte_core.group_gte_admin,1,1,1,1
