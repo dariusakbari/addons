@@ -9,6 +9,7 @@
     "data": [
         "security/ir.model.access.csv",
         "security/gte_field_rules.xml",
+        "security/gte_site_record_rules.xml",
         "views/gte_field_views.xml",
         "views/project_link_views.xml",
         "views/gte_site_record_views.xml",
