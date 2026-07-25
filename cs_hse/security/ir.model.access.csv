@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_flha_field,cs.flha field,model_cs_flha,cs_core.group_cs_field,1,1,1,0
+access_flha_admin,cs.flha admin,model_cs_flha,cs_core.group_cs_admin,1,1,1,1
+access_flha_hazard_field,cs.flha.hazard field,model_cs_flha_hazard,cs_core.group_cs_field,1,1,1,1
+access_flha_signoff_field,cs.flha.signoff field,model_cs_flha_signoff,cs_core.group_cs_field,1,1,1,1
+access_tbt_field,cs.toolbox.talk field,model_cs_toolbox_talk,cs_core.group_cs_field,1,1,1,0
+access_tbt_admin,cs.toolbox.talk admin,model_cs_toolbox_talk,cs_core.group_cs_admin,1,1,1,1
+access_tbt_att_field,cs.toolbox.attendee field,model_cs_toolbox_attendee,cs_core.group_cs_field,1,1,1,1
+access_inc_field,cs.incident field,model_cs_incident,cs_core.group_cs_field,1,1,1,0
+access_inc_admin,cs.incident admin,model_cs_incident,cs_core.group_cs_admin,1,1,1,1
+access_eqi_field,cs.equipment.inspection field,model_cs_equipment_inspection,cs_core.group_cs_field,1,1,1,0
+access_eqi_admin,cs.equipment.inspection admin,model_cs_equipment_inspection,cs_core.group_cs_admin,1,1,1,1
+access_wp_field,cs.work.permit field,model_cs_work_permit,cs_core.group_cs_field,1,1,1,0
+access_wp_admin,cs.work.permit admin,model_cs_work_permit,cs_core.group_cs_admin,1,1,1,1
+access_risk_field,cs.risk field,model_cs_risk,cs_core.group_cs_field,1,1,1,0
+access_risk_admin,cs.risk admin,model_cs_risk,cs_core.group_cs_admin,1,1,1,1

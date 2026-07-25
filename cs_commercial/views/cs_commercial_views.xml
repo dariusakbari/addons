@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_budget_form" model="ir.ui.view">
+        <field name="name">cs.project.budget.form</field>
+        <field name="model">cs.project.budget</field>
+        <field name="arch" type="xml">
+            <form string="Project Budget">
+                <header>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'draft'" groups="cs_core.group_cs_accounting,cs_core.group_cs_admin"/>
+                    <button name="action_close" string="Close" type="object" invisible="state != 'approved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                        </group>
+                        <group>
+                            <field name="amount_budget"/>
+                            <field name="amount_committed"/>
+                            <field name="amount_actual"/>
+                            <field name="amount_variance"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="section"/>
+                            <field name="description"/>
+                            <field name="amount" sum="Total"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_cs_budget_list" model="ir.ui.view">
+        <field name="name">cs.project.budget.list</field>
+        <field name="model">cs.project.budget</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="project_id"/>
+                <field name="amount_budget" sum="Budget"/>
+                <field name="amount_committed" sum="Committed"/>
+                <field name="amount_actual" sum="Actual"/>
+                <field name="amount_variance"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cs_budget" model="ir.actions.act_window">
+        <field name="name">Project Budgets</field>
+        <field name="res_model">cs.project.budget</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_cs_rate_list" model="ir.ui.view">
+        <field name="name">cs.labour.rate.list</field>
+        <field name="model">cs.labour.rate</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="classification"/>
+                <field name="cost_rate" groups="cs_core.group_cs_accounting,cs_core.group_cs_admin"/>
+                <field name="sell_rate"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cs_rate" model="ir.actions.act_window">
+        <field name="name">Labour Rates</field>
+        <field name="res_model">cs.labour.rate</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="view_cs_cert_form" model="ir.ui.view">
+        <field name="name">cs.worker.cert.form</field>
+        <field name="model">cs.worker.cert</field>
+        <field name="arch" type="xml">
+            <form string="Certification">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="worker_name"/>
+                            <field name="user_id"/>
+                            <field name="cert_name"/>
+                            <field name="cert_number"/>
+                            <field name="issuer"/>
+                        </group>
+                        <group>
+                            <field name="issue_date"/>
+                            <field name="expiry_date"/>
+                            <field name="state" widget="badge"/>
+                            <field name="responsible_id"/>
+                        </group>
+                    </group>
+                    <group string="Certificate Copy">
+                        <field name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_cs_cert_list" model="ir.ui.view">
+        <field name="name">cs.worker.cert.list</field>
+        <field name="model">cs.worker.cert</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="state == 'expired'" decoration-warning="state == 'expiring'">
+                <field name="worker_name"/>
+                <field name="cert_name"/>
+                <field name="cert_number" optional="show"/>
+                <field name="issuer" optional="hide"/>
+                <field name="expiry_date"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_cs_cert_search" model="ir.ui.view">
+        <field name="name">cs.worker.cert.search</field>
+        <field name="model">cs.worker.cert</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="worker_name"/>
+                <field name="cert_name"/>
+                <filter name="expiring" string="Expiring Soon" domain="[('state', '=', 'expiring')]"/>
+                <filter name="expired" string="Expired" domain="[('state', '=', 'expired')]"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_cs_cert" model="ir.actions.act_window">
+        <field name="name">Worker Certifications</field>
+        <field name="res_model">cs.worker.cert</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="cron_cert_expiry" model="ir.cron">
+        <field name="name">Construction: Certification expiry reminders</field>
+        <field name="model_id" ref="model_cs_worker_cert"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_expiry_reminders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="view_project_form_cs_budget" model="ir.ui.view">
+        <field name="name">project.project.form.cs.budget</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_cs_budget" type="object" class="oe_stat_button" icon="fa-money" groups="cs_core.group_cs_pm,cs_core.group_cs_accounting">
+                    <field name="cs_budget_total" widget="statinfo" string="Budget"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_cs_commercial" name="Commercial" parent="cs_controls.menu_cs_root" sequence="40" groups="cs_core.group_cs_pm,cs_core.group_cs_accounting"/>
+    <menuitem id="menu_cs_budget" name="Project Budgets" parent="menu_cs_commercial" action="action_cs_budget" sequence="10"/>
+    <menuitem id="menu_cs_rate" name="Labour Rates" parent="menu_cs_commercial" action="action_cs_rate" sequence="20" groups="cs_core.group_cs_accounting,cs_core.group_cs_admin"/>
+    <menuitem id="menu_cs_cert" name="Worker Certifications" parent="menu_cs_commercial" action="action_cs_cert" sequence="30"/>
+</odoo>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="rule_cs_ncr_member" model="ir.rule">
+        <field name="name">cs.ncr: project members</field>
+        <field name="model_id" ref="model_cs_ncr"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_ncr_manager" model="ir.rule">
+        <field name="name">cs.ncr: managers all</field>
+        <field name="model_id" ref="model_cs_ncr"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+<record id="rule_cs_inspection_member" model="ir.rule">
+        <field name="name">cs.inspection: project members</field>
+        <field name="model_id" ref="model_cs_inspection"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_inspection_manager" model="ir.rule">
+        <field name="name">cs.inspection: managers all</field>
+        <field name="model_id" ref="model_cs_inspection"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+<record id="rule_cs_site_attendance_member" model="ir.rule">
+        <field name="name">cs.site.attendance: project members</field>
+        <field name="model_id" ref="model_cs_site_attendance"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_site_attendance_manager" model="ir.rule">
+        <field name="name">cs.site.attendance: managers all</field>
+        <field name="model_id" ref="model_cs_site_attendance"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+<record id="rule_cs_visitor_log_member" model="ir.rule">
+        <field name="name">cs.visitor.log: project members</field>
+        <field name="model_id" ref="model_cs_visitor_log"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_visitor_log_manager" model="ir.rule">
+        <field name="name">cs.visitor.log: managers all</field>
+        <field name="model_id" ref="model_cs_visitor_log"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+<record id="rule_cs_transmittal_member" model="ir.rule">
+        <field name="name">cs.transmittal: project members</field>
+        <field name="model_id" ref="model_cs_transmittal"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_transmittal_manager" model="ir.rule">
+        <field name="name">cs.transmittal: managers all</field>
+        <field name="model_id" ref="model_cs_transmittal"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+<record id="rule_cs_shop_drawing_member" model="ir.rule">
+        <field name="name">cs.shop.drawing: project members</field>
+        <field name="model_id" ref="model_cs_shop_drawing"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_shop_drawing_manager" model="ir.rule">
+        <field name="name">cs.shop.drawing: managers all</field>
+        <field name="model_id" ref="model_cs_shop_drawing"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+<record id="rule_cs_gate_pass_member" model="ir.rule">
+        <field name="name">cs.gate.pass: project members</field>
+        <field name="model_id" ref="model_cs_gate_pass"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_gate_pass_manager" model="ir.rule">
+        <field name="name">cs.gate.pass: managers all</field>
+        <field name="model_id" ref="model_cs_gate_pass"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_cs_field_issue_member" model="ir.rule">
+        <field name="name">cs.field.issue: project members</field>
+        <field name="model_id" ref="model_cs_field_issue"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_field_issue_manager" model="ir.rule">
+        <field name="name">cs.field.issue: managers all</field>
+        <field name="model_id" ref="model_cs_field_issue"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_cs_punch_item_member" model="ir.rule">
+        <field name="name">cs.punch.item: project members</field>
+        <field name="model_id" ref="model_cs_punch_item"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_punch_item_manager" model="ir.rule">
+        <field name="name">cs.punch.item: managers all</field>
+        <field name="model_id" ref="model_cs_punch_item"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_cs_meeting_member" model="ir.rule">
+        <field name="name">cs.meeting: project members</field>
+        <field name="model_id" ref="model_cs_meeting"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_meeting_manager" model="ir.rule">
+        <field name="name">cs.meeting: managers all</field>
+        <field name="model_id" ref="model_cs_meeting"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_cs_closeout_item_member" model="ir.rule">
+        <field name="name">cs.closeout.item: project members</field>
+        <field name="model_id" ref="model_cs_closeout_item"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_closeout_item_manager" model="ir.rule">
+        <field name="name">cs.closeout.item: managers all</field>
+        <field name="model_id" ref="model_cs_closeout_item"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

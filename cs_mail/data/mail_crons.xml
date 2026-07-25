@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cron_cs_rfi_reminders" model="ir.cron">
+        <field name="name">Construction: RFI response reminders</field>
+        <field name="model_id" ref="cs_controls.model_cs_rfi"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_reminders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="cron_cs_submittal_reminders" model="ir.cron">
+        <field name="name">Construction: Submittal on-site reminders</field>
+        <field name="model_id" ref="cs_controls.model_cs_submittal"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_reminders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

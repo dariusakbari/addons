@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_rfi_form_portal" model="ir.ui.view">
+        <field name="name">cs.rfi.form.portal</field>
+        <field name="model">cs.rfi</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_rfi_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@string='Distribution']" position="after">
+                <page string="Portal Sharing" name="portal">
+                    <group>
+                        <field name="cs_portal_partner_ids" widget="many2many_tags"/>
+                        <button name="action_share_portal" string="Share to Portal" type="object" class="btn-primary"/>
+                    </group>
+                    <group string="Portal Response" invisible="not cs_portal_responded_by_id">
+                        <field name="cs_portal_responded_by_id" readonly="1"/>
+                        <field name="cs_portal_responded_date" readonly="1"/>
+                        <field name="cs_portal_response" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_cs_submittal_form_portal" model="ir.ui.view">
+        <field name="name">cs.submittal.form.portal</field>
+        <field name="model">cs.submittal</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_submittal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@string='Distribution']" position="after">
+                <page string="Portal Sharing" name="portal">
+                    <group>
+                        <field name="cs_portal_partner_ids" widget="many2many_tags"/>
+                        <button name="action_share_portal" string="Share to Portal" type="object" class="btn-primary"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

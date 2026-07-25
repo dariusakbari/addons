@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_portal_rfi,portal cs.rfi,cs_controls.model_cs_rfi,base.group_portal,1,0,0,0
+access_portal_submittal,portal cs.submittal,cs_controls.model_cs_submittal,base.group_portal,1,0,0,0
+access_portal_transmittal,portal cs.transmittal,cs_field.model_cs_transmittal,base.group_portal,1,0,0,0
+access_portal_sub_rev,portal cs.submittal.revision,cs_controls.model_cs_submittal_revision,base.group_portal,1,0,0,0
+access_portal_tr_line,portal cs.transmittal.line,cs_field.model_cs_transmittal_line,base.group_portal,1,0,0,0

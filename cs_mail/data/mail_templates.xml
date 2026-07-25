@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_cs_rfi" model="mail.template">
+        <field name="name">RFI: Send to Consultant</field>
+        <field name="model_id" ref="cs_controls.model_cs_rfi"/>
+        <field name="subject">{{ object.project_id.name }} — {{ object.name }}: {{ object.subject }}</field>
+        <field name="email_to">{{ object.addressed_to_id.email or '' }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Please find attached <t t-out="object.name"/> — <t t-out="object.subject"/> for project <t t-out="object.project_id.name"/>.</p>
+                <p>Response required by: <t t-out="object.date_required or 'as soon as possible'"/>.</p>
+                <p>Regards,<br/><t t-out="object.coordinator_id.name"/></p>
+            </div>
+        </field>
+        <field name="report_template_ids" eval="[(4, ref('cs_controls.action_report_cs_rfi'))]"/>
+        <field name="auto_delete" eval="True"/>
+    </record>
+    <record id="mail_template_cs_co" model="mail.template">
+        <field name="name">Change Order: Submit to Client</field>
+        <field name="model_id" ref="cs_controls.model_cs_change_order"/>
+        <field name="subject">{{ object.project_id.name }} — {{ object.name }}: {{ object.title }}</field>
+        <field name="email_to">{{ object.partner_id.email or '' }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Please find attached change order <t t-out="object.name"/> — <t t-out="object.title"/> for your review and approval.</p>
+                <p>Proposed amount: <t t-out="object.amount_proposed"/>. Decision required by: <t t-out="object.date_required or 'at your earliest convenience'"/>.</p>
+                <p>Regards,<br/><t t-out="object.user_id.name"/></p>
+            </div>
+        </field>
+        <field name="report_template_ids" eval="[(4, ref('cs_controls.action_report_cs_co'))]"/>
+        <field name="auto_delete" eval="True"/>
+    </record>
+    <record id="mail_template_cs_submittal" model="mail.template">
+        <field name="name">Submittal: Request from Supplier</field>
+        <field name="model_id" ref="cs_controls.model_cs_submittal"/>
+        <field name="subject">{{ object.project_id.name }} — {{ object.name }}: {{ object.title }} (Spec {{ object.spec_section or '' }})</field>
+        <field name="email_to">{{ object.supplier_id.email or '' }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Please provide submittal <t t-out="object.name"/> — <t t-out="object.title"/> (specification section <t t-out="object.spec_section"/>).</p>
+                <p>Required submission date: <t t-out="object.date_required_submit or 'as soon as possible'"/>; required on site: <t t-out="object.date_required_onsite"/>.</p>
+                <p>Regards,<br/><t t-out="object.coordinator_id.name"/></p>
+            </div>
+        </field>
+        <field name="report_template_ids" eval="[(4, ref('cs_controls.action_report_cs_submittal'))]"/>
+        <field name="auto_delete" eval="True"/>
+    </record>
+    <record id="mail_template_cs_dsl" model="mail.template">
+        <field name="name">Daily Site Log: Distribute</field>
+        <field name="model_id" ref="cs_field.model_cs_daily_log"/>
+        <field name="subject">{{ object.project_id.name }} — Daily Site Log {{ object.name }} ({{ object.date }})</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Attached is the daily site log <t t-out="object.name"/> for <t t-out="object.project_id.name"/>, <t t-out="object.date"/>.</p>
+                <p>Total labour hours: <t t-out="object.total_hours"/>.</p>
+                <p><t t-out="object.foreman_id.name"/></p>
+            </div>
+        </field>
+        <field name="report_template_ids" eval="[(4, ref('cs_field.action_report_cs_dsl'))]"/>
+        <field name="auto_delete" eval="True"/>
+    </record>
+    <record id="mail_template_cs_transmittal" model="mail.template">
+        <field name="name">Transmittal: Issue</field>
+        <field name="model_id" ref="cs_field.model_cs_transmittal"/>
+        <field name="subject">{{ object.project_id.name }} — Transmittal {{ object.name }}</field>
+        <field name="email_to">{{ object.partner_id.email or '' }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Please find attached transmittal <t t-out="object.name"/> for <t t-out="object.project_id.name"/>.</p>
+                <p>Regards,<br/><t t-out="object.sent_by_id.name"/></p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Home portal cards -->
+    <template id="portal_my_home_cs" inherit_id="portal.portal_my_home" name="Construction Portal Home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/cs_portal/static/description/icon.png'"/>
+                <t t-set="title">RFIs</t>
+                <t t-set="text">Requests for Information shared with you</t>
+                <t t-set="url" t-value="'/my/construction/rfis'"/>
+                <t t-set="config_card" t-value="True"/>
+                <t t-set="placeholder_count" t-value="'cs_rfi_count'"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Submittals</t>
+                <t t-set="text">Submittals shared with you</t>
+                <t t-set="url" t-value="'/my/construction/submittals'"/>
+                <t t-set="config_card" t-value="True"/>
+                <t t-set="placeholder_count" t-value="'cs_submittal_count'"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Transmittals</t>
+                <t t-set="text">Document transmittals shared with you</t>
+                <t t-set="url" t-value="'/my/construction/transmittals'"/>
+                <t t-set="config_card" t-value="True"/>
+                <t t-set="placeholder_count" t-value="'cs_transmittal_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- RFI list -->
+    <template id="portal_rfi_list" name="Portal RFIs">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h3 class="mt-3">RFIs Shared With You</h3>
+                <table class="table table-hover">
+                    <thead><tr><th>Number</th><th>Subject</th><th>Project</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr t-foreach="rfis" t-as="r">
+                            <td><a t-attf-href="/my/construction/rfi/{{ r.id }}"><t t-esc="r.name"/></a></td>
+                            <td><t t-esc="r.subject"/></td>
+                            <td><t t-esc="r.project_id.name"/></td>
+                            <td><span class="badge text-bg-secondary"><t t-esc="r.state"/></span></td>
+                        </tr>
+                        <tr t-if="not rfis"><td colspan="4" class="text-muted">Nothing shared with you yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <!-- RFI detail + response form -->
+    <template id="portal_rfi_detail" name="Portal RFI Detail">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h3 class="mt-3"><t t-esc="rfi.name"/> — <t t-esc="rfi.subject"/></h3>
+                <p><strong>Project:</strong> <t t-esc="rfi.project_id.name"/></p>
+                <p><strong>Required response date:</strong> <t t-esc="rfi.date_required"/></p>
+                <div class="card mb-3"><div class="card-body">
+                    <h6>Question</h6>
+                    <div t-field="rfi.question"/>
+                </div></div>
+                <div t-if="rfi.response" class="card mb-3"><div class="card-body">
+                    <h6>Official Response</h6>
+                    <div t-field="rfi.response"/>
+                </div></div>
+                <div t-if="rfi.cs_portal_response" class="alert alert-info">
+                    <strong>Your logged response (<t t-esc="rfi.cs_portal_responded_date"/>):</strong>
+                    <div t-field="rfi.cs_portal_response"/>
+                </div>
+                <form t-attf-action="/my/construction/rfi/{{ rfi.id }}/respond" method="post" class="mt-3">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="mb-2">
+                        <label class="form-label">Submit a response</label>
+                        <textarea name="response" class="form-control" rows="4"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Response</button>
+                    <a href="/my/construction/rfis" class="btn btn-link">Back</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <!-- Submittal list -->
+    <template id="portal_submittal_list" name="Portal Submittals">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h3 class="mt-3">Submittals Shared With You</h3>
+                <table class="table table-hover">
+                    <thead><tr><th>Number</th><th>Title</th><th>Spec</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr t-foreach="submittals" t-as="s">
+                            <td><t t-esc="s.name"/></td>
+                            <td><t t-esc="s.title"/></td>
+                            <td><t t-esc="s.spec_section"/></td>
+                            <td><span class="badge text-bg-secondary"><t t-esc="s.state"/></span></td>
+                        </tr>
+                        <tr t-if="not submittals"><td colspan="4" class="text-muted">Nothing shared with you yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <!-- Transmittal list -->
+    <template id="portal_transmittal_list" name="Portal Transmittals">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h3 class="mt-3">Transmittals Shared With You</h3>
+                <table class="table table-hover">
+                    <thead><tr><th>Number</th><th>Project</th><th>Date</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr t-foreach="transmittals" t-as="t">
+                            <td><t t-esc="t.name"/></td>
+                            <td><t t-esc="t.project_id.name"/></td>
+                            <td><t t-esc="t.date"/></td>
+                            <td><span class="badge text-bg-secondary"><t t-esc="t.state"/></span></td>
+                        </tr>
+                        <tr t-if="not transmittals"><td colspan="4" class="text-muted">Nothing shared with you yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>

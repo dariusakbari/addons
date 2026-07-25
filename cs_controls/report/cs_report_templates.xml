@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_cs_rfi">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Request for Information <span t-field="o.name"/></h2>
+                        <table class="table table-sm o_main_table">
+                            <tr><td style="width:30%"><strong>Project</strong></td><td><span t-field="o.project_id.display_name"/></td></tr>
+                            <tr><td><strong>Subject</strong></td><td><span t-field="o.subject"/></td></tr>
+                            <tr><td><strong>Status</strong></td><td><span t-field="o.state"/></td></tr>
+                            <tr><td><strong>Raised By</strong></td><td><span t-field="o.raised_by_id"/></td></tr>
+                            <tr><td><strong>Addressed To</strong></td><td><span t-field="o.addressed_to_id"/></td></tr>
+                            <tr><td><strong>Coordinator</strong></td><td><span t-field="o.coordinator_id"/></td></tr>
+                            <tr><td><strong>Date Raised</strong></td><td><span t-field="o.date_raised"/></td></tr>
+                            <tr><td><strong>Response Required By</strong></td><td><span t-field="o.date_required"/></td></tr>
+                            <tr><td><strong>Drawing References</strong></td><td><span t-field="o.drawing_refs"/></td></tr>
+                            <tr><td><strong>Specification References</strong></td><td><span t-field="o.spec_refs"/></td></tr>
+                        </table>
+                        <h4>Question</h4>
+                        <div t-field="o.question"/>
+                        <h4>Response</h4>
+                        <div t-field="o.response"/>
+                        <t t-if="o.date_answered"><p><strong>Answered:</strong> <span t-field="o.date_answered"/></p></t>
+                        <t t-if="o.cost_impact == 'yes'">
+                            <p><strong>Cost Impact:</strong> <span t-field="o.cost_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></p>
+                        </t>
+                        <t t-if="o.schedule_impact == 'yes'">
+                            <p><strong>Schedule Impact:</strong> <span t-field="o.schedule_days"/> days</p>
+                        </t>
+                        <t t-if="o.distribution_ids">
+                            <h4>Distribution</h4>
+                            <p><span t-esc="', '.join(o.distribution_ids.mapped('display_name'))"/></p>
+                        </t>
+                        <t t-if="o.legacy_source_id"><p class="text-muted">Legacy reference: <span t-field="o.legacy_source_id"/></p></t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_cs_co">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Change Order <span t-field="o.name"/></h2>
+                        <table class="table table-sm o_main_table">
+                            <tr><td style="width:30%"><strong>Project</strong></td><td><span t-field="o.project_id.display_name"/></td></tr>
+                            <tr><td><strong>Title</strong></td><td><span t-field="o.title"/></td></tr>
+                            <tr><td><strong>Client</strong></td><td><span t-field="o.partner_id"/></td></tr>
+                            <tr><td><strong>Project Manager</strong></td><td><span t-field="o.user_id"/></td></tr>
+                            <tr><td><strong>Status</strong></td><td><span t-field="o.state"/></td></tr>
+                            <tr><td><strong>Source</strong></td><td><span t-field="o.source_type"/></td></tr>
+                            <tr><td><strong>Quote Date</strong></td><td><span t-field="o.date_quote"/></td></tr>
+                            <tr><td><strong>Submitted</strong></td><td><span t-field="o.date_submitted"/></td></tr>
+                            <tr><td><strong>Decision Required By</strong></td><td><span t-field="o.date_required"/></td></tr>
+                        </table>
+                        <h4>Scope</h4>
+                        <div t-field="o.scope"/>
+                        <h4>Pricing</h4>
+                        <table class="table table-sm">
+                            <thead><tr>
+                                <th>Section</th><th>Description</th>
+                                <th class="text-end">Qty</th><th>Unit</th>
+                                <th class="text-end">Unit Cost</th>
+                                <th class="text-end">Markup %</th>
+                                <th class="text-end">Sell</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr t-foreach="o.line_ids" t-as="l">
+                                    <td><span t-field="l.section"/></td>
+                                    <td><span t-field="l.description"/></td>
+                                    <td class="text-end"><span t-field="l.quantity"/></td>
+                                    <td><span t-field="l.uom"/></td>
+                                    <td class="text-end"><span t-field="l.unit_cost" t-options='{"widget": "monetary", "display_currency": l.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="l.markup_pct"/></td>
+                                    <td class="text-end"><span t-field="l.price_sell" t-options='{"widget": "monetary", "display_currency": l.currency_id}'/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="text-end"><strong>Proposed Amount: </strong><span t-field="o.amount_proposed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></p>
+                        <t t-if="o.amount_approved">
+                            <p class="text-end"><strong>Approved Amount: </strong><span t-field="o.amount_approved" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></p>
+                        </t>
+                        <t t-if="o.schedule_days"><p><strong>Schedule Impact:</strong> <span t-field="o.schedule_days"/> days</p></t>
+                        <t t-if="o.legacy_source_id"><p class="text-muted">Legacy reference: <span t-field="o.legacy_source_id"/></p></t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_cs_submittal">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Submittal <span t-field="o.name"/></h2>
+                        <table class="table table-sm o_main_table">
+                            <tr><td style="width:30%"><strong>Project</strong></td><td><span t-field="o.project_id.display_name"/></td></tr>
+                            <tr><td><strong>Title</strong></td><td><span t-field="o.title"/></td></tr>
+                            <tr><td><strong>Specification Section</strong></td><td><span t-field="o.spec_section"/></td></tr>
+                            <tr><td><strong>Supplier</strong></td><td><span t-field="o.supplier_id"/></td></tr>
+                            <tr><td><strong>Responsible Contractor</strong></td><td><span t-field="o.contractor_id"/></td></tr>
+                            <tr><td><strong>Coordinator</strong></td><td><span t-field="o.coordinator_id"/></td></tr>
+                            <tr><td><strong>Reviewer</strong></td><td><span t-field="o.reviewer_id"/></td></tr>
+                            <tr><td><strong>Status</strong></td><td><span t-field="o.state"/></td></tr>
+                            <tr><td><strong>Outcome</strong></td><td><span t-field="o.outcome"/></td></tr>
+                            <tr><td><strong>Required On Site</strong></td><td><span t-field="o.date_required_onsite"/></td></tr>
+                        </table>
+                        <h4>Revision History</h4>
+                        <table class="table table-sm">
+                            <thead><tr><th>Rev</th><th>Submitted</th><th>Returned</th><th>Outcome</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="o.revision_ids.sorted('revision')" t-as="r">
+                                    <td><span t-field="r.revision"/></td>
+                                    <td><span t-field="r.date_submitted"/></td>
+                                    <td><span t-field="r.date_returned"/></td>
+                                    <td><span t-field="r.outcome"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4>Reviewer Comments</h4>
+                        <div t-field="o.comments"/>
+                        <t t-if="o.legacy_source_id"><p class="text-muted">Legacy reference: <span t-field="o.legacy_source_id"/></p></t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_doc_register_list" model="ir.ui.view">
+        <field name="name">documents.document.cs.list</field>
+        <field name="model">documents.document</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="cs_doc_status == 'superseded'">
+                <field name="cs_doc_number"/>
+                <field name="name"/>
+                <field name="cs_doc_type"/>
+                <field name="cs_discipline" optional="show"/>
+                <field name="cs_revision"/>
+                <field name="cs_doc_status" widget="badge"/>
+                <field name="cs_issue_date" optional="show"/>
+                <field name="folder_id"/>
+                <field name="cs_rfi_id" optional="hide"/>
+                <field name="cs_co_id" optional="hide"/>
+                <field name="cs_submittal_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_cs_doc_register_form" model="ir.ui.view">
+        <field name="name">documents.document.cs.form</field>
+        <field name="model">documents.document</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form string="Document">
+                <header>
+                    <button name="action_cs_register_revision" string="Register Revision" type="object" class="btn-primary" invisible="cs_doc_status == 'superseded'"/>
+                    <button name="cs_auto_folder" string="File Into Project Folder" type="object" invisible="not cs_doc_type"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="SUPERSEDED" bg_color="text-bg-danger" invisible="cs_doc_status != 'superseded'"/>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="cs_doc_number"/>
+                            <field name="cs_doc_type"/>
+                            <field name="cs_discipline"/>
+                            <field name="cs_revision"/>
+                            <field name="cs_doc_status"/>
+                            <field name="cs_superseded_by_id" invisible="not cs_superseded_by_id"/>
+                        </group>
+                        <group>
+                            <field name="folder_id"/>
+                            <field name="cs_issue_date"/>
+                            <field name="cs_source"/>
+                        </group>
+                    </group>
+                    <group string="Links">
+                        <group>
+                            <field name="cs_rfi_id"/>
+                            <field name="cs_co_id"/>
+                        </group>
+                        <group>
+                            <field name="cs_submittal_id"/>
+                            <field name="cs_task_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_cs_doc_register_search" model="ir.ui.view">
+        <field name="name">documents.document.cs.search</field>
+        <field name="model">documents.document</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="cs_doc_number"/>
+                <field name="name"/>
+                <field name="folder_id"/>
+                <field name="cs_revision"/>
+                <field name="cs_discipline"/>
+                <field name="cs_doc_type"/>
+                <filter name="current" string="Current" domain="[('cs_doc_status', '=', 'current')]"/>
+                <filter name="superseded" string="Superseded" domain="[('cs_doc_status', '=', 'superseded')]"/>
+                <filter name="drawings" string="Drawings" domain="[('cs_doc_type', '=', 'drawing')]"/>
+                <separator/>
+                <filter name="by_folder" string="Folder" context="{'group_by': 'folder_id'}"/>
+                <filter name="by_type" string="Type" context="{'group_by': 'cs_doc_type'}"/>
+                <filter name="by_discipline" string="Discipline" context="{'group_by': 'cs_discipline'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_cs_doc_register" model="ir.actions.act_window">
+        <field name="name">Drawings and Documents</field>
+        <field name="res_model">documents.document</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type', '=', 'binary')]</field>
+        <field name="view_id" ref="view_cs_doc_register_list"/>
+        <field name="search_view_id" ref="view_cs_doc_register_search"/>
+        <field name="context">{'search_default_current': 1}</field>
+    </record>
+    <record id="action_cs_doc_register_form_view" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref="action_cs_doc_register"/>
+        <field name="view_id" ref="view_cs_doc_register_form"/>
+        <field name="view_mode">form</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="view_cs_doc_rev_wizard_form" model="ir.ui.view">
+        <field name="name">cs.document.revision.wizard.form</field>
+        <field name="model">cs.document.revision.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Register Revision">
+                <group>
+                    <field name="predecessor_id"/>
+                    <field name="revision"/>
+                    <field name="new_document_id"/>
+                    <field name="new_file" filename="new_file_name"/>
+                    <field name="new_file_name" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_apply" string="Register" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <menuitem id="menu_cs_documents" name="Drawings &amp; Documents" parent="cs_controls.menu_cs_root" action="action_cs_doc_register" sequence="37"/>
+    <record id="view_cs_doc_meta_wizard_form" model="ir.ui.view">
+        <field name="name">cs.document.metadata.wizard.form</field>
+        <field name="model">cs.document.metadata.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Set Document Metadata">
+                <group>
+                    <field name="document_ids" widget="many2many_tags" readonly="1"/>
+                    <field name="cs_doc_type"/>
+                    <field name="cs_discipline"/>
+                    <field name="cs_issue_date"/>
+                    <field name="cs_source"/>
+                    <field name="auto_folder"/>
+                </group>
+                <footer>
+                    <button name="action_apply" string="Apply" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_cs_issue_package_form" model="ir.ui.view">
+        <field name="name">cs.issue.package.wizard.form</field>
+        <field name="model">cs.issue.package.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Issue Package">
+                <group>
+                    <field name="name"/>
+                    <field name="document_ids" widget="many2many_tags" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_download" string="Download Zip" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_server_cs_metadata" model="ir.actions.server">
+        <field name="name">Set Construction Metadata</field>
+        <field name="model_id" ref="documents.model_documents_document"/>
+        <field name="binding_model_id" ref="documents.model_documents_document"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    "type": "ir.actions.act_window",
+    "res_model": "cs.document.metadata.wizard",
+    "view_mode": "form", "target": "new",
+    "context": {"default_document_ids": records.ids},
+}
+        </field>
+    </record>
+    <record id="action_server_cs_issue_package" model="ir.actions.server">
+        <field name="name">Download Issue Package</field>
+        <field name="model_id" ref="documents.model_documents_document"/>
+        <field name="binding_model_id" ref="documents.model_documents_document"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    "type": "ir.actions.act_window",
+    "res_model": "cs.issue.package.wizard",
+    "view_mode": "form", "target": "new",
+    "context": {"default_document_ids": records.ids},
+}
+        </field>
+    </record>
+    <record id="action_server_cs_transmittal_from_docs" model="ir.actions.server">
+        <field name="name">Create Transmittal</field>
+        <field name="model_id" ref="documents.model_documents_document"/>
+        <field name="binding_model_id" ref="documents.model_documents_document"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_cs_create_transmittal()</field>
+    </record>
+</odoo>

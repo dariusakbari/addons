@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_dsl" model="ir.actions.report">
+        <field name="name">Daily Site Log</field>
+        <field name="model">cs.daily.log</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">cs_field.report_cs_dsl</field>
+        <field name="report_name">cs_field.report_cs_dsl</field>
+        <field name="print_report_name">'%s - Daily Log' % (object.name)</field>
+        <field name="binding_model_id" ref="model_cs_daily_log"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_cs_dsl">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Daily Site Log <span t-field="o.name"/></h2>
+                        <table class="table table-sm o_main_table">
+                            <tr><td style="width:30%"><strong>Project</strong></td><td><span t-field="o.project_id.display_name"/></td></tr>
+                            <tr><td><strong>Date</strong></td><td><span t-field="o.date"/></td></tr>
+                            <tr><td><strong>Foreman</strong></td><td><span t-field="o.foreman_id"/></td></tr>
+                            <tr><td><strong>Weather</strong></td><td><span t-field="o.weather"/> <span t-field="o.temperature"/></td></tr>
+                            <tr><td><strong>Total Hours</strong></td><td><span t-field="o.total_hours"/></td></tr>
+                            <tr><td><strong>Status</strong></td><td><span t-field="o.state"/></td></tr>
+                        </table>
+                        <h4>Labour</h4>
+                        <table class="table table-sm">
+                            <thead><tr><th>Worker</th><th>Classification</th><th class="text-end">Hours</th><th>Notes</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="o.labour_ids" t-as="l">
+                                    <td><span t-field="l.worker_name"/></td>
+                                    <td><span t-field="l.classification"/></td>
+                                    <td class="text-end"><span t-field="l.hours"/></td>
+                                    <td><span t-field="l.notes"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4>Work Completed</h4><p t-field="o.work_done"/>
+                        <t t-if="o.quantities"><h4>Quantities Installed</h4><p t-field="o.quantities"/></t>
+                        <t t-if="o.equipment"><h4>Equipment Used</h4><p t-field="o.equipment"/></t>
+                        <t t-if="o.deliveries"><h4>Deliveries</h4><p t-field="o.deliveries"/></t>
+                        <t t-if="o.visitors"><h4>Visitors</h4><p t-field="o.visitors"/></t>
+                        <t t-if="o.delays"><h4>Delays and Causes</h4><p t-field="o.delays"/></t>
+                        <t t-if="o.safety_observations"><h4>Safety Observations</h4><p t-field="o.safety_observations"/></t>
+                        <h4>Foreman Signature</h4>
+                        <img t-if="o.signature" t-att-src="image_data_uri(o.signature)" style="max-height: 60px;"/>
+                        <p t-if="o.reviewed_by_id"><strong>Reviewed by:</strong> <span t-field="o.reviewed_by_id"/> on <span t-field="o.reviewed_date"/></p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

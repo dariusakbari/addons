@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_rfi" model="ir.actions.report">
+        <field name="name">RFI</field>
+        <field name="model">cs.rfi</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_controls.report_cs_rfi</field>
+        <field name="report_file">cs_controls.report_cs_rfi</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.subject)</field>
+        <field name="binding_model_id" ref="model_cs_rfi"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_report_cs_co" model="ir.actions.report">
+        <field name="name">Change Order</field>
+        <field name="model">cs.change.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_controls.report_cs_co</field>
+        <field name="report_file">cs_controls.report_cs_co</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.title)</field>
+        <field name="binding_model_id" ref="model_cs_change_order"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_report_cs_submittal" model="ir.actions.report">
+        <field name="name">Submittal</field>
+        <field name="model">cs.submittal</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_controls.report_cs_submittal</field>
+        <field name="report_file">cs_controls.report_cs_submittal</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.title)</field>
+        <field name="binding_model_id" ref="model_cs_submittal"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

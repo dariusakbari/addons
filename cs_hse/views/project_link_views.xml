@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_form_cs_hse" model="ir.ui.view">
+        <field name="name">project.project.form.cs.hse</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_cs_flhas" type="object" class="oe_stat_button" icon="fa-shield">
+                    <field name="cs_flha_count" widget="statinfo" string="FLHAs"/>
+                </button>
+                <button name="action_view_cs_tbts" type="object" class="oe_stat_button" icon="fa-comments-o">
+                    <field name="cs_tbt_count" widget="statinfo" string="Toolbox Talks"/>
+                </button>
+                <button name="action_view_cs_incidents" type="object" class="oe_stat_button" icon="fa-exclamation-triangle" invisible="cs_incident_count == 0">
+                    <field name="cs_incident_count" widget="statinfo" string="Incidents"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

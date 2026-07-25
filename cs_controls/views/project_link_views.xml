@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_form_cs" model="ir.ui.view">
+        <field name="name">project.project.form.cs</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_cs_rfis" type="object" class="oe_stat_button" icon="fa-question-circle" groups="cs_core.group_cs_coordinator">
+                    <field name="cs_rfi_count" widget="statinfo" string="RFIs"/>
+                </button>
+                <button name="action_view_cs_cos" type="object" class="oe_stat_button" icon="fa-exchange" groups="cs_core.group_cs_coordinator,cs_core.group_cs_estimator">
+                    <field name="cs_co_count" widget="statinfo" string="Change Orders"/>
+                </button>
+                <button name="action_view_cs_submittals" type="object" class="oe_stat_button" icon="fa-file-text-o" groups="cs_core.group_cs_coordinator">
+                    <field name="cs_submittal_count" widget="statinfo" string="Submittals"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_task_form_cs" model="ir.ui.view">
+        <field name="name">project.task.form.cs</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_cs_rfis" type="object" class="oe_stat_button" icon="fa-question-circle" invisible="cs_rfi_count == 0" groups="cs_core.group_cs_coordinator">
+                    <field name="cs_rfi_count" widget="statinfo" string="RFIs"/>
+                </button>
+                <button name="action_view_cs_cos" type="object" class="oe_stat_button" icon="fa-exchange" invisible="cs_co_count == 0" groups="cs_core.group_cs_coordinator,cs_core.group_cs_estimator">
+                    <field name="cs_co_count" widget="statinfo" string="Change Orders"/>
+                </button>
+                <button name="action_view_cs_submittals" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="cs_submittal_count == 0" groups="cs_core.group_cs_coordinator">
+                    <field name="cs_submittal_count" widget="statinfo" string="Submittals"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

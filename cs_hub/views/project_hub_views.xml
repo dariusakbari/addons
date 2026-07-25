@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_form_cs_hub" model="ir.ui.view">
+        <field name="name">project.project.form.cs.hub</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="RFIs" name="cs_rfis" groups="cs_core.group_cs_coordinator">
+                    <field name="cs_rfi_ids" context="{'default_project_id': id}">
+                        <list decoration-danger="is_overdue">
+                            <field name="name"/>
+                            <field name="subject"/>
+                            <field name="addressed_to_id"/>
+                            <field name="date_required"/>
+                            <field name="is_overdue" column_invisible="1"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Change Orders" name="cs_cos" groups="cs_core.group_cs_coordinator,cs_core.group_cs_estimator">
+                    <field name="cs_co_ids" context="{'default_project_id': id}">
+                        <list>
+                            <field name="name"/>
+                            <field name="title"/>
+                            <field name="amount_proposed" sum="Proposed"/>
+                            <field name="amount_approved" sum="Approved"/>
+                            <field name="exposure" sum="Exposure"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Submittals" name="cs_submittals" groups="cs_core.group_cs_coordinator">
+                    <field name="cs_submittal_ids" context="{'default_project_id': id}">
+                        <list>
+                            <field name="name"/>
+                            <field name="title"/>
+                            <field name="spec_section"/>
+                            <field name="current_revision"/>
+                            <field name="date_required_onsite"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Field &amp; Safety" name="cs_field_safety">
+                    <group string="Daily Site Logs">
+                        <field name="cs_dsl_ids" nolabel="1" context="{'default_project_id': id}">
+                            <list>
+                                <field name="name"/>
+                                <field name="date"/>
+                                <field name="foreman_id"/>
+                                <field name="total_hours"/>
+                                <field name="state" widget="badge"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group string="FLHAs">
+                        <field name="cs_flha_ids" nolabel="1" context="{'default_project_id': id}">
+                            <list>
+                                <field name="name"/>
+                                <field name="date"/>
+                                <field name="foreman_id"/>
+                                <field name="overall_risk" widget="badge"/>
+                                <field name="state" widget="badge"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group string="Incidents">
+                        <field name="cs_incident_ids" nolabel="1" context="{'default_project_id': id}">
+                            <list>
+                                <field name="name"/>
+                                <field name="date"/>
+                                <field name="incident_type"/>
+                                <field name="severity" widget="badge"/>
+                                <field name="state" widget="badge"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group string="NCRs">
+                        <field name="cs_ncr_ids" nolabel="1" context="{'default_project_id': id}">
+                            <list>
+                                <field name="name"/>
+                                <field name="date"/>
+                                <field name="severity"/>
+                                <field name="assigned_to_id"/>
+                                <field name="state" widget="badge"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

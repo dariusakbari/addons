@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_budget_pm,cs.project.budget pm,model_cs_project_budget,cs_core.group_cs_pm,1,1,1,0
+access_budget_acct,cs.project.budget accounting,model_cs_project_budget,cs_core.group_cs_accounting,1,1,1,0
+access_budget_admin,cs.project.budget admin,model_cs_project_budget,cs_core.group_cs_admin,1,1,1,1
+access_budget_line_pm,cs.project.budget.line pm,model_cs_project_budget_line,cs_core.group_cs_pm,1,1,1,1
+access_budget_line_acct,cs.project.budget.line accounting,model_cs_project_budget_line,cs_core.group_cs_accounting,1,1,1,1
+access_rate_acct,cs.labour.rate accounting,model_cs_labour_rate,cs_core.group_cs_accounting,1,1,1,0
+access_rate_pm,cs.labour.rate pm,model_cs_labour_rate,cs_core.group_cs_pm,1,0,0,0
+access_rate_admin,cs.labour.rate admin,model_cs_labour_rate,cs_core.group_cs_admin,1,1,1,1
+access_cert_field,cs.worker.cert field,model_cs_worker_cert,cs_core.group_cs_field,1,0,0,0
+access_cert_safety,cs.worker.cert safety,model_cs_worker_cert,cs_core.group_cs_safety,1,1,1,0
+access_cert_pm,cs.worker.cert pm,model_cs_worker_cert,cs_core.group_cs_pm,1,1,1,0
+access_cert_admin,cs.worker.cert admin,model_cs_worker_cert,cs_core.group_cs_admin,1,1,1,1

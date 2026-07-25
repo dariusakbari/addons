@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_submittal_form" model="ir.ui.view">
+        <field name="name">cs.submittal.form</field>
+        <field name="model">cs.submittal</field>
+        <field name="arch" type="xml">
+            <form string="Submittal">
+                <header>
+                    <button name="action_request" string="Request" type="object" invisible="state not in ('draft','revise')"/>
+                    <button name="action_receive" string="Received" type="object" invisible="state != 'requested'"/>
+                    <button name="action_review" string="To Internal Review" type="object" invisible="state != 'received'"/>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'review'"/>
+                    <button name="action_approve" string="Approved" type="object" class="btn-primary" invisible="state != 'submitted'"/>
+                    <button name="action_approve_noted" string="Approved as Noted" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_revise" string="Revise and Resubmit" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_reject" string="Rejected" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_close" string="Close" type="object" invisible="state not in ('approved','approved_noted','rejected')"/>
+                    <button name="action_open_reason_wizard" string="Cancel" type="object" context="{'cs_action': 'cancel'}" invisible="state not in ('draft','requested','received')"/>
+                    <button name="action_open_reason_wizard" string="Reopen" type="object" context="{'cs_action': 'reopen'}" invisible="state not in ('closed','cancelled')" groups="cs_core.group_cs_pm"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,requested,received,review,submitted,approved,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="project_id"/>
+                            <field name="spec_id"/>
+                            <field name="spec_section"/>
+                            <field name="supplier_id"/>
+                            <field name="contractor_id"/>
+                            <field name="coordinator_id"/>
+                            <field name="reviewer_id"/>
+                        </group>
+                        <group>
+                            <field name="current_revision"/>
+                            <field name="date_required_onsite"/>
+                            <field name="date_required_submit"/>
+                            <field name="date_received" readonly="1"/>
+                            <field name="date_submitted" readonly="1"/>
+                            <field name="date_returned" readonly="1"/>
+                            <field name="outcome" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Revisions">
+                            <field name="revision_ids" readonly="1">
+                                <list>
+                                    <field name="revision"/>
+                                    <field name="date_submitted"/>
+                                    <field name="date_returned"/>
+                                    <field name="outcome"/>
+                                    <field name="attachment_ids" widget="many2many_tags"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Comments"><field name="comments"/></page>
+                        <page string="Distribution"><field name="distribution_ids" widget="many2many_tags"/></page>
+                        <page string="Links">
+                            <group>
+                                <field name="drawing_ref"/>
+                                <field name="rfi_id"/>
+                                <field name="task_ids" widget="many2many_tags"/>
+                                <field name="origin_task_id"/>
+                                <field name="legacy_source_id"/>
+                                <field name="migration_incomplete"/>
+                                <field name="migration_missing_fields" invisible="not migration_incomplete"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_cs_submittal_list" model="ir.ui.view">
+        <field name="name">cs.submittal.list</field>
+        <field name="model">cs.submittal</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="title"/>
+                <field name="project_id"/>
+                <field name="spec_section"/>
+                <field name="current_revision"/>
+                <field name="date_required_onsite"/>
+                <field name="state" widget="badge"/>
+                <field name="migration_incomplete" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_cs_submittal_search" model="ir.ui.view">
+        <field name="name">cs.submittal.search</field>
+        <field name="model">cs.submittal</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="title"/>
+                <field name="project_id"/>
+                <field name="spec_section"/>
+                <filter name="pending" string="Pending" domain="[('state', 'in', ('draft','requested','received','review','submitted'))]"/>
+                <filter name="mig_exceptions" string="Migration Exceptions" domain="[('migration_incomplete', '=', True)]"/>
+                <separator/>
+                <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
+                <filter name="by_state" string="Status" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_cs_submittal" model="ir.actions.act_window">
+        <field name="name">Submittals</field>
+        <field name="res_model">cs.submittal</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_cs_submittal_spec" model="ir.actions.act_window">
+        <field name="name">Standard Submittals</field>
+        <field name="res_model">cs.submittal.spec</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

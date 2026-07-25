@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_rfi_form_mail" model="ir.ui.view">
+        <field name="name">cs.rfi.form.mail</field>
+        <field name="model">cs.rfi</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_rfi_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email RFI" type="object" invisible="state in ('draft','cancelled')"/>
+                <button name="action_send_reminder" string="Send Reminder" type="object" invisible="state not in ('sent','answered')"/>
+                <button name="action_resend_email" string="Resend" type="object" invisible="state in ('draft','cancelled')"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_cs_co_form_mail" model="ir.ui.view">
+        <field name="name">cs.change.order.form.mail</field>
+        <field name="model">cs.change.order</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_co_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email to Client" type="object" invisible="state in ('draft','pricing','cancelled')"/>
+                <button name="action_send_reminder" string="Send Reminder" type="object" invisible="state != 'submitted'"/>
+                <button name="action_resend_email" string="Resend" type="object" invisible="state in ('draft','pricing','cancelled')"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_cs_submittal_form_mail" model="ir.ui.view">
+        <field name="name">cs.submittal.form.mail</field>
+        <field name="model">cs.submittal</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_submittal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email Request" type="object" invisible="state in ('draft','cancelled','closed')"/>
+                <button name="action_send_reminder" string="Send Reminder" type="object" invisible="state not in ('requested','submitted')"/>
+                <button name="action_resend_email" string="Resend" type="object" invisible="state in ('draft','cancelled','closed')"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_cs_dsl_form_mail" model="ir.ui.view">
+        <field name="name">cs.daily.log.form.mail</field>
+        <field name="model">cs.daily.log</field>
+        <field name="inherit_id" ref="cs_field.view_cs_dsl_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email Report" type="object" invisible="state == 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cs_rfi_field,cs.rfi field,model_cs_rfi,cs_core.group_cs_field,1,0,0,0
+access_cs_rfi_foreman,cs.rfi foreman,model_cs_rfi,cs_core.group_cs_foreman,1,1,1,0
+access_cs_rfi_coord,cs.rfi coordinator,model_cs_rfi,cs_core.group_cs_coordinator,1,1,1,0
+access_cs_rfi_admin,cs.rfi admin,model_cs_rfi,cs_core.group_cs_admin,1,1,1,1
+access_cs_co_estimator,cs.co estimator,model_cs_change_order,cs_core.group_cs_estimator,1,1,1,0
+access_cs_co_coord,cs.co coordinator,model_cs_change_order,cs_core.group_cs_coordinator,1,1,1,0
+access_cs_co_accounting,cs.co accounting,model_cs_change_order,cs_core.group_cs_accounting,1,1,0,0
+access_cs_co_admin,cs.co admin,model_cs_change_order,cs_core.group_cs_admin,1,1,1,1
+access_cs_co_line_estimator,cs.co.line estimator,model_cs_change_order_line,cs_core.group_cs_estimator,1,1,1,1
+access_cs_co_line_coord,cs.co.line coordinator,model_cs_change_order_line,cs_core.group_cs_coordinator,1,1,1,1
+access_cs_co_line_accounting,cs.co.line accounting,model_cs_change_order_line,cs_core.group_cs_accounting,1,1,0,0
+access_cs_submittal_field,cs.submittal field,model_cs_submittal,cs_core.group_cs_field,1,0,0,0
+access_cs_submittal_coord,cs.submittal coordinator,model_cs_submittal,cs_core.group_cs_coordinator,1,1,1,0
+access_cs_submittal_admin,cs.submittal admin,model_cs_submittal,cs_core.group_cs_admin,1,1,1,1
+access_cs_sub_rev_field,cs.submittal.revision field,model_cs_submittal_revision,cs_core.group_cs_field,1,0,0,0
+access_cs_sub_rev_coord,cs.submittal.revision coordinator,model_cs_submittal_revision,cs_core.group_cs_coordinator,1,1,1,0
+access_cs_sub_spec_all,cs.submittal.spec all,model_cs_submittal_spec,cs_core.group_cs_field,1,0,0,0
+access_cs_sub_spec_coord,cs.submittal.spec coordinator,model_cs_submittal_spec,cs_core.group_cs_coordinator,1,1,1,0
