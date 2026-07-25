@@ -103,17 +103,18 @@ class GteDocumentRevisionWizard(models.TransientModel):
 
     def action_apply(self):
         self.ensure_one()
-        if not self.new_document_id and self.new_file:
-            self.new_document_id = self.env["documents.document"].create({
+        new = self.new_document_id
+        if not new and self.new_file:
+            new = self.env["documents.document"].create({
                 "name": self.new_file_name or "%s rev %s" % (
                     self.predecessor_id.name, self.revision or "?"),
                 "type": "binary",
                 "datas": self.new_file,
                 "folder_id": self.predecessor_id.folder_id.id,
             })
-        if not self.new_document_id:
+        if not new:
             raise ValidationError("Select an existing document or upload a file.")
-        new, old = self.new_document_id, self.predecessor_id
+        old = self.predecessor_id
         if new == old:
             raise ValidationError("A document cannot supersede itself.")
         if old.gte_superseded_by_id:
