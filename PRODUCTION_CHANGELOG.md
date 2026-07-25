@@ -251,3 +251,30 @@ Pre-phase backup: OSM 2AM daily (25 Jul) + prior manual points.
     Note: a failed upgrade left an Odoo module-op lock ("processing another
     module operation"); a Restart cleared it. Menus for Meeting/Closeout
     live under Construction → Document Flow; Deficiencies under Field & Safety.
+
+## Upgrade spec Phase 2 — 25 July 2026 (email code; server deferred)
+
+31. Deployed gte_mail 0.2.0. Complete email WORKFLOW code; inert until an
+    outgoing mail server exists (owner: connect an SMTP relay after the
+    greentechelectric.ca domain move, with full two-way inbound).
+    Verified via ORM (before a display glitch, see note):
+    - Reminder crons "GTE: RFI response reminders" + "GTE: Submittal
+      on-site reminders" using configurable lead days; RFI reminders fired
+      on 8 due records, submittal on 1; idempotent (re-run 8→8).
+    - Mail-readiness diagnostics (Settings → Construction): computes
+      outgoing/incoming/alias-domain/template status; shows the NOT-SET
+      warning correctly (mail_ready=false, templates OK). All settings
+      fields default_get cleanly.
+    - Bounce detection field (gte_mail_bounced) computes from
+      mail.notification bounce/exception status.
+    - Send / Send Reminder / Resend buttons added to RFI/CO/Submittal forms;
+      transmittal email template added.
+    NOTE: after this upgrade the backend web client rendered blank across
+    all pages — a stale service-worker + corrupt asset bundle (debug=assets
+    mode made it worse). Fix that WORKED: clear ir.attachment url like
+    '/web/assets/%', restart, then in the browser unregister service
+    workers + clear caches (or just log out/in). Public site stayed healthy
+    throughout. Session was logged out to clear it — owner logs back in for
+    a clean backend.
+    Acceptance test (send RFI → reply attaches → distribute) DEFERRED to
+    the mail-server connection after the domain move.
