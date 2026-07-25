@@ -1,7 +1,7 @@
 {
     "name": "GTE Documents & Drawings",
     "summary": "Construction document metadata and revision control (supersede, never overwrite)",
-    "version": "19.0.0.1.0",
+    "version": "19.0.0.2.0",
     "author": "Green Tech Electric",
     "license": "OPL-1",
     "category": "Construction",

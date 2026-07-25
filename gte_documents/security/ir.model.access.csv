@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_gte_doc_rev_wizard,gte.document.revision.wizard,model_gte_document_revision_wizard,gte_core.group_gte_field,1,1,1,1
+access_gte_doc_meta_wizard,gte.document.metadata.wizard,model_gte_document_metadata_wizard,gte_core.group_gte_field,1,1,1,1
+access_gte_issue_pkg_wizard,gte.issue.package.wizard,model_gte_issue_package_wizard,gte_core.group_gte_field,1,1,1,1
