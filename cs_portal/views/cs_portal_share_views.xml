@@ -5,7 +5,7 @@
         <field name="model">cs.rfi</field>
         <field name="inherit_id" ref="cs_controls.view_cs_rfi_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@string='Distribution']" position="after">
+            <xpath expr="//notebook" position="inside">
                 <page string="Portal Sharing" name="portal">
                     <group>
                         <field name="cs_portal_partner_ids" widget="many2many_tags"/>
@@ -25,7 +25,7 @@
         <field name="model">cs.submittal</field>
         <field name="inherit_id" ref="cs_controls.view_cs_submittal_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@string='Distribution']" position="after">
+            <xpath expr="//notebook" position="inside">
                 <page string="Portal Sharing" name="portal">
                     <group>
                         <field name="cs_portal_partner_ids" widget="many2many_tags"/>
