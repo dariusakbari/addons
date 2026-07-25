@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Construction Dashboard in the PROJECT app, at the Overview level -->
+    <menuitem id="menu_cs_project_dashboard" name="Construction Dashboard"
+              parent="project.menu_main_pm" sequence="1"
+              groups="cs_core.group_cs_coordinator"/>
+    <menuitem id="menu_cs_pd_co" name="Change Exposure" parent="menu_cs_project_dashboard" action="action_cs_co_analysis" sequence="10"/>
+    <menuitem id="menu_cs_pd_rfi" name="RFIs" parent="menu_cs_project_dashboard" action="action_cs_rfi_analysis" sequence="20"/>
+    <menuitem id="menu_cs_pd_submittal" name="Submittals" parent="menu_cs_project_dashboard" action="action_cs_submittal_analysis" sequence="30"/>
+    <menuitem id="menu_cs_pd_punch" name="Deficiencies" parent="menu_cs_project_dashboard" action="action_cs_punch_analysis" sequence="40"/>
+    <menuitem id="menu_cs_pd_incident" name="Incidents" parent="menu_cs_project_dashboard" action="action_cs_incident_analysis" sequence="50"/>
+    <menuitem id="menu_cs_pd_budget" name="Budget vs Actual" parent="menu_cs_project_dashboard" action="action_cs_budget_analysis" sequence="60" groups="cs_core.group_cs_pm,cs_core.group_cs_accounting"/>
+
+    <!-- Same analytics also available inside the Construction app -->
     <menuitem id="menu_cs_reporting" name="Reporting" parent="cs_controls.menu_cs_root" sequence="6" groups="cs_core.group_cs_coordinator"/>
     <menuitem id="menu_cs_rep_rfi" name="RFI Analysis" parent="menu_cs_reporting" action="action_cs_rfi_analysis" sequence="10"/>
     <menuitem id="menu_cs_rep_co" name="Change Order Analysis" parent="menu_cs_reporting" action="action_cs_co_analysis" sequence="20"/>

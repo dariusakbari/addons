@@ -6,7 +6,7 @@
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
-    "depends": ["cs_controls", "cs_field", "cs_hse", "cs_commercial"],
+    "depends": ["cs_controls", "cs_field", "cs_hse", "cs_commercial", "project"],
     "data": [
         "report/cs_log_reports.xml",
         "views/cs_analytics_views.xml",
