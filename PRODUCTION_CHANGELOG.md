@@ -310,3 +310,22 @@ Backup taken first: odoo.greentechelectric.ca_20260725_155810.zip.
 LOST in cutover (re-creatable / minor): test records, Bayview budget +
 labour rates (gte.project.budget/rate), document revision-metadata links,
 the TEST field user's group assignment. Redo as needed.
+
+## Upgrade spec Phase 7 — 25 July 2026 (reporting & dashboards)
+
+34. Installed cs_dashboards 0.1.0. Native Odoo 19 analytics + reports:
+    - Graph + pivot views: RFIs, Change Orders (proposed/approved/exposure
+      measures), Submittals, Deficiencies, Incidents, Budgets (budget vs
+      committed vs actual vs variance).
+    - "Construction Dashboard" menu placed in the PROJECT app at the
+      Overview level (parent project.menu_main_pm, sequence 1) with:
+      Change Exposure, RFIs, Submittals, Deficiencies, Incidents, Budget
+      vs Actual. Same analytics also under Construction → Reporting.
+    - Printable log PDFs bound to list actions (respect selection):
+      RFI Log, Change Order Log (+exposure total), Submittal Log, Punch
+      List. Excel/CSV via native list export.
+    Verified: menus in both places, Submittal graph renders by project,
+    all 3 log PDFs HTTP 200. (CO exposure = 0 until COs get pricing from
+    the pending SmartBuild enrichment — correct.)
+    Reminder: exit browser debug mode (/web?debug=0) after installs or
+    action panes render blank.
