@@ -1,7 +1,7 @@
 {
     "name": "GTE Core",
     "summary": "Green Tech Electric — shared mixins, sequences, security groups",
-    "version": "19.0.0.2.0",
+    "version": "19.0.0.3.0",
     "author": "Green Tech Electric",
     "license": "OPL-1",
     "category": "Construction",

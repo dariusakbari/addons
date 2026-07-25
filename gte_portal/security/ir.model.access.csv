@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_portal_rfi,portal gte.rfi,gte_controls.model_gte_rfi,base.group_portal,1,0,0,0
+access_portal_submittal,portal gte.submittal,gte_controls.model_gte_submittal,base.group_portal,1,0,0,0
+access_portal_transmittal,portal gte.transmittal,gte_field.model_gte_transmittal,base.group_portal,1,0,0,0
+access_portal_sub_rev,portal gte.submittal.revision,gte_controls.model_gte_submittal_revision,base.group_portal,1,0,0,0
+access_portal_tr_line,portal gte.transmittal.line,gte_field.model_gte_transmittal_line,base.group_portal,1,0,0,0
