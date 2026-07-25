@@ -2,29 +2,45 @@
     background: #f8f9fa;
     min-height: 100%;
 
-    .o_cs_group_title {
-        font-weight: 600;
-        color: #495057;
-        border-bottom: 1px solid #dee2e6;
-        padding-bottom: 4px;
+    .o_cs_project_block { }
+
+    .o_cs_project_head {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        border-bottom: 2px solid #2c8257;
+        padding: 6px 2px;
+        margin-bottom: 12px;
+
+        .o_cs_project_code {
+            font-weight: 700;
+            font-size: 16px;
+            color: #2c8257;
+            background: #e7f1ec;
+            border-radius: 4px;
+            padding: 1px 8px;
+        }
+        .o_cs_project_name { font-size: 15px; font-weight: 600; color: #343a40; }
     }
+
     .o_cs_kpi_card {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         background: #fff;
         border: 1px solid #e9ecef;
         border-left: 4px solid #6c757d;
         border-radius: 6px;
-        padding: 14px 16px;
+        padding: 10px 12px;
         cursor: pointer;
+        height: 100%;
         transition: box-shadow .15s, transform .15s;
 
         &:hover { box-shadow: 0 4px 12px rgba(0,0,0,.08); transform: translateY(-1px); }
 
-        .o_cs_kpi_icon { font-size: 26px; color: #adb5bd; width: 34px; text-align: center; }
-        .o_cs_kpi_value { font-size: 26px; font-weight: 700; line-height: 1.1; color: #212529; }
-        .o_cs_kpi_label { font-size: 13px; color: #6c757d; }
+        .o_cs_kpi_icon { font-size: 22px; color: #adb5bd; width: 28px; text-align: center; }
+        .o_cs_kpi_value { font-size: 22px; font-weight: 700; line-height: 1.1; color: #212529; }
+        .o_cs_kpi_label { font-size: 12px; color: #6c757d; }
 
         &[data-tone="danger"]  { border-left-color: #dc3545; .o_cs_kpi_icon { color: #dc3545; } }
         &[data-tone="warning"] { border-left-color: #fd7e14; .o_cs_kpi_icon { color: #fd7e14; } }

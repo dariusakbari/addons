@@ -10,24 +10,17 @@ export class ConstructionDashboard extends Component {
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
-        this.state = useState({ kpis: [], loading: true });
+        this.state = useState({ projects: [], loading: true });
         onWillStart(async () => {
-            this.state.kpis = await this.orm.call("cs.dashboard", "get_kpis", []);
+            this.state.projects = await this.orm.call(
+                "cs.dashboard", "get_project_kpis", []);
             this.state.loading = false;
         });
     }
 
-    get groups() {
-        const g = {};
-        for (const k of this.state.kpis) {
-            (g[k.group] = g[k.group] || []).push(k);
-        }
-        return Object.entries(g).map(([name, items]) => ({ name, items }));
-    }
-
-    openKpi(kpi) {
-        if (kpi.action) {
-            this.action.doAction(kpi.action);
+    openKpi(card) {
+        if (card.action) {
+            this.action.doAction(card.action);
         }
     }
 }

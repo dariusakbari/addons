@@ -414,3 +414,21 @@ the TEST field user's group assignment. Redo as needed.
     one: 8 views inherit core Project views (project.edit_project,
     project.view_task_form2) — a major version could move an anchor; fix is
     a small xpath repair, documented in the checklist.
+
+## Overview: per-project KPI cards — 25 July 2026
+
+42. Reworked Project > Overview from company-wide totals into one card block
+    per construction project (owner request: "separate each project, not
+    just how many items there are"). New cs.dashboard.get_project_kpis()
+    computes per-project counts via read_group (verified working in Odoo 19)
+    for 10 project-scoped metrics: Open/Overdue RFIs, Pending Submittals,
+    Changes Awaiting Client, Approved-Unbilled, Open Change Exposure $, Open
+    Deficiencies, Open Incidents, Field Issues to PM, Active Work Permits.
+    Each card drills through to that project's filtered list. Certs excluded
+    (worker-level, not project-scoped). Projects shown = any with a
+    construction record, sorted by cs_code. OWL component + template rewritten
+    for project blocks (code chip + name header, compact card grid); SCSS
+    updated. cs_dashboards -> 0.5.0 with a 0.5.0 post-migrate re-asserting the
+    Overview merge. NOTE: read_group is public in 19 but deprecated long-term;
+    swap to formatted_read_group if a future major version removes it (added
+    to the upgrade smoke-test).

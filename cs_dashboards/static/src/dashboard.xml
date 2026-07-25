@@ -3,21 +3,30 @@
     <t t-name="cs_dashboards.ConstructionDashboard">
         <div class="o_cs_dashboard">
             <div t-if="state.loading" class="text-center p-5 text-muted">Loading…</div>
+            <div t-elif="!state.projects.length" class="text-center p-5 text-muted">
+                No construction projects with activity yet.
+            </div>
             <div t-else="" class="p-3">
-                <t t-foreach="groups" t-as="grp" t-key="grp.name">
-                    <h5 class="o_cs_group_title mt-3 mb-2" t-esc="grp.name"/>
-                    <div class="row">
-                        <t t-foreach="grp.items" t-as="kpi" t-key="kpi.key">
-                            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
-                                <div class="o_cs_kpi_card" t-att-data-tone="kpi.tone" t-on-click="() => this.openKpi(kpi)">
-                                    <div class="o_cs_kpi_icon"><i class="fa" t-att-class="kpi.icon"/></div>
-                                    <div class="o_cs_kpi_body">
-                                        <div class="o_cs_kpi_value" t-esc="kpi.value"/>
-                                        <div class="o_cs_kpi_label" t-esc="kpi.label"/>
+                <t t-foreach="state.projects" t-as="proj" t-key="proj.project_id">
+                    <div class="o_cs_project_block mb-4">
+                        <div class="o_cs_project_head">
+                            <span class="o_cs_project_code" t-esc="proj.code"/>
+                            <span class="o_cs_project_name" t-esc="proj.name"/>
+                        </div>
+                        <div class="row">
+                            <t t-foreach="proj.cards" t-as="kpi" t-key="kpi.key">
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
+                                    <div class="o_cs_kpi_card" t-att-data-tone="kpi.tone"
+                                         t-on-click="() => this.openKpi(kpi)">
+                                        <div class="o_cs_kpi_icon"><i class="fa" t-att-class="kpi.icon"/></div>
+                                        <div class="o_cs_kpi_body">
+                                            <div class="o_cs_kpi_value" t-esc="kpi.value"/>
+                                            <div class="o_cs_kpi_label" t-esc="kpi.label"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </t>
+                            </t>
+                        </div>
                     </div>
                 </t>
             </div>

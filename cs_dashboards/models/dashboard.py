@@ -13,94 +13,113 @@ class CsDashboard(models.AbstractModel):
             "domain": domain, "context": ctx or {},
         }
 
-    @api.model
-    def get_kpis(self):
-        R = self.env["cs.rfi"]
-        CO = self.env["cs.change.order"]
-        S = self.env["cs.submittal"]
-        P = self.env["cs.punch.item"]
-        I = self.env["cs.incident"]
-        FI = self.env["cs.field.issue"]
-        WP = self.env["cs.work.permit"]
-        cert = self.env["cs.worker.cert"]
-
-        open_co = CO.search([("state", "not in",
-                              ("closed", "cancelled", "rejected"))])
-        exposure = sum(open_co.mapped("exposure"))
-        currency = self.env.company.currency_id.symbol or "$"
-
-        kpis = [
-            {"key": "rfi_open", "label": "Open RFIs", "group": "RFIs",
-             "value": R.search_count([("state", "in",
-                        ("draft", "open", "sent", "answered"))]),
-             "tone": "primary", "icon": "fa-question-circle",
-             "action": self._win("Open RFIs", "cs.rfi",
-                        [("state", "in", ("draft", "open", "sent", "answered"))])},
-            {"key": "rfi_overdue", "label": "Overdue RFIs", "group": "RFIs",
-             "value": R.search_count([("is_overdue", "=", True)]),
-             "tone": "danger", "icon": "fa-clock-o",
-             "action": self._win("Overdue RFIs", "cs.rfi",
-                        [("is_overdue", "=", True)])},
-            {"key": "sub_pending", "label": "Pending Submittals",
-             "group": "Submittals",
-             "value": S.search_count([("state", "in",
-                        ("draft", "requested", "received", "review",
-                         "submitted", "revise"))]),
-             "tone": "primary", "icon": "fa-file-text-o",
-             "action": self._win("Pending Submittals", "cs.submittal",
-                        [("state", "in", ("draft", "requested", "received",
-                          "review", "submitted", "revise"))])},
-            {"key": "co_await", "label": "Changes Awaiting Client",
-             "group": "Change Orders",
-             "value": CO.search_count([("state", "=", "submitted")]),
-             "tone": "warning", "icon": "fa-exchange",
-             "action": self._win("Awaiting Client", "cs.change.order",
-                        [("state", "=", "submitted")])},
-            {"key": "co_unbilled", "label": "Approved, Unbilled",
-             "group": "Change Orders",
-             "value": CO.search_count([("state", "=", "approved")]),
-             "tone": "warning", "icon": "fa-usd",
-             "action": self._win("Approved, Unbilled", "cs.change.order",
-                        [("state", "=", "approved")])},
-            {"key": "co_exposure", "label": "Open Change Exposure",
-             "group": "Change Orders",
-             "value": "%s%s" % (currency, "{:,.0f}".format(exposure)),
-             "tone": "info", "icon": "fa-line-chart",
-             "action": self._win("Open Change Orders", "cs.change.order",
-                        [("state", "not in",
-                          ("closed", "cancelled", "rejected"))])},
-            {"key": "punch_open", "label": "Open Deficiencies",
-             "group": "Field & Safety",
-             "value": P.search_count([("state", "not in",
-                        ("closed", "cancelled"))]),
-             "tone": "warning", "icon": "fa-exclamation-triangle",
-             "action": self._win("Open Deficiencies", "cs.punch.item",
-                        [("state", "not in", ("closed", "cancelled"))])},
-            {"key": "incident_open", "label": "Open Incidents",
-             "group": "Field & Safety",
-             "value": I.search_count([("state", "not in",
-                        ("closed", "cancelled"))]),
-             "tone": "danger", "icon": "fa-ambulance",
-             "action": self._win("Open Incidents", "cs.incident",
-                        [("state", "not in", ("closed", "cancelled"))])},
-            {"key": "fi_pm", "label": "Field Issues to PM",
-             "group": "Field & Safety",
-             "value": FI.search_count([("state", "=", "submitted")]),
-             "tone": "primary", "icon": "fa-flag",
-             "action": self._win("Field Issues", "cs.field.issue",
-                        [("state", "=", "submitted")])},
-            {"key": "cert_exp", "label": "Certs Expiring/Expired",
-             "group": "Field & Safety",
-             "value": cert.search_count([("state", "in",
-                        ("expiring", "expired"))]),
-             "tone": "danger", "icon": "fa-id-card-o",
-             "action": self._win("Expiring Certifications", "cs.worker.cert",
-                        [("state", "in", ("expiring", "expired"))])},
-            {"key": "wp_active", "label": "Active Work Permits",
-             "group": "Field & Safety",
-             "value": WP.search_count([("state", "=", "active")]),
-             "tone": "info", "icon": "fa-check-square-o",
-             "action": self._win("Active Permits", "cs.work.permit",
-                        [("state", "=", "active")])},
+    # ------------------------------------------------------------------
+    # Per-project metric definitions. Each is a count of records matching
+    # a base domain, scoped per project. Open Change Exposure (a monetary
+    # sum) is handled separately below. cs.worker.cert is intentionally
+    # excluded: it is worker-level, not project-scoped.
+    # (key, label, tone, icon, model, base_domain)
+    # ------------------------------------------------------------------
+    def _project_metric_defs(self):
+        return [
+            ("rfi_open", "Open RFIs", "primary", "fa-question-circle", "cs.rfi",
+             [("state", "in", ("draft", "open", "sent", "answered"))]),
+            ("rfi_overdue", "Overdue RFIs", "danger", "fa-clock-o", "cs.rfi",
+             [("is_overdue", "=", True)]),
+            ("sub_pending", "Pending Submittals", "primary", "fa-file-text-o",
+             "cs.submittal",
+             [("state", "in", ("draft", "requested", "received", "review",
+                               "submitted", "revise"))]),
+            ("co_await", "Changes Awaiting Client", "warning", "fa-exchange",
+             "cs.change.order", [("state", "=", "submitted")]),
+            ("co_unbilled", "Approved, Unbilled", "warning", "fa-usd",
+             "cs.change.order", [("state", "=", "approved")]),
+            ("punch_open", "Open Deficiencies", "warning",
+             "fa-exclamation-triangle", "cs.punch.item",
+             [("state", "not in", ("closed", "cancelled"))]),
+            ("incident_open", "Open Incidents", "danger", "fa-ambulance",
+             "cs.incident", [("state", "not in", ("closed", "cancelled"))]),
+            ("fi_pm", "Field Issues to PM", "primary", "fa-flag",
+             "cs.field.issue", [("state", "=", "submitted")]),
+            ("wp_active", "Active Work Permits", "info", "fa-check-square-o",
+             "cs.work.permit", [("state", "=", "active")]),
         ]
-        return kpis
+
+    # Models scanned to decide which projects are "construction" projects
+    # (i.e. have at least one construction record in any state).
+    _CONSTRUCTION_MODELS = [
+        "cs.rfi", "cs.change.order", "cs.submittal", "cs.punch.item",
+        "cs.incident", "cs.field.issue", "cs.work.permit",
+    ]
+    _EXPOSURE_DOMAIN = [("state", "not in", ("closed", "cancelled", "rejected"))]
+
+    @api.model
+    def _counts_by_project(self, model, domain):
+        """Return {project_id: count} for a domain, grouped by project."""
+        out = {}
+        for grp in self.env[model].read_group(domain, ["project_id"],
+                                               ["project_id"]):
+            if grp.get("project_id"):
+                out[grp["project_id"][0]] = grp["project_id_count"]
+        return out
+
+    @api.model
+    def get_project_kpis(self):
+        """One card block per construction project, each with its own KPIs."""
+        defs = self._project_metric_defs()
+
+        # Pre-compute every metric once, grouped by project (few queries).
+        counts = {key: self._counts_by_project(model, dom)
+                  for (key, _l, _t, _i, model, dom) in defs}
+
+        exposure = {}
+        for grp in self.env["cs.change.order"].read_group(
+                self._EXPOSURE_DOMAIN, ["project_id", "exposure:sum"],
+                ["project_id"]):
+            if grp.get("project_id"):
+                exposure[grp["project_id"][0]] = grp.get("exposure") or 0.0
+
+        # Which projects to show: any project with a construction record.
+        proj_ids = set()
+        for model in self._CONSTRUCTION_MODELS:
+            for grp in self.env[model].read_group([], ["project_id"],
+                                                  ["project_id"]):
+                if grp.get("project_id"):
+                    proj_ids.add(grp["project_id"][0])
+
+        projects = self.env["project.project"].browse(sorted(proj_ids))
+        projects = projects.filtered("active").sorted(
+            key=lambda p: (p.cs_code or "", p.name or ""))
+
+        currency = self.env.company.currency_id.symbol or "$"
+        result = []
+        for p in projects:
+            label = p.cs_code or p.name or ""
+            cards = []
+            for (key, lbl, tone, icon, model, dom) in defs:
+                cards.append({
+                    "key": key, "label": lbl, "tone": tone, "icon": icon,
+                    "value": counts[key].get(p.id, 0),
+                    "action": self._win("%s — %s" % (label, lbl), model,
+                                        [("project_id", "=", p.id)] + dom),
+                })
+                # Slot the monetary exposure card right after co_unbilled so
+                # the three Change Order figures sit together.
+                if key == "co_unbilled":
+                    amt = exposure.get(p.id, 0.0)
+                    cards.append({
+                        "key": "co_exposure", "label": "Open Change Exposure",
+                        "tone": "info", "icon": "fa-line-chart",
+                        "value": "%s%s" % (currency, "{:,.0f}".format(amt)),
+                        "action": self._win(
+                            "%s — Open Change Orders" % label,
+                            "cs.change.order",
+                            [("project_id", "=", p.id)] + self._EXPOSURE_DOMAIN),
+                    })
+            result.append({
+                "project_id": p.id,
+                "code": p.cs_code or "",
+                "name": p.name or "",
+                "cards": cards,
+            })
+        return result
