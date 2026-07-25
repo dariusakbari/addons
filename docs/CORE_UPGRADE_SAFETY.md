@@ -83,6 +83,15 @@ write, which an upgrade could undo. This is now hardened:
 Practical consequence: as long as `cs_dashboards` is upgraded after any core
 upgrade (see checklist), the Overview merge re-applies itself automatically.
 
+Migration signature: this Odoo build requires the classic
+`def migrate(cr, version)` signature and rejects `def migrate(env, version)`
+with "signature should be `(cr, version)`". All migration scripts therefore
+take `cr` and build the environment themselves
+(`env = api.Environment(cr, SUPERUSER_ID, {})`). Use that form for any new
+migration — the `(env, version)` form silently aborts the whole upgrade
+transaction, which can roll back unrelated data (it once stopped a product
+record from loading).
+
 ## Pre-upgrade checklist
 
 1. Take a full OSM backup (database + filestore) and confirm it downloaded.

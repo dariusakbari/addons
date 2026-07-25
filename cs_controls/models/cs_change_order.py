@@ -208,10 +208,29 @@ class GteChangeOrder(models.Model):
             })
         return so
 
-    def action_bill_via_sale(self):
-        """Add (or update) a sale-order line for the approved change amount."""
+    @api.model
+    def _cs_co_product(self):
+        """The service product used on change-order sale lines. Resilient:
+        return the data record, else an existing one by name, else create it."""
         product = self.env.ref("cs_controls.product_change_order",
                                raise_if_not_found=False)
+        if product:
+            return product
+        product = self.env["product.product"].search(
+            [("name", "=", "Change Order Work")], limit=1)
+        if not product:
+            product = self.env["product.product"].create({
+                "name": "Change Order Work",
+                "type": "service",
+                "invoice_policy": "order",
+                "list_price": 0.0,
+                "purchase_ok": False,
+            })
+        return product
+
+    def action_bill_via_sale(self):
+        """Add (or update) a sale-order line for the approved change amount."""
+        product = self._cs_co_product()
         for rec in self:
             if rec.state not in ("approved", "billed"):
                 raise ValidationError(

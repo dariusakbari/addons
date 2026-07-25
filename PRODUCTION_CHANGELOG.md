@@ -491,3 +491,16 @@ the TEST field user's group assignment. Redo as needed.
       specifics (product type 'service', invoice_policy 'order', sale line
       product_uom_id) before build.
     Next (6.2): AIA-style progress billing / payment application with holdback.
+
+## FIX: migration signature — 25 July 2026
+
+46. CRITICAL upgrade fix: this Odoo build requires post-migration scripts to
+    use def migrate(cr, version); our cs_dashboards migrations used
+    (env, version) and were aborting the upgrade transaction (which also
+    rolled back cs_controls' new "Change Order Work" product on the 6.1
+    deploy). Rewrote all cs_dashboards migrations (0.4.0–0.7.0) to
+    migrate(cr, version) building env from the cursor, added a 0.8.0
+    migration, and made the CO service product resilient via a get-or-create
+    helper (no longer dependent on data-file load order). cs_dashboards
+    0.8.0, cs_controls 0.9.1. Documented the signature rule in
+    docs/CORE_UPGRADE_SAFETY.md.
