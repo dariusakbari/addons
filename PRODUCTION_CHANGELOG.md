@@ -521,3 +521,30 @@ the TEST field user's group assignment. Redo as needed.
     "Construction Progress Billing" service product. Payment Certificate PDF
     (report). Menu under Commercial; ACL PM/Accounting/Admin (unlink admin
     only); unlink guard. Next: deploy + verify end to end.
+
+48. Phase 6.2 VERIFIED in production (TEMPLATE project, test records removed):
+    PA-001 40% (contract 100k) → $40k this period, $4k holdback, $36k due;
+    PA-002 → prev $40k, this period $30k, $3k holdback, less $36k previous =
+    $27k current due; Create Invoice produced a draft out_invoice netting
+    $27,000 (line $30,000, holdback line −$3,000). All math correct.
+    DEPLOY NOTE: a plain OSM "Restart" did not register the new model file —
+    the model only appeared after a full module upgrade (button_immediate_
+    upgrade / -u). For future NEW models, force a module upgrade, not just a
+    restart.
+
+## Phase 10 — Automation & escalation engine — 25 July 2026
+
+49. New module cs_automation (0.1.0): configurable escalation engine.
+    cs.escalation.rule with rule_type presets (RFI required-response,
+    submittal required-submission, change-order decision, work-permit
+    valid-to, cert expiry), timing before/after, days, and notify
+    (project manager / record responsible / specific user). One daily cron
+    (_cron_run) raises a deduped to-do activity on each matching record for
+    the resolved user (dedup marker [escN] in the summary). Seven default
+    rules seeded (lead reminders + overdue for RFI/CO, plus submittal/permit/
+    cert leads). post_init retires the three overlapping activity crons
+    (cs_controls.cron_rfi_overdue, cs_hse.cron_permit_expiry,
+    cs_commercial.cron_cert_expiry) so nothing double-fires. Config menu under
+    Construction (admin). ACL: admin manage, PM read. New module — requires
+    app-list update + install (not just upgrade). To verify: install, run the
+    cron, confirm activities appear and old crons are inactive.

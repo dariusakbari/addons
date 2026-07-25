@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="rule_rfi_due" model="cs.escalation.rule">
+        <field name="name">RFI response due soon</field>
+        <field name="sequence">10</field>
+        <field name="rule_type">rfi_due</field>
+        <field name="timing">before</field>
+        <field name="days">2</field>
+        <field name="notify">pm</field>
+    </record>
+    <record id="rule_rfi_overdue" model="cs.escalation.rule">
+        <field name="name">RFI response overdue</field>
+        <field name="sequence">11</field>
+        <field name="rule_type">rfi_due</field>
+        <field name="timing">after</field>
+        <field name="days">0</field>
+        <field name="notify">pm</field>
+    </record>
+    <record id="rule_sub_due" model="cs.escalation.rule">
+        <field name="name">Submittal due soon</field>
+        <field name="sequence">20</field>
+        <field name="rule_type">sub_due</field>
+        <field name="timing">before</field>
+        <field name="days">7</field>
+        <field name="notify">pm</field>
+    </record>
+    <record id="rule_co_decision" model="cs.escalation.rule">
+        <field name="name">Change order decision due soon</field>
+        <field name="sequence">30</field>
+        <field name="rule_type">co_decision</field>
+        <field name="timing">before</field>
+        <field name="days">2</field>
+        <field name="notify">pm</field>
+    </record>
+    <record id="rule_co_overdue" model="cs.escalation.rule">
+        <field name="name">Change order decision overdue</field>
+        <field name="sequence">31</field>
+        <field name="rule_type">co_decision</field>
+        <field name="timing">after</field>
+        <field name="days">0</field>
+        <field name="notify">pm</field>
+    </record>
+    <record id="rule_permit_expiry" model="cs.escalation.rule">
+        <field name="name">Work permit expiring soon</field>
+        <field name="sequence">40</field>
+        <field name="rule_type">permit_expiry</field>
+        <field name="timing">before</field>
+        <field name="days">3</field>
+        <field name="notify">pm</field>
+    </record>
+    <record id="rule_cert_expiry" model="cs.escalation.rule">
+        <field name="name">Certification expiring soon</field>
+        <field name="sequence">50</field>
+        <field name="rule_type">cert_expiry</field>
+        <field name="timing">before</field>
+        <field name="days">30</field>
+        <field name="notify">responsible</field>
+    </record>
+</odoo>

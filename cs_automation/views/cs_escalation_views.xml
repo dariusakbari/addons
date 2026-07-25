@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_escalation_list" model="ir.ui.view">
+        <field name="name">cs.escalation.rule.list</field>
+        <field name="model">cs.escalation.rule</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="rule_type"/>
+                <field name="timing"/>
+                <field name="days"/>
+                <field name="notify"/>
+                <field name="user_id" optional="show"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cs_escalation_form" model="ir.ui.view">
+        <field name="name">cs.escalation.rule.form</field>
+        <field name="model">cs.escalation.rule</field>
+        <field name="arch" type="xml">
+            <form string="Escalation Rule">
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" placeholder="e.g. RFI due in 2 days"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="rule_type"/>
+                            <field name="timing"/>
+                            <field name="days"/>
+                        </group>
+                        <group>
+                            <field name="notify"/>
+                            <field name="user_id" invisible="notify != 'specific'" required="notify == 'specific'"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <p class="text-muted">
+                        A daily job raises a to-do activity on each matching record
+                        for the chosen person, once per rule per record.
+                    </p>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cs_escalation" model="ir.actions.act_window">
+        <field name="name">Escalation Rules</field>
+        <field name="res_model">cs.escalation.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="cron_cs_escalations" model="ir.cron">
+        <field name="name">Construction: escalations &amp; reminders</field>
+        <field name="model_id" ref="model_cs_escalation_rule"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_run()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <menuitem id="menu_cs_config" name="Configuration" parent="cs_controls.menu_cs_root" sequence="90" groups="cs_core.group_cs_admin"/>
+    <menuitem id="menu_cs_escalation" name="Escalation Rules" parent="menu_cs_config" action="action_cs_escalation" sequence="10"/>
+</odoo>
