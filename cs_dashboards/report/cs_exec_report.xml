@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_exec" model="ir.actions.report">
+        <field name="name">Executive Summary</field>
+        <field name="model">project.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_dashboards.report_cs_exec</field>
+        <field name="report_file">cs_dashboards.report_cs_exec</field>
+        <field name="binding_model_id" ref="project.model_project_project"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cs_exec">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Construction Executive Summary</h2>
+                    <p class="text-muted">
+                        Generated <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                    </p>
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th class="text-end">Progress</th>
+                                <th class="text-end">Open RFIs</th>
+                                <th class="text-end">Overdue</th>
+                                <th class="text-end">Pend. Subm.</th>
+                                <th class="text-end">Open Chg.</th>
+                                <th class="text-end">Exposure</th>
+                                <th class="text-end">Defic.</th>
+                                <th class="text-end">Incidents</th>
+                                <th class="text-end">Budget</th>
+                                <th class="text-end">Forecast</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="doc">
+                                <t t-set="s" t-value="doc.cs_exec_summary()"/>
+                                <tr>
+                                    <td><span t-field="doc.name"/></td>
+                                    <td class="text-end"><span t-esc="s['progress']"/>%</td>
+                                    <td class="text-end"><span t-esc="s['rfi_open']"/></td>
+                                    <td class="text-end"><span t-esc="s['rfi_overdue']"/></td>
+                                    <td class="text-end"><span t-esc="s['sub_pending']"/></td>
+                                    <td class="text-end"><span t-esc="s['co_open']"/></td>
+                                    <td class="text-end"><span t-out="s['exposure']" t-options="{'widget': 'monetary', 'display_currency': s['currency']}"/></td>
+                                    <td class="text-end"><span t-esc="s['deficiencies']"/></td>
+                                    <td class="text-end"><span t-esc="s['incidents']"/></td>
+                                    <td class="text-end"><span t-out="s['budget']" t-options="{'widget': 'monetary', 'display_currency': s['currency']}"/></td>
+                                    <td class="text-end"><span t-out="s['forecast']" t-options="{'widget': 'monetary', 'display_currency': s['currency']}"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <p class="text-muted mt16" style="font-size:11px;">
+                        Overdue = open RFIs past their required response date.
+                        Exposure = open change-order value. Forecast = actual cost
+                        booked plus cost-to-complete.
+                    </p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

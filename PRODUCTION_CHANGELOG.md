@@ -590,3 +590,21 @@ the TEST field user's group assignment. Redo as needed.
 54. NOTED (audit #5b): branded register/log PDFs DO exist (RFI, CO, CO Log,
     Punch List, Daily Log, FLHA, Payment Certificate) — reachable via the
     Print menu on the respective list views.
+
+## Audit #5 graph verified + #5c exec report + #7 milestones — 25 July 2026
+
+55. VERIFIED (audit #5a): the RFI Analysis graph is NOT broken — it renders a
+    stacked bar chart (per project, by state) across all 64 records with a Sum
+    line. The earlier "blank" was a render-timing artifact (paints on a focused
+    reload), not a data/config bug.
+56. NEW (audit #5c): on-demand Executive Summary PDF (cs_dashboards 0.10.0).
+    project.project.cs_exec_summary() computes per-project KPIs (progress %,
+    open/overdue RFIs, pending submittals, open changes + exposure,
+    deficiencies, incidents, budget, forecast); report_cs_exec renders a
+    portfolio table. Printable from the Projects list (Print -> Executive
+    Summary). Weekly email deferred until SMTP go-live per owner.
+57. ENHANCED (audit #7): added Milestone Deadline look-aheads (2/3/6 week) on
+    project.milestone alongside the task look-aheads, reorganized under
+    Schedule > Tasks and Schedule > Milestone Deadlines (cs_schedule 0.2.0).
+    Verified project.milestone.deadline/project_id exist.
+    cs_dashboards 0.10.0 (+0.10.0 migration).

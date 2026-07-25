@@ -3,6 +3,44 @@ from datetime import timedelta
 from odoo import api, fields, models
 
 
+class ProjectProject(models.Model):
+    _inherit = "project.project"
+
+    def cs_exec_summary(self):
+        """Per-project executive KPIs for the summary report."""
+        self.ensure_one()
+        today = fields.Date.today()
+
+        def cnt(model, dom):
+            return self.env[model].search_count(
+                [("project_id", "=", self.id)] + dom)
+
+        open_co = self.env["cs.change.order"].search([
+            ("project_id", "=", self.id),
+            ("state", "not in", ("closed", "cancelled", "rejected"))])
+        budget = self.env["cs.project.budget"].sudo().search(
+            [("project_id", "=", self.id)], limit=1)
+        return {
+            "progress": round((self.task_completion_percentage or 0.0) * 100.0),
+            "rfi_open": cnt("cs.rfi", [("state", "in",
+                            ("draft", "open", "sent", "answered"))]),
+            "rfi_overdue": cnt("cs.rfi", [("date_required", "<", today),
+                            ("state", "in", ("draft", "open", "sent"))]),
+            "sub_pending": cnt("cs.submittal", [("state", "in",
+                            ("draft", "requested", "received", "review",
+                             "submitted", "revise"))]),
+            "co_open": len(open_co),
+            "exposure": sum(open_co.mapped("exposure")),
+            "deficiencies": cnt("cs.punch.item",
+                            [("state", "not in", ("closed", "cancelled"))]),
+            "incidents": cnt("cs.incident",
+                            [("state", "not in", ("closed", "cancelled"))]),
+            "budget": budget.amount_budget if budget else 0.0,
+            "forecast": budget.amount_forecast if budget else 0.0,
+            "currency": self.env.company.currency_id,
+        }
+
+
 class CsDashboard(models.AbstractModel):
     _name = "cs.dashboard"
     _description = "Construction Dashboard Data"

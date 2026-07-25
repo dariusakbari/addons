@@ -2,7 +2,7 @@
     "name": "Construction Scheduling & Manpower",
     "summary": "Baseline vs forecast dates, delay events with schedule-impact "
                "roll-up, look-ahead schedules and a construction calendar",
-    "version": "19.0.0.1.0",
+    "version": "19.0.0.2.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
