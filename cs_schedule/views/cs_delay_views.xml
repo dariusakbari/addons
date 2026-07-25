@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_delay_form" model="ir.ui.view">
+        <field name="name">cs.delay.event.form</field>
+        <field name="model">cs.delay.event</field>
+        <field name="arch" type="xml">
+            <form string="Delay Event">
+                <header>
+                    <button name="action_mitigate" string="Mark Mitigated" type="object" invisible="state != 'open'"/>
+                    <button name="action_close" string="Close" type="object" invisible="state == 'closed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="open,mitigated,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="date"/>
+                            <field name="cause"/>
+                            <field name="days_impact"/>
+                        </group>
+                        <group>
+                            <field name="rfi_id"/>
+                            <field name="change_order_id"/>
+                            <field name="daily_log_id"/>
+                            <field name="field_issue_id"/>
+                        </group>
+                    </group>
+                    <group><field name="description"/></group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_cs_delay_list" model="ir.ui.view">
+        <field name="name">cs.delay.event.list</field>
+        <field name="model">cs.delay.event</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="days_impact >= 5" decoration-warning="days_impact > 0 and days_impact &lt; 5">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="date"/>
+                <field name="cause"/>
+                <field name="days_impact" sum="Total days"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_cs_delay_calendar" model="ir.ui.view">
+        <field name="name">cs.delay.event.calendar</field>
+        <field name="model">cs.delay.event</field>
+        <field name="arch" type="xml">
+            <calendar string="Delays" date_start="date" color="cause" mode="month">
+                <field name="project_id"/>
+                <field name="days_impact"/>
+            </calendar>
+        </field>
+    </record>
+    <record id="view_cs_delay_search" model="ir.ui.view">
+        <field name="name">cs.delay.event.search</field>
+        <field name="model">cs.delay.event</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="project_id"/>
+                <field name="cause"/>
+                <filter name="open" string="Open" domain="[('state','=','open')]"/>
+                <separator/>
+                <filter name="by_project" string="Project" context="{'group_by':'project_id'}"/>
+                <filter name="by_cause" string="Cause" context="{'group_by':'cause'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_cs_delay" model="ir.actions.act_window">
+        <field name="name">Delay Events</field>
+        <field name="res_model">cs.delay.event</field>
+        <field name="view_mode">list,calendar,form</field>
+        <field name="context">{'search_default_open': 1}</field>
+    </record>
+</odoo>

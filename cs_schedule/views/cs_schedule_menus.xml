@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_cs_lookahead_2wk" model="ir.actions.act_window">
+        <field name="name">2-Week Look-Ahead</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">list,kanban,calendar,gantt,form</field>
+        <field name="domain">[('date_deadline','&gt;=', context_today().strftime('%Y-%m-%d')), ('date_deadline','&lt;=', (context_today() + datetime.timedelta(days=14)).strftime('%Y-%m-%d'))]</field>
+        <field name="context">{'search_default_group_by_project': 1}</field>
+    </record>
+    <record id="action_cs_lookahead_3wk" model="ir.actions.act_window">
+        <field name="name">3-Week Look-Ahead</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">list,kanban,calendar,gantt,form</field>
+        <field name="domain">[('date_deadline','&gt;=', context_today().strftime('%Y-%m-%d')), ('date_deadline','&lt;=', (context_today() + datetime.timedelta(days=21)).strftime('%Y-%m-%d'))]</field>
+    </record>
+    <record id="action_cs_lookahead_6wk" model="ir.actions.act_window">
+        <field name="name">6-Week Look-Ahead</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">list,kanban,calendar,gantt,form</field>
+        <field name="domain">[('date_deadline','&gt;=', context_today().strftime('%Y-%m-%d')), ('date_deadline','&lt;=', (context_today() + datetime.timedelta(days=42)).strftime('%Y-%m-%d'))]</field>
+    </record>
+
+    <menuitem id="menu_cs_schedule" name="Schedule" parent="cs_controls.menu_cs_root" sequence="45" groups="cs_core.group_cs_coordinator"/>
+    <menuitem id="menu_cs_lookahead_2" name="2-Week Look-Ahead" parent="menu_cs_schedule" action="action_cs_lookahead_2wk" sequence="10"/>
+    <menuitem id="menu_cs_lookahead_3" name="3-Week Look-Ahead" parent="menu_cs_schedule" action="action_cs_lookahead_3wk" sequence="20"/>
+    <menuitem id="menu_cs_lookahead_6" name="6-Week Look-Ahead" parent="menu_cs_schedule" action="action_cs_lookahead_6wk" sequence="30"/>
+    <menuitem id="menu_cs_delays" name="Delay Events" parent="menu_cs_schedule" action="action_cs_delay" sequence="40"/>
+</odoo>

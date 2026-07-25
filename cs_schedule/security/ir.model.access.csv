@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delay_field,cs.delay.event field,model_cs_delay_event,cs_core.group_cs_field,1,1,1,0
+access_delay_pm,cs.delay.event pm,model_cs_delay_event,cs_core.group_cs_pm,1,1,1,1
+access_delay_admin,cs.delay.event admin,model_cs_delay_event,cs_core.group_cs_admin,1,1,1,1

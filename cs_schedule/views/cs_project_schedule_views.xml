@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_form_cs_schedule" model="ir.ui.view">
+        <field name="name">project.project.form.cs.schedule</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_cs_delays" type="object" class="oe_stat_button" icon="fa-hourglass-half" groups="cs_core.group_cs_coordinator">
+                    <field name="cs_delay_count" widget="statinfo" string="Delays"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="cs_schedule_impact_days"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_project_form_cs_schedule_dates" model="ir.ui.view">
+        <field name="name">project.project.form.cs.schedule.dates</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Schedule" name="cs_schedule" groups="cs_core.group_cs_coordinator">
+                    <group>
+                        <group string="Baseline">
+                            <field name="cs_baseline_start"/>
+                            <field name="cs_baseline_end"/>
+                        </group>
+                        <group string="Forecast">
+                            <field name="cs_forecast_start"/>
+                            <field name="cs_forecast_end"/>
+                            <field name="cs_schedule_impact_days"/>
+                        </group>
+                    </group>
+                    <field name="cs_delay_event_ids" context="{'default_project_id': id}">
+                        <list>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="cause"/>
+                            <field name="days_impact"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
