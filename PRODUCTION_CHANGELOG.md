@@ -432,3 +432,22 @@ the TEST field user's group assignment. Redo as needed.
     Overview merge. NOTE: read_group is public in 19 but deprecated long-term;
     swap to formatted_read_group if a future major version removes it (added
     to the upgrade smoke-test).
+
+## Overview: budget/cost/progress KPIs — 25 July 2026
+
+43. Added status + commercial KPIs to each project block in Overview
+    (owner request: "budget, costs, progress"). New per-project cards:
+    Task Progress (% from project.task_completion_percentage), Open Tasks.
+    Commercial cards — Budget, Committed (Changes), Actual Cost, Budget
+    Variance — computed with sudo and shown ONLY to PM / Accounting / Admin
+    (cs_core.group_cs_pm/accounting/admin). The dollar Change Exposure card
+    was moved out of the everyone-visible set into this gated group so field
+    staff no longer see change-order dollar values (honours the earlier
+    field-user rule). Budget/Variance pull from cs.project.budget (show "—"
+    when a project has no budget yet); Committed = open CO exposure; Actual =
+    costs booked to the project analytic account. All native fields used
+    (task_completion_percentage, open_task_count, is_closed, account_id) are
+    upgrade-stable. cs_dashboards -> 0.6.0 with 0.6.0 post-migrate re-asserting
+    the Overview merge. NOTE: no budgets or analytic costs exist yet post-
+    cutover, so money cards currently read $0/"—"; they populate as budgets
+    and costs are entered.
