@@ -18,9 +18,9 @@ export class ConstructionDashboard extends Component {
         });
     }
 
-    openKpi(card) {
-        if (card.action) {
-            this.action.doAction(card.action);
+    open(action) {
+        if (action) {
+            this.action.doAction(action);
         }
     }
 }

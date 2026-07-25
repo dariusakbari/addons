@@ -451,3 +451,20 @@ the TEST field user's group assignment. Redo as needed.
     the Overview merge. NOTE: no budgets or analytic costs exist yet post-
     cutover, so money cards currently read $0/"—"; they populate as budgets
     and costs are entered.
+
+## Overview visual redesign — 25 July 2026
+
+44. Redesigned the Overview (owner: "too much information without proper
+    order; make it appealing, SmartBuild-style"). Each project is now one
+    clean card: header (code chip, name, client, type tags) -> a task
+    progress bar with done/total/open counts -> three labelled metric
+    sections (RFIs; Submittals & changes; Field & safety) -> a locked
+    Commercial footer (Budget/Committed/Actual/Variance, PM/Accounting/Admin
+    only). Urgency colours added per owner request: due-soon = amber, overdue
+    = red, safety incidents = red, zeros greyed out so attention items stand
+    out. "Due soon" windows are settings-driven (cs.rfi_reminder_days=2,
+    cs.submittal_reminder_days=7) — RFIs use date_required, submittals use
+    date_required_submit. Every stat and money item still drills through to
+    its filtered list. get_project_kpis now returns sections + money + progress
+    + tags; OWL template/SCSS rebuilt (card, progress bar, grouped stats).
+    cs_dashboards -> 0.7.0 with 0.7.0 post-migrate re-asserting the merge.

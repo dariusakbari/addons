@@ -6,25 +6,56 @@
             <div t-elif="!state.projects.length" class="text-center p-5 text-muted">
                 No construction projects with activity yet.
             </div>
-            <div t-else="" class="p-3">
+            <div t-else="" class="o_cs_wrap">
                 <t t-foreach="state.projects" t-as="proj" t-key="proj.project_id">
-                    <div class="o_cs_project_block mb-4">
-                        <div class="o_cs_project_head">
-                            <span class="o_cs_project_code" t-esc="proj.code"/>
-                            <span class="o_cs_project_name" t-esc="proj.name"/>
+                    <div class="o_cs_card">
+                        <!-- header -->
+                        <div class="o_cs_card_head">
+                            <span class="o_cs_code" t-esc="proj.code"/>
+                            <span class="o_cs_pname" t-esc="proj.name"/>
+                            <span t-if="proj.partner" class="o_cs_partner" t-esc="'· ' + proj.partner"/>
+                            <span class="o_cs_tags">
+                                <t t-foreach="proj.tags" t-as="tag" t-key="tag_index">
+                                    <span class="o_cs_tag" t-esc="tag"/>
+                                </t>
+                            </span>
                         </div>
-                        <div class="row">
-                            <t t-foreach="proj.cards" t-as="kpi" t-key="kpi.key">
-                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
-                                    <div class="o_cs_kpi_card" t-att-data-tone="kpi.tone"
-                                         t-on-click="() => this.openKpi(kpi)">
-                                        <div class="o_cs_kpi_icon"><i class="fa" t-att-class="kpi.icon"/></div>
-                                        <div class="o_cs_kpi_body">
-                                            <div class="o_cs_kpi_value" t-esc="kpi.value"/>
-                                            <div class="o_cs_kpi_label" t-esc="kpi.label"/>
-                                        </div>
+
+                        <!-- progress -->
+                        <div class="o_cs_progress_row" t-on-click="() => this.open(proj.tasks_action)">
+                            <div class="o_cs_bar">
+                                <div class="o_cs_bar_fill" t-attf-style="width: {{proj.progress}}%;"/>
+                            </div>
+                            <span class="o_cs_pct" t-esc="proj.progress + '%'"/>
+                            <span class="o_cs_tasks" t-esc="proj.tasks_done + ' / ' + proj.tasks_total + ' tasks · ' + proj.tasks_open + ' open'"/>
+                        </div>
+
+                        <!-- metric sections -->
+                        <div class="o_cs_sections">
+                            <t t-foreach="proj.sections" t-as="sec" t-key="sec.name">
+                                <div class="o_cs_section">
+                                    <div class="o_cs_section_title" t-esc="sec.name"/>
+                                    <div class="o_cs_stats">
+                                        <t t-foreach="sec.metrics" t-as="m" t-key="m.label">
+                                            <div class="o_cs_stat" t-att-data-tone="m.tone"
+                                                 t-on-click="() => this.open(m.action)">
+                                                <span class="o_cs_stat_val" t-esc="m.value"/>
+                                                <span class="o_cs_stat_lbl" t-esc="m.label"/>
+                                            </div>
+                                        </t>
                                     </div>
                                 </div>
+                            </t>
+                        </div>
+
+                        <!-- commercial footer (managers only) -->
+                        <div t-if="proj.money.length" class="o_cs_money">
+                            <span class="o_cs_money_lock"><i class="fa fa-lock"/> Commercial</span>
+                            <t t-foreach="proj.money" t-as="mm" t-key="mm.label">
+                                <span class="o_cs_money_item" t-on-click="() => this.open(mm.action)">
+                                    <span class="o_cs_money_lbl" t-esc="mm.label"/>
+                                    <span class="o_cs_money_val" t-esc="mm.value"/>
+                                </span>
                             </t>
                         </div>
                     </div>
