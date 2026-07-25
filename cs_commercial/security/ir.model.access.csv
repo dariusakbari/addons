@@ -11,3 +11,6 @@ access_cert_field,cs.worker.cert field,model_cs_worker_cert,cs_core.group_cs_fie
 access_cert_safety,cs.worker.cert safety,model_cs_worker_cert,cs_core.group_cs_safety,1,1,1,0
 access_cert_pm,cs.worker.cert pm,model_cs_worker_cert,cs_core.group_cs_pm,1,1,1,0
 access_cert_admin,cs.worker.cert admin,model_cs_worker_cert,cs_core.group_cs_admin,1,1,1,1
+access_payapp_pm,cs.payment.application pm,model_cs_payment_application,cs_core.group_cs_pm,1,1,1,0
+access_payapp_acct,cs.payment.application accounting,model_cs_payment_application,cs_core.group_cs_accounting,1,1,1,0
+access_payapp_admin,cs.payment.application admin,model_cs_payment_application,cs_core.group_cs_admin,1,1,1,1

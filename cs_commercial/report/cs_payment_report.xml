@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_payapp" model="ir.actions.report">
+        <field name="name">Payment Certificate</field>
+        <field name="model">cs.payment.application</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_commercial.report_cs_payapp</field>
+        <field name="report_file">cs_commercial.report_cs_payapp</field>
+        <field name="binding_model_id" ref="model_cs_payment_application"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cs_payapp">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Application for Payment</h2>
+                        <div class="row mt8">
+                            <div class="col-6">
+                                <strong>Application:</strong> <span t-field="doc.name"/><br/>
+                                <strong>Project:</strong> <span t-field="doc.project_id"/><br/>
+                                <strong>Client:</strong> <span t-field="doc.partner_id"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong> <span t-field="doc.date_application"/><br/>
+                                <strong>Period to:</strong> <span t-field="doc.period_end"/><br/>
+                                <strong>Status:</strong> <span t-field="doc.state"/>
+                            </div>
+                        </div>
+                        <table class="table table-sm mt16">
+                            <tr><td>Original contract sum</td>
+                                <td class="text-end"><span t-field="doc.original_contract"/></td></tr>
+                            <tr><td>Approved change orders</td>
+                                <td class="text-end"><span t-field="doc.approved_co_total"/></td></tr>
+                            <tr><td><strong>Revised contract sum</strong></td>
+                                <td class="text-end"><strong><span t-field="doc.revised_contract"/></strong></td></tr>
+                            <tr><td>Total completed and stored to date
+                                (<span t-field="doc.percent_complete"/>%)</td>
+                                <td class="text-end"><span t-field="doc.completed_to_date"/></td></tr>
+                            <tr><td>Less holdback (<span t-field="doc.holdback_percent"/>%)</td>
+                                <td class="text-end"><span t-field="doc.holdback_to_date"/></td></tr>
+                            <tr><td>Total earned less holdback</td>
+                                <td class="text-end"><span t-field="doc.earned_less_holdback"/></td></tr>
+                            <tr><td>Less previous payments</td>
+                                <td class="text-end"><span t-field="doc.previous_payments"/></td></tr>
+                            <tr><td><strong>Current payment due</strong></td>
+                                <td class="text-end"><strong><span t-field="doc.current_due"/></strong></td></tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -504,3 +504,20 @@ the TEST field user's group assignment. Redo as needed.
     helper (no longer dependent on data-file load order). cs_dashboards
     0.8.0, cs_controls 0.9.1. Documented the signature rule in
     docs/CORE_UPGRADE_SAFETY.md.
+
+## Phase 6.2 — Progress billing / payment applications — 25 July 2026
+
+47. Built AIA G702-style progress billing (cs_commercial 0.5.0). New model
+    cs.payment.application (PA- per-project numbering): original contract
+    (defaults from project), approved change orders, revised contract sum,
+    completed-to-date input with % complete, previous vs this-period, holdback
+    to date + this-period holdback (holdback % defaults from project), earned
+    less holdback, less previous payments, current payment due. Workflow
+    draft → submitted → approved → invoiced with gates (period-end required;
+    completed-to-date must exceed previously billed; reset PM-only; can't
+    cancel once invoiced). "Create Invoice" generates a draft customer invoice
+    (account.move) with a progress line (this period) and a negative holdback
+    line so the net equals current due, using a resilient get-or-create
+    "Construction Progress Billing" service product. Payment Certificate PDF
+    (report). Menu under Commercial; ACL PM/Accounting/Admin (unlink admin
+    only); unlink guard. Next: deploy + verify end to end.
