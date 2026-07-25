@@ -1,7 +1,7 @@
 {
     "name": "Construction Core",
     "summary": "Construction Suite — shared mixins, sequences, security groups",
-    "version": "19.0.0.3.0",
+    "version": "19.0.0.4.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
@@ -9,6 +9,7 @@
     "data": [
         "security/cs_groups.xml",
         "security/ir.model.access.csv",
+        "data/project_type_tags.xml",
         "views/reason_wizard_views.xml",
         "views/settings_views.xml",
     ],

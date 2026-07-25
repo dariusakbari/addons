@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ptag_medical" model="project.tags"><field name="name">Medical</field><field name="color">1</field></record>
+    <record id="ptag_dental" model="project.tags"><field name="name">Dental</field><field name="color">4</field></record>
+    <record id="ptag_institutional" model="project.tags"><field name="name">Institutional</field><field name="color">2</field></record>
+    <record id="ptag_educational" model="project.tags"><field name="name">Educational</field><field name="color">3</field></record>
+    <record id="ptag_religious" model="project.tags"><field name="name">Religious</field><field name="color">5</field></record>
+    <record id="ptag_recreational" model="project.tags"><field name="name">Recreational</field><field name="color">6</field></record>
+    <record id="ptag_residential" model="project.tags"><field name="name">Residential</field><field name="color">7</field></record>
+    <record id="ptag_commercial" model="project.tags"><field name="name">Commercial</field><field name="color">8</field></record>
+    <record id="ptag_industrial" model="project.tags"><field name="name">Industrial</field><field name="color">9</field></record>
+    <record id="ptag_retail" model="project.tags"><field name="name">Retail</field><field name="color">10</field></record>
+    <record id="ptag_hospitality" model="project.tags"><field name="name">Hospitality</field><field name="color">11</field></record>
+    <record id="ptag_government" model="project.tags"><field name="name">Government</field><field name="color">2</field></record>
+    <record id="ptag_new_construction" model="project.tags"><field name="name">New Construction</field><field name="color">3</field></record>
+    <record id="ptag_upgrade" model="project.tags"><field name="name">Upgrade / Retrofit</field><field name="color">1</field></record>
+    <record id="ptag_ti" model="project.tags"><field name="name">Tenant Improvement</field><field name="color">6</field></record>
+    <record id="ptag_service" model="project.tags"><field name="name">Service / Maintenance</field><field name="color">9</field></record>
+</odoo>
