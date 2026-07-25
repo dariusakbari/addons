@@ -58,7 +58,8 @@ class CsDashboard(models.AbstractModel):
         rfi_open_dom = [("state", "in", self._RFI_OPEN)]
         rfi_soon_dom = rfi_open_dom + [("date_required", ">=", today),
                                        ("date_required", "<=", rfi_soon)]
-        rfi_over_dom = [("is_overdue", "=", True)]
+        rfi_over_dom = [("date_required", "<", today),
+                        ("state", "in", ("draft", "open", "sent"))]
         sub_dom = [("state", "in", self._SUB_PENDING)]
         sub_soon_dom = sub_dom + [("date_required_submit", ">=", today),
                                   ("date_required_submit", "<=", sub_soon)]

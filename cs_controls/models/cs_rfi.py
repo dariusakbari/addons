@@ -70,13 +70,19 @@ class GteRfi(models.Model):
                 rec.date_required and rec.date_required < today
                 and rec.state in ("draft", "open", "sent"))
 
+    _OVERDUE_STATES = ["draft", "open", "sent"]
+
     def _search_is_overdue(self, operator, value):
-        today = fields.Date.context_today(self)
-        domain = [("date_required", "<", today),
-                  ("state", "in", ("draft", "open", "sent"))]
+        today = fields.Date.today()
+        overdue = ["&", ("date_required", "<", today),
+                   ("state", "in", self._OVERDUE_STATES)]
         if (operator == "=") == bool(value):
-            return domain
-        return ["!"] + domain
+            return overdue
+        # NOT overdue (De Morgan): no due date, or not yet due, or responded/closed
+        return ["|", "|",
+                ("date_required", "=", False),
+                ("date_required", ">=", today),
+                ("state", "not in", self._OVERDUE_STATES)]
 
     @api.model_create_multi
     def create(self, vals_list):

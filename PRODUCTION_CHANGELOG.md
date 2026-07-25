@@ -561,3 +561,32 @@ the TEST field user's group assignment. Redo as needed.
     stays hidden and the owner can pip-install it server-side. Photos already
     exist on field records (attachment fields); phone rendering + camera
     capture remain an on-device check for the owner.
+
+## Audit fixes — overdue KPI, test-user role, gates proven — 25 July 2026
+
+51. BUG FIX (audit #4): the "Overdue RFIs" everywhere read 0 despite 7 open
+    past-due RFIs on Bayview. Root cause: cs.rfi._search_is_overdue was
+    returning an empty result for both True and False (context_today in the
+    search context + a malformed "!" negation), so every is_overdue domain
+    filter (dashboard KPI, saved Overdue-RFIs action, search filter) was blank
+    even though the field computes correctly. Fixed the search method
+    (fields.Date.today(), explicit '&', proper De Morgan negation) AND switched
+    the consumers off the computed field to reliable stored-field domains:
+    dashboard rfi_over_dom -> [date_required < today, state in draft/open/sent];
+    action_cs_rfi_overdue and the RFI "Overdue" search filter -> dynamic
+    context_today() date domains. cs_controls 0.9.2, cs_dashboards 0.9.0
+    (+0.9.0 migration). Data verified: Bayview has 7 open RFIs past due
+    (0476-RFI-001/002/003/004/005/019/020).
+52. FIX (audit #3): "TEST Field Employee" (uid 9) had lost its construction
+    role in the gte->cs cutover (Construction Suite = None). Reassigned
+    group_cs_field via group_ids; verified.
+53. VERIFIED (audit #6) — server-side workflow gates enforce (tested on
+    TEMPLATE, records removed): RFI cannot be distributed without recipients
+    ("Distribution recipients required"); RFI cannot be closed without
+    response/distribution; CO cannot be submitted without pricing; CO cannot
+    be approved without an approval reference; Submittal cannot be closed
+    without a review outcome and returned date. Reopen/cancel route through the
+    mandatory reason wizard.
+54. NOTED (audit #5b): branded register/log PDFs DO exist (RFI, CO, CO Log,
+    Punch List, Daily Log, FLHA, Payment Certificate) — reachable via the
+    Print menu on the respective list views.

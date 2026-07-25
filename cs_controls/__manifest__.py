@@ -1,7 +1,7 @@
 {
     "name": "Construction Controls",
     "summary": "RFIs, Change Orders and Submittals as dedicated business records",
-    "version": "19.0.0.9.1",
+    "version": "19.0.0.9.2",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",

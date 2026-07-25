@@ -101,7 +101,7 @@
                 <field name="name"/>
                 <field name="subject"/>
                 <field name="project_id"/>
-                <filter name="overdue" string="Overdue" domain="[('is_overdue', '=', True)]"/>
+                <filter name="overdue" string="Overdue" domain="[('date_required', '&lt;', context_today().strftime('%Y-%m-%d')), ('state', 'in', ['draft','open','sent'])]"/>
                 <filter name="open_states" string="In Progress" domain="[('state', 'in', ('draft','open','sent','answered'))]"/>
                 <filter name="mig_exceptions" string="Migration Exceptions" domain="[('migration_incomplete', '=', True)]"/>
                 <separator/>

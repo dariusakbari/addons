@@ -4,7 +4,7 @@
         <field name="name">Overdue RFIs</field>
         <field name="res_model">cs.rfi</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[('is_overdue', '=', True)]</field>
+        <field name="domain">[('date_required', '&lt;', context_today().strftime('%Y-%m-%d')), ('state', 'in', ['draft', 'open', 'sent'])]</field>
     </record>
     <record id="action_cs_rfi_awaiting" model="ir.actions.act_window">
         <field name="name">RFIs Awaiting Response</field>
