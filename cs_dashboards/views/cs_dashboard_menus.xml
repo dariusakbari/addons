@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cs_reporting" name="Reporting" parent="cs_controls.menu_cs_root" sequence="6" groups="cs_core.group_cs_coordinator"/>
+    <menuitem id="menu_cs_rep_rfi" name="RFI Analysis" parent="menu_cs_reporting" action="action_cs_rfi_analysis" sequence="10"/>
+    <menuitem id="menu_cs_rep_co" name="Change Order Analysis" parent="menu_cs_reporting" action="action_cs_co_analysis" sequence="20"/>
+    <menuitem id="menu_cs_rep_submittal" name="Submittal Analysis" parent="menu_cs_reporting" action="action_cs_submittal_analysis" sequence="30"/>
+    <menuitem id="menu_cs_rep_punch" name="Deficiency Analysis" parent="menu_cs_reporting" action="action_cs_punch_analysis" sequence="40"/>
+    <menuitem id="menu_cs_rep_incident" name="Incident Analysis" parent="menu_cs_reporting" action="action_cs_incident_analysis" sequence="50"/>
+    <menuitem id="menu_cs_rep_budget" name="Budget Analysis" parent="menu_cs_reporting" action="action_cs_budget_analysis" sequence="60" groups="cs_core.group_cs_pm,cs_core.group_cs_accounting"/>
+</odoo>

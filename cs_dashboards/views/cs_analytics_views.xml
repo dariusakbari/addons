@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- RFI graph + pivot -->
+    <record id="view_cs_rfi_graph" model="ir.ui.view">
+        <field name="name">cs.rfi.graph</field>
+        <field name="model">cs.rfi</field>
+        <field name="arch" type="xml">
+            <graph string="RFIs" sample="1">
+                <field name="project_id"/>
+                <field name="state"/>
+            </graph>
+        </field>
+    </record>
+    <record id="view_cs_rfi_pivot" model="ir.ui.view">
+        <field name="name">cs.rfi.pivot</field>
+        <field name="model">cs.rfi</field>
+        <field name="arch" type="xml">
+            <pivot string="RFIs" sample="1">
+                <field name="project_id" type="row"/>
+                <field name="state" type="col"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="action_cs_rfi_analysis" model="ir.actions.act_window">
+        <field name="name">RFI Analysis</field>
+        <field name="res_model">cs.rfi</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+    </record>
+
+    <!-- Change Order graph + pivot (exposure) -->
+    <record id="view_cs_co_graph" model="ir.ui.view">
+        <field name="name">cs.change.order.graph</field>
+        <field name="model">cs.change.order</field>
+        <field name="arch" type="xml">
+            <graph string="Change Orders" sample="1">
+                <field name="project_id"/>
+                <field name="exposure" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <record id="view_cs_co_pivot" model="ir.ui.view">
+        <field name="name">cs.change.order.pivot</field>
+        <field name="model">cs.change.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Change Orders" sample="1">
+                <field name="project_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="amount_proposed" type="measure"/>
+                <field name="amount_approved" type="measure"/>
+                <field name="exposure" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="action_cs_co_analysis" model="ir.actions.act_window">
+        <field name="name">Change Order Analysis</field>
+        <field name="res_model">cs.change.order</field>
+        <field name="view_mode">pivot,graph,list,form</field>
+    </record>
+
+    <!-- Submittal graph -->
+    <record id="view_cs_submittal_graph" model="ir.ui.view">
+        <field name="name">cs.submittal.graph</field>
+        <field name="model">cs.submittal</field>
+        <field name="arch" type="xml">
+            <graph string="Submittals" sample="1">
+                <field name="project_id"/>
+                <field name="state"/>
+            </graph>
+        </field>
+    </record>
+    <record id="action_cs_submittal_analysis" model="ir.actions.act_window">
+        <field name="name">Submittal Analysis</field>
+        <field name="res_model">cs.submittal</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+    </record>
+
+    <!-- Punch list graph -->
+    <record id="view_cs_punch_graph" model="ir.ui.view">
+        <field name="name">cs.punch.item.graph</field>
+        <field name="model">cs.punch.item</field>
+        <field name="arch" type="xml">
+            <graph string="Deficiencies" sample="1">
+                <field name="project_id"/>
+                <field name="state"/>
+            </graph>
+        </field>
+    </record>
+    <record id="action_cs_punch_analysis" model="ir.actions.act_window">
+        <field name="name">Deficiency Analysis</field>
+        <field name="res_model">cs.punch.item</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+    </record>
+
+    <!-- Incident graph -->
+    <record id="view_cs_incident_graph" model="ir.ui.view">
+        <field name="name">cs.incident.graph</field>
+        <field name="model">cs.incident</field>
+        <field name="arch" type="xml">
+            <graph string="Incidents" sample="1">
+                <field name="project_id"/>
+                <field name="severity"/>
+            </graph>
+        </field>
+    </record>
+    <record id="action_cs_incident_analysis" model="ir.actions.act_window">
+        <field name="name">Incident Analysis</field>
+        <field name="res_model">cs.incident</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+    </record>
+
+    <!-- Budget pivot (commercial) -->
+    <record id="view_cs_budget_pivot" model="ir.ui.view">
+        <field name="name">cs.project.budget.pivot</field>
+        <field name="model">cs.project.budget</field>
+        <field name="arch" type="xml">
+            <pivot string="Budgets" sample="1">
+                <field name="project_id" type="row"/>
+                <field name="amount_budget" type="measure"/>
+                <field name="amount_committed" type="measure"/>
+                <field name="amount_actual" type="measure"/>
+                <field name="amount_variance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="action_cs_budget_analysis" model="ir.actions.act_window">
+        <field name="name">Budget vs Committed vs Actual</field>
+        <field name="res_model">cs.project.budget</field>
+        <field name="view_mode">pivot,list,form</field>
+    </record>
+</odoo>

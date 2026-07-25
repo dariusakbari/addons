@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- RFI Log -->
+    <record id="action_report_cs_rfi_log" model="ir.actions.report">
+        <field name="name">RFI Log</field>
+        <field name="model">cs.rfi</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_dashboards.report_cs_rfi_log</field>
+        <field name="report_file">cs_dashboards.report_cs_rfi_log</field>
+        <field name="binding_model_id" ref="cs_controls.model_cs_rfi"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_cs_rfi_log">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>RFI Log</h2>
+                    <table class="table table-sm">
+                        <thead><tr><th>Number</th><th>Subject</th><th>Project</th><th>Coordinator</th><th>Required</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="o">
+                                <td><span t-field="o.name"/></td>
+                                <td><span t-field="o.subject"/></td>
+                                <td><span t-field="o.project_id.display_name"/></td>
+                                <td><span t-field="o.coordinator_id"/></td>
+                                <td><span t-field="o.date_required"/></td>
+                                <td><span t-field="o.state"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="text-muted">Total: <span t-esc="len(docs)"/> RFIs.</p>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Change Order Log -->
+    <record id="action_report_cs_co_log" model="ir.actions.report">
+        <field name="name">Change Order Log</field>
+        <field name="model">cs.change.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_dashboards.report_cs_co_log</field>
+        <field name="report_file">cs_dashboards.report_cs_co_log</field>
+        <field name="binding_model_id" ref="cs_controls.model_cs_change_order"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_cs_co_log">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Change Order Log</h2>
+                    <table class="table table-sm">
+                        <thead><tr><th>Number</th><th>Title</th><th>Project</th><th class="text-end">Proposed</th><th class="text-end">Approved</th><th class="text-end">Exposure</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="o">
+                                <td><span t-field="o.name"/></td>
+                                <td><span t-field="o.title"/></td>
+                                <td><span t-field="o.project_id.display_name"/></td>
+                                <td class="text-end"><span t-field="o.amount_proposed"/></td>
+                                <td class="text-end"><span t-field="o.amount_approved"/></td>
+                                <td class="text-end"><span t-field="o.exposure"/></td>
+                                <td><span t-field="o.state"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="text-muted">Total: <span t-esc="len(docs)"/> change orders. Total exposure: <span t-esc="sum(docs.mapped('exposure'))"/>.</p>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Submittal Log -->
+    <record id="action_report_cs_submittal_log" model="ir.actions.report">
+        <field name="name">Submittal Log</field>
+        <field name="model">cs.submittal</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_dashboards.report_cs_submittal_log</field>
+        <field name="report_file">cs_dashboards.report_cs_submittal_log</field>
+        <field name="binding_model_id" ref="cs_controls.model_cs_submittal"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_cs_submittal_log">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Submittal Log</h2>
+                    <table class="table table-sm">
+                        <thead><tr><th>Number</th><th>Title</th><th>Spec</th><th>Project</th><th>Rev</th><th>On-Site</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="o">
+                                <td><span t-field="o.name"/></td>
+                                <td><span t-field="o.title"/></td>
+                                <td><span t-field="o.spec_section"/></td>
+                                <td><span t-field="o.project_id.display_name"/></td>
+                                <td><span t-field="o.current_revision"/></td>
+                                <td><span t-field="o.date_required_onsite"/></td>
+                                <td><span t-field="o.state"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="text-muted">Total: <span t-esc="len(docs)"/> submittals.</p>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Punch List Report -->
+    <record id="action_report_cs_punch_log" model="ir.actions.report">
+        <field name="name">Punch List</field>
+        <field name="model">cs.punch.item</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_dashboards.report_cs_punch_log</field>
+        <field name="report_file">cs_dashboards.report_cs_punch_log</field>
+        <field name="binding_model_id" ref="cs_field.model_cs_punch_item"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_cs_punch_log">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Deficiency / Punch List</h2>
+                    <table class="table table-sm">
+                        <thead><tr><th>Number</th><th>Location</th><th>Description</th><th>Responsible</th><th>Required</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="o">
+                                <td><span t-field="o.name"/></td>
+                                <td><span t-field="o.location"/></td>
+                                <td><span t-field="o.description"/></td>
+                                <td><span t-field="o.responsible_id"/></td>
+                                <td><span t-field="o.date_required"/></td>
+                                <td><span t-field="o.state"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="text-muted">Total: <span t-esc="len(docs)"/> items.</p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
