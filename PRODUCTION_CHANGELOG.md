@@ -387,3 +387,30 @@ the TEST field user's group assignment. Redo as needed.
     compile fine server-side and all data/menus verified via ORM. This is
     the recurring session asset gremlin; a fresh login (log out/in) or a
     clean/incognito browser restores it, as it did earlier today.
+
+## Blank-page root cause + upgrade hardening — 25 July 2026
+
+40. ROOT CAUSE of the recurring "blank content, navbar only": diagnosed to
+    the render layer, not the app. All assets 200, modules load (0 failed),
+    action registered, template present, get_kpis returns 11, ORM service
+    returns in ~50ms — yet the OWL scheduler held 2 finished-but-unflushed
+    tasks (ActionContainer + LoadingIndicator, counter 0). Tab was
+    document.hidden = true: Chrome throttles requestAnimationFrame in
+    hidden/background tabs, so OWL never flushed its paint. Forcing
+    scheduler.processTasks() instantly rendered Contacts, the Projects
+    kanban, and the Overview dashboard (11 KPIs, 4 groups). Conclusion: no
+    code defect; the blank is a background/stale-session artifact. Cures:
+    focused reload, clear /web/assets/ attachments, or unregister the
+    odoo-sw-cache service worker (all three exercised today).
+41. HARDENING (upgrade-proofing): audited all 12 cs_* modules — no raw SQL,
+    no hard-coded IDs, no private API imports, clean manifests (19.0.x
+    versions, explicit depends), all _inherit on stable public models,
+    constraints via models.Constraint. Made the Overview merge self-healing:
+    extracted _cs_apply_overview_merge(env) helper (idempotent) and added
+    cs_dashboards/migrations/19.0.0.4.0/post-migrate.py so the menu repoint
+    re-applies on every upgrade (post_init_hook only fires on install).
+    cs_dashboards -> 0.4.0. New doc: docs/CORE_UPGRADE_SAFETY.md (audit +
+    pre/post-upgrade checklist). Only residual upgrade risk is the ordinary
+    one: 8 views inherit core Project views (project.edit_project,
+    project.view_task_form2) — a major version could move an anchor; fix is
+    a small xpath repair, documented in the checklist.
