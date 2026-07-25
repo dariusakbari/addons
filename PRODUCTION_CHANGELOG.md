@@ -227,3 +227,27 @@ Pre-phase backup: OSM 2AM daily (25 Jul) + prior manual points.
     confirm field/behaviour after upgrade (cost one extra cycle here).
     Test artifacts: TEST E-401 chain + TEST SPEC in Bayview/02+03,
     TEST Package.zip, 0476-TR-001 — clean up after review.
+
+## Upgrade spec Phase 4 — 25 July 2026
+
+30. Deployed gte_field 0.6.0 (commit 8949848). Field-workflow suite,
+    all production-tested on TEMPLATE:
+    - Field Memo / Site Instruction (Field Issue extended): recipient,
+      required-action date, cost/schedule impact, related change,
+      acknowledgement, distribution. TMPL-FI-001 acknowledged, cost 1500,
+      2 days sched.
+    - Deficiency / Punch List (gte.punch.item, PL-): before/after photos,
+      priority, corrective action, verification. Gates: ready needs
+      corrective action, close needs an after-photo (both blocked as
+      expected). TMPL-PL-001 closed.
+    - Inspection → deficiency: "Log Deficiency" button + deficiency smart
+      button; TMPL-PL-001 created from inspection, count rolled up.
+    - Meeting Minutes (gte.meeting, MIN-) + action items: issuing raises
+      owner activities for internal owners only (1 of 2, external skipped);
+      TMPL-MIN-001 issued.
+    - Closeout Register (gte.closeout.item): O&M/as-built/warranty/etc.
+      with required→received→reviewed→accepted; accept needs an attached
+      document (blocked then passed). TMPL closeout accepted.
+    Note: a failed upgrade left an Odoo module-op lock ("processing another
+    module operation"); a Restart cleared it. Menus for Meeting/Closeout
+    live under Construction → Document Flow; Deficiencies under Field & Safety.
