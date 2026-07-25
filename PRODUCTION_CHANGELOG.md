@@ -206,3 +206,24 @@ Pre-phase backup: odoo.greentechelectric.ca_20260724_231612.zip.
     - Settings → Construction: CO approval limit (currently 0 = disabled,
       awaiting D4 value), RFI/submittal reminder leads.
     Test records TMPL-RFI-004/005, TMPL-CO-002, TMPL-SUB-002 on TEMPLATE.
+
+## Upgrade spec Phase 3 — 25 July 2026
+
+Pre-phase backup: OSM 2AM daily (25 Jul) + prior manual points.
+29. Deployed gte_documents 0.2.0 (commits ca24aa5→8137751). Document
+    control complete, all production-tested on Bayview/02 Drawings:
+    - Register Revision now accepts a direct file upload (auto-creates the
+      new revision doc); predecessor must be current. rev2→rev3 by upload OK.
+    - SUPERSEDED red ribbon on the form.
+    - Mass "Set Construction Metadata" action + auto-file into the correct
+      project subfolder by type (spec → 03 Specifications verified).
+    - "Download Issue Package" zips current revisions only — superseded
+      excluded by design (3 selected → 2 in zip, 359 bytes).
+    - "Create Transmittal" from selected docs freezes exact revisions into
+      transmittal lines (0476-TR-001, revs 3+0, 2 files) and refuses
+      superseded selections.
+    - Register menu opens the list view (blank-form bug already fixed).
+    Note: OSM "up to date" status can lag; always Refresh then Pull, and
+    confirm field/behaviour after upgrade (cost one extra cycle here).
+    Test artifacts: TEST E-401 chain + TEST SPEC in Bayview/02+03,
+    TEST Package.zip, 0476-TR-001 — clean up after review.
