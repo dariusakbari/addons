@@ -7,6 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="action_send_email" string="Email RFI" type="object" invisible="state in ('draft','cancelled')"/>
+                <button name="action_send_reminder" string="Send Reminder" type="object" invisible="state not in ('sent','answered')"/>
+                <button name="action_resend_email" string="Resend" type="object" invisible="state in ('draft','cancelled')"/>
             </xpath>
         </field>
     </record>
@@ -17,6 +19,8 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="action_send_email" string="Email to Client" type="object" invisible="state in ('draft','pricing','cancelled')"/>
+                <button name="action_send_reminder" string="Send Reminder" type="object" invisible="state != 'submitted'"/>
+                <button name="action_resend_email" string="Resend" type="object" invisible="state in ('draft','pricing','cancelled')"/>
             </xpath>
         </field>
     </record>
@@ -27,6 +31,8 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="action_send_email" string="Email Request" type="object" invisible="state in ('draft','cancelled','closed')"/>
+                <button name="action_send_reminder" string="Send Reminder" type="object" invisible="state not in ('requested','submitted')"/>
+                <button name="action_resend_email" string="Resend" type="object" invisible="state in ('draft','cancelled','closed')"/>
             </xpath>
         </field>
     </record>
