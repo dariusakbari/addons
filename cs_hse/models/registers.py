@@ -1,5 +1,45 @@
+import base64
+from io import BytesIO
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+
+
+def _cs_make_qr(value):
+    """Return a base64 PNG QR for a value, or False if generation is
+    unavailable (missing qrcode library, etc.). Never raises."""
+    try:
+        import qrcode
+    except Exception:
+        return False
+    try:
+        img = qrcode.make(value)
+        buf = BytesIO()
+        img.save(buf, format="PNG")
+        return base64.b64encode(buf.getvalue())
+    except Exception:
+        return False
+
+
+class CsQrMixin(models.AbstractModel):
+    """Adds a scan-to-open QR image pointing at the record's form."""
+    _name = "cs.qr.mixin"
+    _description = "Construction QR Mixin"
+
+    qr_image = fields.Image(compute="_compute_qr_image", store=True,
+                            readonly=True)
+
+    @api.depends("name")
+    def _compute_qr_image(self):
+        base = self.env["ir.config_parameter"].sudo().get_param(
+            "web.base.url") or ""
+        for rec in self:
+            if isinstance(rec.id, int) and base:
+                url = "%s/web#id=%s&model=%s&view_type=form" % (
+                    base, rec.id, rec._name)
+                rec.qr_image = _cs_make_qr(url)
+            else:
+                rec.qr_image = False
 
 
 class GteIncident(models.Model):
@@ -87,7 +127,8 @@ class GteIncident(models.Model):
 class GteEquipmentInspection(models.Model):
     _name = "cs.equipment.inspection"
     _description = "Equipment Inspection"
-    _inherit = ["mail.thread", "mail.activity.mixin", "cs.legacy.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin", "cs.legacy.mixin",
+                "cs.qr.mixin"]
     _order = "date desc, id desc"
 
     name = fields.Char(readonly=True, copy=False, default="New")
@@ -142,7 +183,8 @@ class GteEquipmentInspection(models.Model):
 class GteWorkPermit(models.Model):
     _name = "cs.work.permit"
     _description = "Work Permit"
-    _inherit = ["mail.thread", "mail.activity.mixin", "cs.legacy.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin", "cs.legacy.mixin",
+                "cs.qr.mixin"]
     _order = "valid_from desc, id desc"
 
     name = fields.Char(readonly=True, copy=False, default="New")

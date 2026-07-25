@@ -548,3 +548,16 @@ the TEST field user's group assignment. Redo as needed.
     Construction (admin). ACL: admin manage, PM read. New module — requires
     app-list update + install (not just upgrade). To verify: install, run the
     cron, confirm activities appear and old crons are inactive.
+
+## Phase 9 — Field QR codes — 25 July 2026
+
+50. Scan-to-open QR codes for the field (cs_hse 0.4.0). New cs.qr.mixin
+    computes a QR image (base64 PNG via the qrcode library, fully guarded —
+    returns nothing if the lib is unavailable, never raises) encoding the
+    record's form URL. Added to cs.work.permit and cs.equipment.inspection,
+    shown top-right on their forms (hidden when empty). Note: Odoo's built-in
+    barcode renderer is broken on this server (missing rlPyCairo/pycairo), so
+    QR is generated via qrcode directly; if qrcode is also absent the field
+    stays hidden and the owner can pip-install it server-side. Photos already
+    exist on field records (attachment fields); phone rendering + camera
+    capture remain an on-device check for the owner.

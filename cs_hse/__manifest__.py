@@ -1,7 +1,7 @@
 {
     "name": "Construction HSE & Safety",
     "summary": "Field Level Hazard Assessments and Toolbox Talks with mandatory validation",
-    "version": "19.0.0.3.0",
+    "version": "19.0.0.4.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
