@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Construction Dashboard page in the PROJECT app, at the Overview level -->
-    <menuitem id="menu_cs_project_dashboard" name="Construction Dashboard"
-              parent="project.menu_main_pm" sequence="1"
-              action="action_construction_dashboard"
-              groups="cs_core.group_cs_coordinator"/>
-
     <!-- Same analytics also available inside the Construction app -->
     <menuitem id="menu_cs_reporting" name="Reporting" parent="cs_controls.menu_cs_root" sequence="6" groups="cs_core.group_cs_coordinator"/>
     <menuitem id="menu_cs_rep_rfi" name="RFI Analysis" parent="menu_cs_reporting" action="action_cs_rfi_analysis" sequence="10"/>

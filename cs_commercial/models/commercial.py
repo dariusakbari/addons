@@ -17,16 +17,16 @@ class GteProjectBudget(models.Model):
     company_id = fields.Many2one(related="project_id.company_id", store=True)
     currency_id = fields.Many2one("res.currency", compute="_compute_currency_id")
     line_ids = fields.One2many("cs.project.budget.line", "budget_id", copy=True)
-    amount_budget = fields.Monetary(currency_field="currency_id",
+    amount_budget = fields.Monetary(aggregator="sum", currency_field="currency_id",
                                     compute="_compute_amounts", store=True)
-    amount_committed = fields.Monetary(
+    amount_committed = fields.Monetary(aggregator="sum", 
         currency_field="currency_id", compute="_compute_amounts",
         help="Open + approved change-order exposure on this project.")
-    amount_actual = fields.Monetary(
+    amount_actual = fields.Monetary(aggregator="sum", 
         currency_field="currency_id", compute="_compute_amounts",
         help="Costs booked to the project's analytic account (negative "
              "analytic amounts).")
-    amount_variance = fields.Monetary(currency_field="currency_id",
+    amount_variance = fields.Monetary(aggregator="sum", currency_field="currency_id",
                                       compute="_compute_amounts")
     state = fields.Selection([("draft", "Draft"), ("approved", "Approved"),
                               ("closed", "Closed")],

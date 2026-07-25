@@ -27,15 +27,15 @@ class GteChangeOrder(models.Model):
     user_id = fields.Many2one("res.users", string="Project Manager",
                               default=lambda self: self.env.user, tracking=True)
     line_ids = fields.One2many("cs.change.order.line", "order_id", copy=True)
-    amount_proposed = fields.Monetary(currency_field="currency_id",
+    amount_proposed = fields.Monetary(aggregator="sum", currency_field="currency_id",
                                       compute="_compute_amounts", store=True,
                                       tracking=True)
     amount_submitted = fields.Monetary(currency_field="currency_id", readonly=True,
                                        copy=False, tracking=True,
                                        help="Snapshot taken at submission; never overwritten "
                                             "silently — changes are tracked in the chatter.")
-    amount_approved = fields.Monetary(currency_field="currency_id", tracking=True)
-    exposure = fields.Monetary(currency_field="currency_id",
+    amount_approved = fields.Monetary(aggregator="sum", currency_field="currency_id", tracking=True)
+    exposure = fields.Monetary(aggregator="sum", currency_field="currency_id",
                                compute="_compute_amounts", store=True,
                                help="Approved amount when approved, otherwise proposed "
                                     "amount while the change is unresolved.")
