@@ -210,6 +210,6 @@
 
     <!-- Menus -->
     <menuitem id="menu_gte_punch" name="Deficiencies / Punch" parent="gte_hse.menu_gte_field_safety" action="action_gte_punch" sequence="115"/>
-    <menuitem id="menu_gte_meeting" name="Meeting Minutes" parent="gte_controls.menu_gte_docflow" action="action_gte_meeting" sequence="30"/>
-    <menuitem id="menu_gte_closeout" name="Closeout Register" parent="gte_controls.menu_gte_docflow" action="action_gte_closeout" sequence="40"/>
+    <menuitem id="menu_gte_meeting" name="Meeting Minutes" parent="menu_gte_docflow" action="action_gte_meeting" sequence="30"/>
+    <menuitem id="menu_gte_closeout" name="Closeout Register" parent="menu_gte_docflow" action="action_gte_closeout" sequence="40"/>
 </odoo>
