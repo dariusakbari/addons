@@ -82,8 +82,9 @@ class GteDocumentRevisionWizard(models.TransientModel):
     _description = "Register Document Revision"
 
     new_document_id = fields.Many2one(
-        "documents.document", string="New Revision (this file)", required=True,
-        domain="[('type', '=', 'binary')]")
+        "documents.document", string="New Revision (existing document)",
+        domain="[('type', '=', 'binary')]",
+        help="Either pick an already-uploaded document or upload the file below.")
     predecessor_id = fields.Many2one(
         "documents.document", string="Supersedes", required=True,
         domain="[('type', '=', 'binary'), ('gte_doc_status', '=', 'current')]")
