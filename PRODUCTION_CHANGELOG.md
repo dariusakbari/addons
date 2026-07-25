@@ -368,3 +368,22 @@ the TEST field user's group assignment. Redo as needed.
       calendar/gantt by deadline window; relative-date domains eval OK,
       2 tasks in 6-wk window) + Delay Events register.
     Native Project/Planning cover milestones, dependencies, crew shifts.
+
+## Dashboard merged into Overview + pivot fix — 25 July 2026
+
+38. Merged the Construction Dashboard into the Project app's "Overview"
+    menu (kept the name "Overview"): Project Overview (menu 713) now opens
+    the KPI dashboard client action; the separate "Construction Dashboard"
+    menu removed. cs_dashboards 0.3.0 carries a post_init hook so fresh
+    installs do the same. Verified in DB (Overview -> ir.actions.client,1302;
+    separate menu inactive).
+39. FIX: Odoo 19 pivot error "No aggregate function for measure" —
+    added aggregator="sum" to cs.change.order amounts (proposed/approved/
+    exposure) and cs.project.budget amounts (budget/committed/actual/
+    variance). cs_controls 0.8.0, cs_commercial 0.3.0. Verified: CO
+    read_group returns 3 groups.
+    DISPLAY NOTE: after this upgrade the browser session's web client
+    action-manager failed to mount (blank content, navbar only) — assets
+    compile fine server-side and all data/menus verified via ORM. This is
+    the recurring session asset gremlin; a fresh login (log out/in) or a
+    clean/incognito browser restores it, as it did earlier today.
