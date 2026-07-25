@@ -12,6 +12,7 @@
                     <button name="action_approve" string="Record Approval" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_request_changes" string="Changes Requested" type="object" invisible="state != 'submitted'"/>
                     <button name="action_reject" string="Record Rejection" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_bill_via_sale" string="Bill via Sales" type="object" class="btn-primary" invisible="state not in ('approved','billed')" groups="cs_core.group_cs_pm,cs_core.group_cs_accounting"/>
                     <button name="action_billed" string="Mark Billed" type="object" invisible="state != 'approved'"/>
                     <button name="action_paid" string="Mark Paid" type="object" invisible="state != 'billed'"/>
                     <button name="action_close" string="Close" type="object" invisible="state not in ('paid','rejected','approved','billed')"/>
@@ -20,6 +21,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,pricing,review,submitted,approved,billed,paid,closed"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sale_order" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="not sale_order_id">
+                            <div class="o_stat_info"><span class="o_stat_text">Sale Order</span></div>
+                        </button>
+                    </div>
                     <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
                     <group>
                         <group>

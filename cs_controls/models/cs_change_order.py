@@ -53,6 +53,7 @@ class GteChangeOrder(models.Model):
         default="unpaid", tracking=True)
     client_response = fields.Html()
     sale_order_id = fields.Many2one("sale.order", copy=False)
+    sale_line_id = fields.Many2one("sale.order.line", copy=False)
     invoice_ids = fields.Many2many("account.move", string="Invoices", copy=False)
     analytic_account_id = fields.Many2one("account.analytic.account", copy=False)
     approval_reference = fields.Char(
@@ -187,6 +188,70 @@ class GteChangeOrder(models.Model):
                     "%s cannot be marked paid without linked invoices." % rec.name)
         self._set_state(("billed",), "paid", {"payment_status": "paid"})
 
+    def _cs_project_sale_order(self):
+        """Find an open sale order for this project, or create one."""
+        self.ensure_one()
+        partner = self.partner_id or self.project_id.partner_id
+        if not partner:
+            raise ValidationError(
+                "%s has no client — set a client on the change order or the "
+                "project before billing." % self.name)
+        so = self.env["sale.order"].search([
+            ("cs_project_id", "=", self.project_id.id),
+            ("state", "in", ("draft", "sent")),
+        ], limit=1)
+        if not so:
+            so = self.env["sale.order"].create({
+                "partner_id": partner.id,
+                "cs_project_id": self.project_id.id,
+                "origin": self.project_id.name,
+            })
+        return so
+
+    def action_bill_via_sale(self):
+        """Add (or update) a sale-order line for the approved change amount."""
+        product = self.env.ref("cs_controls.product_change_order",
+                               raise_if_not_found=False)
+        for rec in self:
+            if rec.state not in ("approved", "billed"):
+                raise ValidationError(
+                    "%s must be approved before it can be billed." % rec.name)
+            if not rec.amount_approved:
+                raise ValidationError(
+                    "%s has no approved amount to bill." % rec.name)
+            so = rec._cs_project_sale_order()
+            line_vals = {
+                "product_id": product.id if product else False,
+                "name": "%s — %s" % (rec.name, rec.title or ""),
+                "product_uom_qty": 1.0,
+                "price_unit": rec.amount_approved,
+            }
+            if rec.sale_line_id and rec.sale_line_id.order_id == so:
+                rec.sale_line_id.write(line_vals)
+            else:
+                line_vals["order_id"] = so.id
+                rec.sale_line_id = self.env["sale.order.line"].create(line_vals)
+            # Force the price after the product-driven compute so the approved
+            # amount is not overwritten by the product's list price.
+            rec.sale_line_id.price_unit = rec.amount_approved
+            rec.sale_order_id = so
+            rec.billing_status = "to_bill"
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "sale.order",
+            "res_id": self[:1].sale_order_id.id,
+            "view_mode": "form",
+        }
+
+    def action_view_sale_order(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "sale.order",
+            "res_id": self.sale_order_id.id,
+            "view_mode": "form",
+        }
+
     def action_reopen(self):
         if not self.env.user.has_group("cs_core.group_cs_pm"):
             raise ValidationError("Only project managers can reopen a change order.")
@@ -201,6 +266,15 @@ class GteChangeOrder(models.Model):
 
     def action_cancel(self):
         self._set_state(("draft", "pricing", "review"), "cancelled")
+
+
+class SaleOrder(models.Model):
+    _inherit = "sale.order"
+
+    cs_project_id = fields.Many2one(
+        "project.project", string="Construction Project", index=True, copy=False,
+        help="Links this order to a construction project so change orders "
+             "attach to it.")
 
 
 class GteChangeOrderLine(models.Model):

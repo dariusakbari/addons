@@ -1,7 +1,7 @@
 {
     "name": "Construction Controls",
     "summary": "RFIs, Change Orders and Submittals as dedicated business records",
-    "version": "19.0.0.8.0",
+    "version": "19.0.0.9.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
@@ -10,6 +10,7 @@
         "security/ir.model.access.csv",
         "security/cs_rules.xml",
         "data/cron.xml",
+        "data/co_products.xml",
         "views/cs_rfi_views.xml",
         "views/cs_change_order_views.xml",
         "views/cs_submittal_views.xml",

@@ -22,6 +22,11 @@
                             <field name="amount_actual"/>
                             <field name="amount_variance"/>
                         </group>
+                        <group string="Forecast">
+                            <field name="amount_cost_to_complete"/>
+                            <field name="amount_forecast"/>
+                            <field name="amount_forecast_variance"/>
+                        </group>
                     </group>
                     <field name="line_ids">
                         <list editable="bottom">
@@ -45,6 +50,8 @@
                 <field name="amount_committed" sum="Committed"/>
                 <field name="amount_actual" sum="Actual"/>
                 <field name="amount_variance"/>
+                <field name="amount_forecast" sum="Forecast" optional="show"/>
+                <field name="amount_forecast_variance" optional="show"/>
                 <field name="state" widget="badge"/>
             </list>
         </field>
@@ -61,8 +68,13 @@
         <field name="arch" type="xml">
             <list editable="bottom">
                 <field name="classification"/>
+                <field name="effective_from"/>
                 <field name="cost_rate" groups="cs_core.group_cs_accounting,cs_core.group_cs_admin"/>
                 <field name="sell_rate"/>
+                <field name="ot_multiplier"/>
+                <field name="dt_multiplier"/>
+                <field name="ot_sell_rate" optional="show"/>
+                <field name="dt_sell_rate" optional="hide"/>
             </list>
         </field>
     </record>
@@ -152,6 +164,12 @@
                 <button name="action_view_cs_budget" type="object" class="oe_stat_button" icon="fa-money" groups="cs_core.group_cs_pm,cs_core.group_cs_accounting">
                     <field name="cs_budget_total" widget="statinfo" string="Budget"/>
                 </button>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]" position="after">
+                <group name="cs_commercial" string="Commercial" groups="cs_core.group_cs_pm,cs_core.group_cs_accounting">
+                    <field name="cs_contract_amount"/>
+                    <field name="cs_holdback_percent"/>
+                </group>
             </xpath>
         </field>
     </record>

@@ -20,6 +20,11 @@
                             <field name="cs_submittal_reminder_days"/>
                         </setting>
                     </block>
+                    <block title="Billing">
+                        <setting string="Default holdback %" help="Withheld on progress billing. Overridable per project.">
+                            <field name="cs_holdback_percent"/>
+                        </setting>
+                    </block>
                 </app>
             </xpath>
         </field>

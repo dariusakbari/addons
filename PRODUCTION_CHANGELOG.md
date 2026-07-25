@@ -468,3 +468,26 @@ the TEST field user's group assignment. Redo as needed.
     its filtered list. get_project_kpis now returns sections + money + progress
     + tags; OWL template/SCSS rebuilt (card, progress bar, grouped stats).
     cs_dashboards -> 0.7.0 with 0.7.0 post-migrate re-asserting the merge.
+
+## Phase 6.1 — Commercial & job cost (increment 1) — 25 July 2026
+
+45. Built the first commercial increment (owner decisions: COs bill by adding
+    a Sale Order line; holdback on, custom % from settings).
+    - Labour rates (cs_commercial 0.4.0): effective_from date (rate history),
+      OT/DT multipliers with computed OT/DT sell rates, and a
+      get_effective_rate(classification, date) lookup. Uniqueness now per
+      (classification, company, effective_from).
+    - Budget forecast: amount_cost_to_complete (input), amount_forecast
+      (= actual + CTC), amount_forecast_variance (= budget − forecast).
+      Shown on budget form/list.
+    - Holdback: cs.holdback_percent setting (cs_core 0.5.0, default 10%) +
+      per-project cs_holdback_percent override and cs_contract_amount on the
+      project form (PM/Accounting only).
+    - CO → Sale Order (cs_controls 0.9.0): "Bill via Sales" button on approved
+      COs creates/updates one draft sale order per project (new
+      sale.order.cs_project_id link) and adds a line for the approved amount
+      using a new "Change Order Work" service product; price forced to the
+      approved amount; SO smart button on the CO form. Verified Odoo 19 field
+      specifics (product type 'service', invoice_policy 'order', sale line
+      product_uom_id) before build.
+    Next (6.2): AIA-style progress billing / payment application with holdback.

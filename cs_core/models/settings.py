@@ -15,3 +15,7 @@ class ResConfigSettings(models.TransientModel):
     cs_submittal_reminder_days = fields.Integer(
         string="Submittal reminder lead (days)",
         config_parameter="cs.submittal_reminder_days", default=7)
+    cs_holdback_percent = fields.Float(
+        string="Default holdback %",
+        config_parameter="cs.holdback_percent", default=10.0,
+        help="Percentage withheld on progress billing. Overridable per project.")

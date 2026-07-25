@@ -22,12 +22,23 @@ class GteProjectBudget(models.Model):
     amount_committed = fields.Monetary(aggregator="sum", 
         currency_field="currency_id", compute="_compute_amounts",
         help="Open + approved change-order exposure on this project.")
-    amount_actual = fields.Monetary(aggregator="sum", 
+    amount_actual = fields.Monetary(aggregator="sum",
         currency_field="currency_id", compute="_compute_amounts",
         help="Costs booked to the project's analytic account (negative "
              "analytic amounts).")
     amount_variance = fields.Monetary(aggregator="sum", currency_field="currency_id",
                                       compute="_compute_amounts")
+    amount_cost_to_complete = fields.Monetary(
+        string="Cost to Complete", currency_field="currency_id",
+        help="Estimated remaining cost to finish the work (your input).")
+    amount_forecast = fields.Monetary(
+        string="Forecast Final Cost", aggregator="sum",
+        currency_field="currency_id", compute="_compute_amounts",
+        help="Actual cost booked to date plus the cost to complete.")
+    amount_forecast_variance = fields.Monetary(
+        string="Forecast Variance", aggregator="sum",
+        currency_field="currency_id", compute="_compute_amounts",
+        help="Budget minus forecast final cost. Negative = projected overrun.")
     state = fields.Selection([("draft", "Draft"), ("approved", "Approved"),
                               ("closed", "Closed")],
                              default="draft", tracking=True, copy=False)
@@ -47,7 +58,7 @@ class GteProjectBudget(models.Model):
         for rec in self:
             rec.currency_id = rec.company_id.currency_id or rec.env.company.currency_id
 
-    @api.depends("line_ids.amount", "project_id")
+    @api.depends("line_ids.amount", "project_id", "amount_cost_to_complete")
     def _compute_amounts(self):
         for rec in self:
             rec.amount_budget = sum(rec.line_ids.mapped("amount"))
@@ -63,6 +74,8 @@ class GteProjectBudget(models.Model):
                 actual = -sum(lines.mapped("amount"))
             rec.amount_actual = actual
             rec.amount_variance = rec.amount_budget - rec.amount_actual
+            rec.amount_forecast = actual + rec.amount_cost_to_complete
+            rec.amount_forecast_variance = rec.amount_budget - rec.amount_forecast
 
     def action_approve(self):
         for rec in self:
@@ -87,24 +100,56 @@ class GteProjectBudgetLine(models.Model):
 
 
 class GteLabourRate(models.Model):
-    """Cost/sell rates by classification. ACL restricted: field employees and
+    """Cost/sell rates by classification, with effective dates so history is
+    preserved and OT/DT multipliers. ACL restricted: field employees and
     foremen have NO access to this model at all (audit requirement)."""
     _name = "cs.labour.rate"
     _description = "Labour Rate"
-    _order = "classification"
+    _order = "classification, effective_from desc"
 
     classification = fields.Char(required=True)
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id")
+    effective_from = fields.Date(
+        required=True, default=fields.Date.context_today,
+        help="Date this rate takes effect. Keep old rows for rate history.")
     cost_rate = fields.Monetary(currency_field="currency_id",
                                 help="Internal cost per hour — confidential.")
-    sell_rate = fields.Monetary(currency_field="currency_id")
+    sell_rate = fields.Monetary(string="Sell Rate (reg.)",
+                                currency_field="currency_id")
+    ot_multiplier = fields.Float(string="OT ×", default=1.5,
+                                 help="Overtime multiplier applied to the sell rate.")
+    dt_multiplier = fields.Float(string="DT ×", default=2.0,
+                                 help="Double-time multiplier applied to the sell rate.")
+    ot_sell_rate = fields.Monetary(string="Sell Rate (OT)", currency_field="currency_id",
+                                   compute="_compute_derived_rates")
+    dt_sell_rate = fields.Monetary(string="Sell Rate (DT)", currency_field="currency_id",
+                                   compute="_compute_derived_rates")
     active = fields.Boolean(default=True)
 
     _classification_uniq = models.Constraint(
-        "unique(classification, company_id)",
-        "A rate already exists for this classification.",
+        "unique(classification, company_id, effective_from)",
+        "A rate already exists for this classification on that effective date.",
     )
+
+    @api.depends("sell_rate", "ot_multiplier", "dt_multiplier")
+    def _compute_derived_rates(self):
+        for rec in self:
+            rec.ot_sell_rate = rec.sell_rate * (rec.ot_multiplier or 0.0)
+            rec.dt_sell_rate = rec.sell_rate * (rec.dt_multiplier or 0.0)
+
+    @api.model
+    def get_effective_rate(self, classification, date=None, company_id=None):
+        """Return the rate record for a classification effective on `date`
+        (the most recent effective_from on or before it), or an empty record.
+        """
+        date = date or fields.Date.context_today(self)
+        company_id = company_id or self.env.company.id
+        return self.search([
+            ("classification", "=", classification),
+            ("company_id", "=", company_id),
+            ("effective_from", "<=", date),
+        ], order="effective_from desc", limit=1)
 
 
 class GteWorkerCert(models.Model):
@@ -176,6 +221,19 @@ class ProjectProject(models.Model):
                                     compute="_compute_cs_budget")
     cs_budget_total = fields.Monetary(compute="_compute_cs_budget",
                                        currency_field="currency_id")
+    cs_contract_amount = fields.Monetary(
+        string="Original Contract", currency_field="currency_id",
+        help="Base contract value, before change orders. Used for progress "
+             "billing.")
+    cs_holdback_percent = fields.Float(
+        string="Holdback %", default=lambda self: self._cs_default_holdback(),
+        help="Percentage withheld on progress billing for this project. "
+             "Defaults from Construction Settings.")
+
+    @api.model
+    def _cs_default_holdback(self):
+        return float(self.env["ir.config_parameter"].sudo().get_param(
+            "cs.holdback_percent", 10.0) or 0.0)
 
     def _compute_cs_budget(self):
         for rec in self:

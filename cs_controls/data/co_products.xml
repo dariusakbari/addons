@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_change_order" model="product.product">
+        <field name="name">Change Order Work</field>
+        <field name="type">service</field>
+        <field name="invoice_policy">order</field>
+        <field name="list_price">0.0</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="description_sale">Approved construction change order.</field>
+    </record>
+</odoo>
