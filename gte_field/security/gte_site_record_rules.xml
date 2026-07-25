@@ -96,4 +96,40 @@
         <field name="groups" eval="[(4, ref('gte_core.group_gte_pm')), (4, ref('gte_core.group_gte_admin'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
     </record>
+    <record id="rule_gte_punch_item_member" model="ir.rule">
+        <field name="name">gte.punch.item: project members</field>
+        <field name="model_id" ref="model_gte_punch_item"/>
+        <field name="groups" eval="[(4, ref('gte_core.group_gte_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_gte_punch_item_manager" model="ir.rule">
+        <field name="name">gte.punch.item: managers all</field>
+        <field name="model_id" ref="model_gte_punch_item"/>
+        <field name="groups" eval="[(4, ref('gte_core.group_gte_pm')), (4, ref('gte_core.group_gte_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_gte_meeting_member" model="ir.rule">
+        <field name="name">gte.meeting: project members</field>
+        <field name="model_id" ref="model_gte_meeting"/>
+        <field name="groups" eval="[(4, ref('gte_core.group_gte_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_gte_meeting_manager" model="ir.rule">
+        <field name="name">gte.meeting: managers all</field>
+        <field name="model_id" ref="model_gte_meeting"/>
+        <field name="groups" eval="[(4, ref('gte_core.group_gte_pm')), (4, ref('gte_core.group_gte_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_gte_closeout_item_member" model="ir.rule">
+        <field name="name">gte.closeout.item: project members</field>
+        <field name="model_id" ref="model_gte_closeout_item"/>
+        <field name="groups" eval="[(4, ref('gte_core.group_gte_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_gte_closeout_item_manager" model="ir.rule">
+        <field name="name">gte.closeout.item: managers all</field>
+        <field name="model_id" ref="model_gte_closeout_item"/>
+        <field name="groups" eval="[(4, ref('gte_core.group_gte_pm')), (4, ref('gte_core.group_gte_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
 </odoo>

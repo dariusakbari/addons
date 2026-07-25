@@ -9,6 +9,7 @@
                     <button name="action_submit" string="Send to PM" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_release_rfi" string="Release RFI" type="object" class="btn-primary" invisible="state != 'submitted'" groups="gte_core.group_gte_pm"/>
                     <button name="action_resolve" string="Resolve Without RFI" type="object" invisible="state != 'submitted'" groups="gte_core.group_gte_pm"/>
+                    <button name="action_acknowledge" string="Acknowledge" type="object" invisible="state in ('draft','cancelled') or acknowledged_by_id != False"/>
                     <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','submitted')"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,converted"/>
                 </header>
@@ -25,11 +26,29 @@
                             <field name="raised_by_id"/>
                             <field name="location"/>
                             <field name="drawing_refs"/>
+                            <field name="recipient_id"/>
+                            <field name="required_action_date"/>
                             <field name="rfi_id" invisible="not rfi_id"/>
                         </group>
                     </group>
                     <group>
                         <field name="description" placeholder="What did you find? Required before sending to the PM."/>
+                    </group>
+                    <group>
+                        <group string="Cost Impact">
+                            <field name="cost_impact"/>
+                            <field name="cost_amount" invisible="cost_impact != 'yes'"/>
+                            <field name="change_order_id"/>
+                        </group>
+                        <group string="Schedule Impact">
+                            <field name="schedule_impact"/>
+                            <field name="schedule_days" invisible="schedule_impact != 'yes'"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="distribution_ids" widget="many2many_tags"/>
+                        <field name="acknowledged_by_id" invisible="not acknowledged_by_id"/>
+                        <field name="acknowledged_date" invisible="not acknowledged_date"/>
                     </group>
                     <group string="Photos">
                         <field name="photo_ids" widget="many2many_binary" nolabel="1"/>

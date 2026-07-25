@@ -24,7 +24,36 @@ class GteFieldIssue(models.Model):
         ("obstruction", "Obstruction / Site Condition"),
         ("design", "Design Conflict"),
         ("material", "Material / Product Issue"),
+        ("instruction", "Site Instruction / Memo"),
         ("other", "Other")], required=True, default="question", tracking=True)
+    recipient_id = fields.Many2one("res.partner", string="Recipient / Directed To",
+                                   tracking=True)
+    required_action_date = fields.Date(string="Required Action Date")
+    cost_impact = fields.Selection(
+        [("none", "None"), ("tbd", "TBD"), ("yes", "Cost Impact")],
+        default="none", tracking=True)
+    cost_amount = fields.Monetary(currency_field="currency_id")
+    currency_id = fields.Many2one("res.currency", compute="_compute_currency_id")
+    schedule_impact = fields.Selection(
+        [("none", "None"), ("tbd", "TBD"), ("yes", "Schedule Impact")],
+        default="none", tracking=True)
+    schedule_days = fields.Integer(string="Schedule Impact (days)")
+    change_order_id = fields.Many2one("gte.change.order", string="Related Change")
+    acknowledged_by_id = fields.Many2one("res.users", string="Acknowledged By",
+                                         readonly=True, copy=False)
+    acknowledged_date = fields.Datetime(readonly=True, copy=False)
+    distribution_ids = fields.Many2many("res.partner", "gte_fi_distribution_rel",
+                                        string="Distribution")
+
+    def _compute_currency_id(self):
+        for rec in self:
+            rec.currency_id = rec.company_id.currency_id or rec.env.company.currency_id
+
+    def action_acknowledge(self):
+        for rec in self:
+            rec.write({"acknowledged_by_id": self.env.user.id,
+                       "acknowledged_date": fields.Datetime.now()})
+            rec.message_post(body="Acknowledged by %s." % self.env.user.name)
     title = fields.Char(required=True, tracking=True)
     description = fields.Text(string="Details")
     location = fields.Char()

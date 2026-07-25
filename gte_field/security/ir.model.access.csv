@@ -21,3 +21,13 @@ access_gp_field,gte.gate.pass field,model_gte_gate_pass,gte_core.group_gte_field
 access_gp_admin,gte.gate.pass admin,model_gte_gate_pass,gte_core.group_gte_admin,1,1,1,1
 access_fi_field,gte.field.issue field,model_gte_field_issue,gte_core.group_gte_field,1,1,1,0
 access_fi_admin,gte.field.issue admin,model_gte_field_issue,gte_core.group_gte_admin,1,1,1,1
+access_punch_field,gte.punch.item field,model_gte_punch_item,gte_core.group_gte_field,1,1,1,0
+access_punch_admin,gte.punch.item admin,model_gte_punch_item,gte_core.group_gte_admin,1,1,1,1
+access_meeting_coord,gte.meeting coordinator,model_gte_meeting,gte_core.group_gte_coordinator,1,1,1,0
+access_meeting_field,gte.meeting field,model_gte_meeting,gte_core.group_gte_field,1,0,0,0
+access_meeting_admin,gte.meeting admin,model_gte_meeting,gte_core.group_gte_admin,1,1,1,1
+access_meeting_action_coord,gte.meeting.action coordinator,model_gte_meeting_action,gte_core.group_gte_coordinator,1,1,1,1
+access_meeting_action_field,gte.meeting.action field,model_gte_meeting_action,gte_core.group_gte_field,1,0,0,0
+access_closeout_coord,gte.closeout.item coordinator,model_gte_closeout_item,gte_core.group_gte_coordinator,1,1,1,0
+access_closeout_field,gte.closeout.item field,model_gte_closeout_item,gte_core.group_gte_field,1,0,0,0
+access_closeout_admin,gte.closeout.item admin,model_gte_closeout_item,gte_core.group_gte_admin,1,1,1,1
