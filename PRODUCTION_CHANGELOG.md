@@ -329,3 +329,20 @@ the TEST field user's group assignment. Redo as needed.
     the pending SmartBuild enrichment — correct.)
     Reminder: exit browser debug mode (/web?debug=0) after installs or
     action panes render blank.
+
+## Phase 7b: KPI-box dashboard — 25 July 2026
+
+35. Upgraded cs_dashboards to 0.2.0. Rebuilt "Construction Dashboard" (in
+    the Project app at Overview level) as a real KPI-box page — an OWL
+    client action styled like Project Overview:
+    - 11 clickable metric cards grouped by RFIs / Submittals / Change
+      Orders / Field & Safety, colour-toned by urgency with icons:
+      Open RFIs (7), Overdue RFIs, Pending Submittals (9), Changes Awaiting
+      Client, Approved-Unbilled, Open Change Exposure ($), Open
+      Deficiencies, Open Incidents, Field Issues to PM, Certs Expiring/
+      Expired, Active Work Permits.
+    - Each card drills into its filtered list (verified: Open RFIs -> the 7
+      records). Data from cs.dashboard.get_kpis (live counts).
+    Assets: cs_dashboards/static/src/dashboard.{js,xml,scss} on
+    web.assets_backend. Graph/pivot analyses remain under Construction ->
+    Reporting.
