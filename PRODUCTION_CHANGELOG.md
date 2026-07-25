@@ -278,3 +278,35 @@ Pre-phase backup: OSM 2AM daily (25 Jul) + prior manual points.
     a clean backend.
     Acceptance test (send RFI → reply attaches → distribute) DEFERRED to
     the mail-server connection after the domain move.
+
+## Namespace cutover: gte_ -> cs_ (Construction Suite) — 25 July 2026
+
+Owner decision: full de-brand + clean production cutover to a neutral,
+white-label namespace so the modules can be reused on any Odoo instance.
+Backup taken first: odoo.greentechelectric.ca_20260725_155810.zip.
+
+32. Renamed all modules gte_* -> cs_*, models gte.* -> cs.*, every field/
+    method/XML-ID/relation-table gte_ -> cs_; author 'Green Tech Electric'
+    -> 'Construction Suite'; app names 'GTE ...' -> 'Construction ...'.
+    Zero gte/GTE/Green Tech left in module code (commit chain 23082df..9ac64f8).
+33. Production cutover (destructive, backup-protected):
+    a. Uninstalled all gte_* (cascade from gte_core) — gte.* models/records
+       dropped. Native data preserved: 189 tagged tasks, 104 doc folders,
+       13 analytic accounts, 12 projects, users, CRM.
+    b. Pulled renamed repo (gte_ folders replaced by cs_), restarted.
+    c. Installed all 10 cs_* modules. Fixes needed on first portal install:
+       dropped nonexistent base.module_category_hidden ref; changed portal
+       share-view xpath from @string selector (forbidden in Odoo 19) to
+       //notebook inside.
+    d. Reconfigured: project codes (0476/0436/0999/250752/TMPL), Construction
+       Administrator assigned to d.akbari + m.kazimi.
+    e. Re-ran migration: 64 RFI / 84 CO / 41 submittal / 98 spec rebuilt on
+       cs.* with 0476-RFI-001 numbering; 189 exceptions flagged; tagged
+       tasks intact. 5 crons present. Menus/app icon intact.
+    Verified in UI (RFI list renders with migrated Bayview records).
+    NOTE: leaving the browser in ?debug=assets mode causes blank action
+    panes after installs; exit with /web?debug=0. That was the display
+    gremlin all session, not a code fault.
+LOST in cutover (re-creatable / minor): test records, Bayview budget +
+labour rates (gte.project.budget/rate), document revision-metadata links,
+the TEST field user's group assignment. Redo as needed.
