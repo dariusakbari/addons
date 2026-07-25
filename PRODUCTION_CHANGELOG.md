@@ -346,3 +346,25 @@ the TEST field user's group assignment. Redo as needed.
     Assets: cs_dashboards/static/src/dashboard.{js,xml,scss} on
     web.assets_backend. Graph/pivot analyses remain under Construction ->
     Reporting.
+
+## Project-type tags + Phase 8 scheduling — 25 July 2026
+
+36. cs_core 0.4.0: 16 construction project-type tags (Medical, Dental,
+    Institutional, Educational, Religious, Recreational, Residential,
+    Commercial, Industrial, Retail, Hospitality, Government, New
+    Construction, Upgrade/Retrofit, Tenant Improvement, Service) — editable,
+    ship with the module. Applied live: Bayview=Educational+Institutional,
+    Meadowvale=Institutional+Religious, Airport Tennis=Recreational,
+    400 University=Commercial+Upgrade.
+37. Installed cs_schedule 0.1.0 (Phase 8):
+    - project.project: baseline + forecast start/finish; Schedule tab;
+      cs_schedule_impact_days rollup = open delay-event days + schedule_days
+      from OPEN RFIs/COs/field issues (closed excluded — verified: Bayview
+      3 delay + 5 open RFI = 8; a closed RFI correctly ignored). Delays
+      smart button.
+    - cs.delay.event (DLY-): cause, days, links to RFI/CO/daily log/field
+      issue; list + calendar (by cause). 0476-DLY-001 created.
+    - Schedule menu: 2/3/6-week look-ahead task actions (list/kanban/
+      calendar/gantt by deadline window; relative-date domains eval OK,
+      2 tasks in 6-wk window) + Delay Events register.
+    Native Project/Planning cover milestones, dependencies, crew shifts.
