@@ -638,3 +638,17 @@ the TEST field user's group assignment. Redo as needed.
     existing "Drawings & Documents" menu is repointed to the new register.
     ACL: field read, coordinator/PM create+edit, admin full. cs_documents
     0.4.0. (documents.document extension retained for Documents-app files.)
+
+## Executive role removed + workflow test suite — 25 July 2026
+
+63. FIX (#1, owner decision): removed the unused "Executive (Read-Only)"
+    construction role (it was mis-scoped anyway). Deleted from cs_groups.xml;
+    cs_core 0.6.0 with a 0.6.0 migration that unlinks the group if present.
+    No users were assigned to it.
+64. TESTS (#4): added cs_controls/tests/test_workflow.py (TransactionCase,
+    post_install). Asserts: CO cannot submit without pricing; CO cannot
+    approve without an approval reference; submittal cannot close without an
+    outcome; the $10k CO approval threshold blocks a non-admin PM but allows a
+    Construction Administrator; Field role cannot read change orders; Field
+    role cannot create RFIs. (Behaviours already proven manually via RPC; this
+    formalises them for CI / on-demand test runs.)
