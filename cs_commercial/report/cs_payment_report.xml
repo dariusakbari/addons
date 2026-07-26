@@ -47,6 +47,50 @@
                             <tr><td><strong>Current payment due</strong></td>
                                 <td class="text-end"><strong><span t-field="doc.current_due"/></strong></td></tr>
                         </table>
+                        <t t-if="doc.line_ids">
+                            <h4 class="mt16">Schedule of Values</h4>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Description</th>
+                                        <th class="text-end">Scheduled</th>
+                                        <th class="text-end">Previous</th>
+                                        <th class="text-end">This Period</th>
+                                        <th class="text-end">Materials</th>
+                                        <th class="text-end">Completed</th>
+                                        <th class="text-end">%</th>
+                                        <th class="text-end">Balance</th>
+                                        <th class="text-end">Holdback</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.line_ids" t-as="l">
+                                        <td><span t-field="l.item_no"/></td>
+                                        <td><span t-field="l.description"/></td>
+                                        <td class="text-end"><span t-field="l.scheduled_value"/></td>
+                                        <td class="text-end"><span t-field="l.previous_completed"/></td>
+                                        <td class="text-end"><span t-field="l.this_period_amount"/></td>
+                                        <td class="text-end"><span t-field="l.materials_stored"/></td>
+                                        <td class="text-end"><span t-field="l.completed_to_date"/></td>
+                                        <td class="text-end"><span t-field="l.percent"/>%</td>
+                                        <td class="text-end"><span t-field="l.balance_to_finish"/></td>
+                                        <td class="text-end"><span t-field="l.holdback"/></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2"><strong>Totals</strong></td>
+                                        <td class="text-end"><strong><span t-field="doc.sov_scheduled_total"/></strong></td>
+                                        <td colspan="2"/>
+                                        <td/>
+                                        <td class="text-end"><strong><span t-field="doc.completed_to_date"/></strong></td>
+                                        <td colspan="2"/>
+                                        <td class="text-end"><strong><span t-field="doc.holdback_to_date"/></strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </t>
                     </div>
                 </t>
             </t>

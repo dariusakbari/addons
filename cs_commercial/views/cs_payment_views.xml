@@ -9,6 +9,8 @@
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'submitted'" groups="cs_core.group_cs_accounting,cs_core.group_cs_admin"/>
                     <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" invisible="state != 'approved'" groups="cs_core.group_cs_accounting,cs_core.group_cs_admin"/>
+                    <button name="action_release_holdback" string="Release Holdback" type="object" invisible="state not in ('approved','invoiced') or holdback_released" groups="cs_core.group_cs_accounting,cs_core.group_cs_admin"/>
+                    <button name="action_load_schedule" string="Load Schedule from Budget" type="object" invisible="state != 'draft'"/>
                     <button name="action_cancel" string="Cancel" type="object" invisible="state in ('invoiced','cancelled')"/>
                     <button name="action_reset" string="Reset to Draft" type="object" invisible="state == 'draft'" groups="cs_core.group_cs_pm"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,invoiced"/>
@@ -17,6 +19,9 @@
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="not invoice_id">
                             <div class="o_stat_info"><span class="o_stat_text">Invoice</span></div>
+                        </button>
+                        <button name="action_view_holdback_invoice" type="object" class="oe_stat_button" icon="fa-university" invisible="not holdback_invoice_id">
+                            <div class="o_stat_info"><span class="o_stat_text">Holdback Inv.</span></div>
                         </button>
                     </div>
                     <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
@@ -36,9 +41,38 @@
                             <field name="holdback_percent" readonly="state != 'draft'"/>
                         </group>
                     </group>
-                    <group string="Work Completed">
+                    <field name="use_sov" invisible="1"/>
+                    <field name="holdback_released" invisible="1"/>
+                    <notebook>
+                        <page string="Schedule of Values" name="sov">
+                            <field name="line_ids" readonly="state not in ('draft','submitted')">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="item_no"/>
+                                    <field name="description"/>
+                                    <field name="budget_line_id" optional="hide"/>
+                                    <field name="scheduled_value" sum="Scheduled"/>
+                                    <field name="previous_completed" sum="From Previous"/>
+                                    <field name="this_period_amount" sum="This Period"/>
+                                    <field name="materials_stored" sum="Materials" optional="show"/>
+                                    <field name="completed_to_date" sum="Completed"/>
+                                    <field name="percent"/>
+                                    <field name="balance_to_finish" sum="Balance" optional="show"/>
+                                    <field name="holdback" sum="Holdback" optional="show"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="sov_scheduled_total"/>
+                            </group>
+                            <div class="text-muted" invisible="use_sov">
+                                No schedule lines yet. Use <b>Load Schedule from Budget</b>, add lines manually, or just enter a lump-sum Completed-to-Date below.
+                            </div>
+                        </page>
+                    </notebook>
+                    <group string="Summary">
                         <group>
-                            <field name="completed_to_date" readonly="state not in ('draft','submitted')"/>
+                            <field name="completed_to_date" readonly="use_sov or state not in ('draft','submitted')"/>
                             <field name="percent_complete"/>
                             <field name="previous_completed"/>
                             <field name="this_period"/>

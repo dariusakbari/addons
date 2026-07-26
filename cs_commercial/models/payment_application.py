@@ -68,6 +68,31 @@ class CsPaymentApplication(models.Model):
 
     invoice_id = fields.Many2one("account.move", copy=False, readonly=True)
 
+    # Schedule of Values (AIA G703 continuation sheet)
+    line_ids = fields.One2many("cs.payment.application.line", "application_id",
+                               string="Schedule of Values", copy=True)
+    use_sov = fields.Boolean(string="Uses Schedule of Values",
+                             compute="_compute_use_sov", store=True)
+    sov_scheduled_total = fields.Monetary(
+        string="Scheduled Total", currency_field="currency_id",
+        compute="_compute_sov_totals", store=True)
+
+    # Holdback release
+    holdback_released = fields.Boolean(copy=False, readonly=True)
+    holdback_invoice_id = fields.Many2one("account.move", copy=False,
+                                          readonly=True,
+                                          string="Holdback Invoice")
+
+    @api.depends("line_ids")
+    def _compute_use_sov(self):
+        for rec in self:
+            rec.use_sov = bool(rec.line_ids)
+
+    @api.depends("line_ids.scheduled_value")
+    def _compute_sov_totals(self):
+        for rec in self:
+            rec.sov_scheduled_total = sum(rec.line_ids.mapped("scheduled_value"))
+
     @api.depends("company_id.currency_id")
     def _compute_currency_id(self):
         for rec in self:
@@ -163,6 +188,57 @@ class CsPaymentApplication(models.Model):
                     % rec.name)
         self._set_state(("draft", "submitted", "approved"), "cancelled")
 
+    def action_load_schedule(self):
+        """Build the Schedule of Values from the project's approved budget,
+        carrying forward previous-completed values from the most recent
+        prior application (matched by description)."""
+        self.ensure_one()
+        if self.state != "draft":
+            raise ValidationError(
+                "%s: load the schedule while still in draft." % self.name)
+        budget = self.env["cs.project.budget"].search(
+            [("project_id", "=", self.project_id.id)], limit=1)
+        if not budget or not budget.line_ids:
+            raise ValidationError(
+                "%s: the project has no budget lines to build a schedule "
+                "from. Add a project budget first, or enter the schedule "
+                "lines manually." % self.name)
+        prior = self.search([
+            ("project_id", "=", self.project_id.id),
+            ("state", "in", ("approved", "invoiced")),
+            ("id", "!=", self.id),
+        ], order="date_application desc, id desc", limit=1)
+        prior_map = {}
+        for pl in prior.line_ids:
+            prior_map[(pl.description or "").strip().lower()] = pl.completed_to_date
+        self.line_ids.unlink()
+        vals = []
+        seq = 10
+        for bl in budget.line_ids:
+            desc = bl.description or dict(budget.line_ids._fields[
+                "section"].selection).get(bl.section, bl.section)
+            vals.append((0, 0, {
+                "sequence": seq,
+                "item_no": str(seq // 10),
+                "description": desc,
+                "budget_line_id": bl.id,
+                "scheduled_value": bl.amount,
+                "previous_completed": prior_map.get(
+                    (desc or "").strip().lower(), 0.0),
+            }))
+            seq += 10
+        self.write({"line_ids": vals})
+        return True
+
+    def _sync_completed_from_lines(self):
+        """Roll the line completed-to-date totals up into the header so all
+        the existing progress math (this-period, holdback, due) reuses it."""
+        for rec in self:
+            if rec.line_ids:
+                total = sum(rec.line_ids.mapped("completed_to_date"))
+                if rec.completed_to_date != total:
+                    rec.completed_to_date = total
+
     @api.model
     def _cs_progress_product(self):
         product = self.env["product.product"].search(
@@ -189,18 +265,36 @@ class CsPaymentApplication(models.Model):
                 "%s has no client to invoice." % self.name)
         product = self._cs_progress_product()
         period = self.period_end and self.period_end.strftime("%Y-%m-%d") or ""
-        lines = [(0, 0, {
-            "product_id": product.id,
-            "name": "%s — progress billing to %s" % (self.name, period),
-            "quantity": 1.0,
-            "price_unit": self.this_period,
-        })]
+        analytic = self._cs_analytic_distribution()
+        lines = []
+        if self.line_ids:
+            # One invoice line per Schedule-of-Values item billed this period,
+            # each carrying the project's analytic account for job costing.
+            for sl in self.line_ids:
+                if not sl.this_period_amount:
+                    continue
+                lines.append((0, 0, {
+                    "product_id": product.id,
+                    "name": "%s — %s" % (self.name, sl.description or ""),
+                    "quantity": 1.0,
+                    "price_unit": sl.this_period_amount,
+                    "analytic_distribution": analytic or False,
+                }))
+        if not lines:
+            lines.append((0, 0, {
+                "product_id": product.id,
+                "name": "%s — progress billing to %s" % (self.name, period),
+                "quantity": 1.0,
+                "price_unit": self.this_period,
+                "analytic_distribution": analytic or False,
+            }))
         if self.this_period_holdback:
             lines.append((0, 0, {
                 "product_id": product.id,
                 "name": "Holdback withheld (%.1f%%)" % (self.holdback_percent or 0.0),
                 "quantity": 1.0,
                 "price_unit": -self.this_period_holdback,
+                "analytic_distribution": analytic or False,
             }))
         move = self.env["account.move"].create({
             "move_type": "out_invoice",
@@ -217,6 +311,56 @@ class CsPaymentApplication(models.Model):
             "view_mode": "form",
         }
 
+    def _cs_analytic_distribution(self):
+        """Analytic distribution dict targeting the project's analytic account
+        so billed revenue lands on the job for cost/revenue reporting."""
+        self.ensure_one()
+        account = self.project_id.account_id
+        return {str(account.id): 100.0} if account else {}
+
+    def action_release_holdback(self):
+        """Invoice the accumulated holdback back to the client (final release).
+        Only allowed once the work is essentially complete."""
+        self.ensure_one()
+        if self.state not in ("approved", "invoiced"):
+            raise ValidationError(
+                "%s must be approved before releasing holdback." % self.name)
+        if self.holdback_released:
+            raise ValidationError(
+                "%s: holdback has already been released." % self.name)
+        if self.percent_complete < 100.0:
+            raise ValidationError(
+                "%s: holdback is normally released only at 100%% complete "
+                "(currently %.1f%%)." % (self.name, self.percent_complete))
+        if not self.holdback_to_date:
+            raise ValidationError(
+                "%s: there is no holdback to release." % self.name)
+        if not self.partner_id:
+            raise ValidationError("%s has no client to invoice." % self.name)
+        product = self._cs_progress_product()
+        analytic = self._cs_analytic_distribution()
+        move = self.env["account.move"].create({
+            "move_type": "out_invoice",
+            "partner_id": self.partner_id.id,
+            "invoice_origin": "%s — holdback release" % self.name,
+            "invoice_line_ids": [(0, 0, {
+                "product_id": product.id,
+                "name": "%s — holdback release (%.1f%%)" % (
+                    self.name, self.holdback_percent or 0.0),
+                "quantity": 1.0,
+                "price_unit": self.holdback_to_date,
+                "analytic_distribution": analytic or False,
+            })],
+        })
+        self.holdback_invoice_id = move
+        self.holdback_released = True
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "account.move",
+            "res_id": move.id,
+            "view_mode": "form",
+        }
+
     def action_view_invoice(self):
         self.ensure_one()
         return {
@@ -226,6 +370,87 @@ class CsPaymentApplication(models.Model):
             "view_mode": "form",
         }
 
+    def action_view_holdback_invoice(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "account.move",
+            "res_id": self.holdback_invoice_id.id,
+            "view_mode": "form",
+        }
+
     def unlink(self):
         self._cs_unlink_guard()
         return super().unlink()
+
+
+class CsPaymentApplicationLine(models.Model):
+    """One row of the Schedule of Values (AIA G703 continuation sheet)."""
+    _name = "cs.payment.application.line"
+    _description = "Payment Application — Schedule of Values Line"
+    _order = "application_id, sequence, id"
+
+    application_id = fields.Many2one("cs.payment.application", required=True,
+                                     ondelete="cascade", index=True)
+    currency_id = fields.Many2one(related="application_id.currency_id")
+    sequence = fields.Integer(default=10)
+    item_no = fields.Char(string="Item #")
+    description = fields.Char(required=True)
+    budget_line_id = fields.Many2one("cs.project.budget.line",
+                                     string="Budget Line",
+                                     help="Links this schedule item to a "
+                                          "project budget line for job costing.")
+    scheduled_value = fields.Monetary(currency_field="currency_id",
+                                      help="Contract value allocated to this "
+                                           "item.")
+    previous_completed = fields.Monetary(
+        string="From Previous", currency_field="currency_id",
+        help="Work completed and stored on prior applications.")
+    this_period_amount = fields.Monetary(
+        string="This Period", currency_field="currency_id",
+        help="Value of work completed this application.")
+    materials_stored = fields.Monetary(
+        string="Materials Stored", currency_field="currency_id",
+        help="Presently stored materials not yet incorporated.")
+    completed_to_date = fields.Monetary(
+        string="Completed & Stored to Date", currency_field="currency_id",
+        compute="_compute_amounts", store=True)
+    percent = fields.Float(string="%", compute="_compute_amounts", store=True)
+    balance_to_finish = fields.Monetary(
+        string="Balance to Finish", currency_field="currency_id",
+        compute="_compute_amounts", store=True)
+    holdback = fields.Monetary(currency_field="currency_id",
+                               compute="_compute_amounts", store=True)
+
+    @api.depends("scheduled_value", "previous_completed", "this_period_amount",
+                 "materials_stored", "application_id.holdback_percent")
+    def _compute_amounts(self):
+        for rec in self:
+            rec.completed_to_date = (rec.previous_completed
+                                     + rec.this_period_amount
+                                     + rec.materials_stored)
+            rec.percent = ((rec.completed_to_date / rec.scheduled_value * 100.0)
+                           if rec.scheduled_value else 0.0)
+            rec.balance_to_finish = rec.scheduled_value - rec.completed_to_date
+            pct = rec.application_id.holdback_percent or 0.0
+            rec.holdback = rec.completed_to_date * pct / 100.0
+
+    def _cs_sync_header(self):
+        self.mapped("application_id")._sync_completed_from_lines()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        recs = super().create(vals_list)
+        recs._cs_sync_header()
+        return recs
+
+    def write(self, vals):
+        res = super().write(vals)
+        self._cs_sync_header()
+        return res
+
+    def unlink(self):
+        apps = self.mapped("application_id")
+        res = super().unlink()
+        apps._sync_completed_from_lines()
+        return res
