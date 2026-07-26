@@ -690,3 +690,15 @@ the TEST field user's group assignment. Redo as needed.
     Payment Certificate PDF now prints the full SOV continuation sheet with
     totals. ACL for the line model: PM/Accounting rwc, Admin full.
     cs_commercial 0.6.0.
+
+## Branded reporting (#6) — part 1: Excel exports — 25 July 2026
+
+70. NEW (#6): cs_reports module — a spec-driven, brand-styled Excel export
+    engine (cs.xlsx.export). Each register's list view gains an "Export to
+    Excel (branded)" entry in the Action menu (ir.actions.server bound to the
+    list) that streams a formatted .xlsx: Green Tech title band (teal),
+    green column headers, bordered cells, number/date formats, a frozen header
+    row and money totals. Covers RFI, Change Order, Submittal, Drawing &
+    Document Register, Site Instruction, and Payment Applications. Built with
+    xlsxwriter; output delivered as an ir.attachment download. cs_reports
+    0.1.0. (Part 2 — branded PDF section headings — to follow.)
