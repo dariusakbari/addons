@@ -109,7 +109,7 @@
                 <field name="responsible_id"/>
                 <filter name="open" string="Open" domain="[('state','=','open')]"/>
                 <filter name="critical" string="Critical Path" domain="[('critical_path','=',True)]"/>
-                <filter name="notice_overdue" string="Notice Overdue" domain="[('notice_overdue','=',True)]"/>
+                <filter name="notice_overdue" string="Notice Overdue" domain="[('notice_required','=',True),('notice_given','=',False),('state','!=','closed'),('notice_deadline','!=',False),('notice_deadline','&lt;',context_today().strftime('%Y-%m-%d'))]"/>
                 <filter name="compensable" string="Compensable" domain="[('delay_type','=','exc_comp')]"/>
                 <separator/>
                 <filter name="by_project" string="Project" context="{'group_by':'project_id'}"/>

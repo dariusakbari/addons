@@ -66,8 +66,7 @@ class CsDelayEvent(models.Model):
         help="Contractual deadline to serve notice of the delay.")
     notice_given = fields.Boolean(readonly=True, copy=False, tracking=True)
     date_notice_given = fields.Date(readonly=True, copy=False)
-    notice_overdue = fields.Boolean(compute="_compute_notice_overdue",
-                                    search="_search_notice_overdue")
+    notice_overdue = fields.Boolean(compute="_compute_notice_overdue")
 
     # Cost impact
     cost_impact = fields.Selection([
@@ -97,17 +96,6 @@ class CsDelayEvent(models.Model):
                 rec.notice_required and not rec.notice_given
                 and rec.state != "closed" and rec.notice_deadline
                 and rec.notice_deadline < today)
-
-    def _search_notice_overdue(self, operator, value):
-        today = fields.Date.context_today(self)
-        overdue = self.search([
-            ("notice_required", "=", True), ("notice_given", "=", False),
-            ("state", "!=", "closed"), ("notice_deadline", "!=", False),
-            ("notice_deadline", "<", today),
-        ])
-        want_overdue = (operator == "=" and value) or \
-            (operator == "!=" and not value)
-        return [("id", "in" if want_overdue else "not in", overdue.ids)]
 
     @api.model_create_multi
     def create(self, vals_list):

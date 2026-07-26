@@ -744,8 +744,12 @@ the TEST field user's group assignment. Redo as needed.
     liability, critical-path and turns red when notice is overdue; search adds
     Critical Path, Notice Overdue and Compensable filters plus group-by
     liability. Now also inherits mail.activity.mixin. cs_schedule 0.4.0.
-74. FIX (P1): the notice_overdue search returned nothing (the prefix-notation
-    negation domain matched neither true nor false). Rewrote
-    _search_notice_overdue to resolve the overdue ids and return a simple
-    id in/not-in domain. Verified: compute true, search true=1/false=0.
-    cs_schedule 0.4.1.
+74. FIX (P1): the "Notice Overdue" filter didn't work. A custom search method
+    on the computed notice_overdue field returned incorrect results on this
+    build (the boolean operator/value passed into the search method is
+    unreliable here — same root cause we hit earlier with cs.rfi.is_overdue).
+    Dropped the computed-field search method entirely and made the search-view
+    filter a static dynamic domain using context_today() (the proven pattern
+    from the RFI overdue filter): notice_required, not given, not closed,
+    deadline in the past. The non-stored compute still drives the list-row red
+    decoration and the "Notice Overdue" ribbon. cs_schedule 0.4.2.
