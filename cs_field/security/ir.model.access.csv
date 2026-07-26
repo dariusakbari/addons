@@ -28,6 +28,9 @@ access_meeting_field,cs.meeting field,model_cs_meeting,cs_core.group_cs_field,1,
 access_meeting_admin,cs.meeting admin,model_cs_meeting,cs_core.group_cs_admin,1,1,1,1
 access_meeting_action_coord,cs.meeting.action coordinator,model_cs_meeting_action,cs_core.group_cs_coordinator,1,1,1,1
 access_meeting_action_field,cs.meeting.action field,model_cs_meeting_action,cs_core.group_cs_field,1,0,0,0
+access_meeting_dist_coord,cs.meeting.distribution coordinator,model_cs_meeting_distribution,cs_core.group_cs_coordinator,1,1,1,0
+access_meeting_dist_field,cs.meeting.distribution field,model_cs_meeting_distribution,cs_core.group_cs_field,1,0,0,0
+access_meeting_dist_admin,cs.meeting.distribution admin,model_cs_meeting_distribution,cs_core.group_cs_admin,1,1,1,1
 access_closeout_coord,cs.closeout.item coordinator,model_cs_closeout_item,cs_core.group_cs_coordinator,1,1,1,0
 access_closeout_field,cs.closeout.item field,model_cs_closeout_item,cs_core.group_cs_field,1,0,0,0
 access_closeout_admin,cs.closeout.item admin,model_cs_closeout_item,cs_core.group_cs_admin,1,1,1,1

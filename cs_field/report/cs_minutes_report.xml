@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_minutes" model="ir.actions.report">
+        <field name="name">Meeting Minutes</field>
+        <field name="model">cs.meeting</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">cs_field.report_cs_minutes</field>
+        <field name="report_name">cs_field.report_cs_minutes</field>
+        <field name="print_report_name">'%s - Minutes' % (object.name)</field>
+        <field name="binding_model_id" ref="model_cs_meeting"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cs_minutes">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Meeting Minutes <span t-field="o.name"/></h2>
+                        <div class="row mt8">
+                            <div class="col-6">
+                                <strong>Project:</strong> <span t-field="o.project_id.display_name"/><br/>
+                                <strong>Type:</strong> <span t-field="o.meeting_type"/><br/>
+                                <strong>Chaired By:</strong> <span t-field="o.chair_id"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong> <span t-field="o.date"/><br/>
+                                <strong>Location:</strong> <span t-field="o.location"/><br/>
+                                <strong>Status:</strong> <span t-field="o.state"/>
+                            </div>
+                        </div>
+
+                        <h4 class="mt16">Attendees</h4>
+                        <p>
+                            <t t-foreach="o.attendee_ids" t-as="a">
+                                <span t-field="a.display_name"/><t t-if="not a_last">, </t>
+                            </t>
+                            <t t-if="not o.attendee_ids"><span class="text-muted">None recorded</span></t>
+                        </p>
+
+                        <t t-if="o.agenda">
+                            <h4 class="mt16">Agenda</h4>
+                            <div t-field="o.agenda"/>
+                        </t>
+
+                        <t t-if="o.discussion">
+                            <h4 class="mt16">Discussion &amp; Decisions</h4>
+                            <div t-field="o.discussion"/>
+                        </t>
+
+                        <t t-if="o.action_ids">
+                            <h4 class="mt16">Action Items</h4>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>Owner</th>
+                                        <th>Due</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.action_ids" t-as="ai">
+                                        <td><span t-field="ai.description"/></td>
+                                        <td>
+                                            <span t-if="ai.owner_user_id" t-field="ai.owner_user_id"/>
+                                            <span t-if="ai.owner_partner_id" t-field="ai.owner_partner_id"/>
+                                        </td>
+                                        <td><span t-field="ai.due_date"/></td>
+                                        <td><span t-field="ai.state"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <t t-if="o.distribution_log_ids">
+                            <p class="mt16 text-muted" style="font-size:9px;">
+                                Distributed to <span t-esc="len(o.distribution_log_ids.mapped('partner_id'))"/>
+                                recipient(s); last sent <span t-field="o.last_distributed"/>.
+                            </p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

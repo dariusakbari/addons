@@ -1,7 +1,7 @@
 {
     "name": "Construction Field Operations",
     "summary": "Daily Site Logs with labour, quantities, photos, signature and supervisor review",
-    "version": "19.0.0.7.0",
+    "version": "19.0.0.8.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
@@ -18,6 +18,7 @@
         "views/cs_site_instruction_views.xml",
         "report/cs_field_reports.xml",
         "report/cs_si_report.xml",
+        "report/cs_minutes_report.xml",
     ],
     "installable": True,
     "application": False,

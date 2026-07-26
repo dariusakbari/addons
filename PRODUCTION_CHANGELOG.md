@@ -701,4 +701,26 @@ the TEST field user's group assignment. Redo as needed.
     row and money totals. Covers RFI, Change Order, Submittal, Drawing &
     Document Register, Site Instruction, and Payment Applications. Built with
     xlsxwriter; output delivered as an ir.attachment download. cs_reports
-    0.1.0. (Part 2 — branded PDF section headings — to follow.)
+    0.1.0. Colours read from res.company.primary_color/secondary_color (Green
+    Tech defaults only as fallback), so exports stay white-label — matching the
+    PDFs, which already inherit each company's letterhead branding.
+    Verified in production: RFI/CO/Submittal exports generate valid .xlsx
+    (correct MIME, zip signature, 8 rows each); all six specs field-checked.
+    Note: a branded PDF section-heading band was considered but deliberately
+    skipped — the register PDFs already carry the company logo, brand colours,
+    Montserrat font and footer via web.external_layout, so the letterhead
+    covers PDF branding. #6 complete.
+
+## P1 — Meeting Minutes distribution — 25 July 2026
+
+71. NEW (P1): Meeting Minutes distribution on cs.meeting. Added a Distribution
+    List (recipients beyond attendees), a branded Meeting Minutes PDF
+    (cs_field.report_cs_minutes — attendees, agenda, discussion, action-item
+    table, via web.external_layout), and Distribute / Re-send actions. Distribute
+    renders the PDF, emails it to all attendees + distribution recipients that
+    have an email (message_post, one email with the PDF attached), and writes a
+    recipient-history row per person into a new cs.meeting.distribution log
+    (recipient, email, timestamp, sent-by, initial vs re-sent). "Distribute" is
+    gated to issued state and shown until first sent; "Re-send" appears after.
+    A Distribution History tab lists every send. issue now stamps date_issued.
+    ACL: coordinator rwc, field read, admin full. cs_field 0.8.0.

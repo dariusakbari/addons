@@ -1,3 +1,5 @@
+import base64
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -87,14 +89,28 @@ class GteMeeting(models.Model):
     date = fields.Datetime(required=True, default=fields.Datetime.now)
     location = fields.Char()
     attendee_ids = fields.Many2many("res.partner", string="Attendees")
+    distribution_ids = fields.Many2many(
+        "res.partner", "cs_meeting_distribution_rel", "meeting_id", "partner_id",
+        string="Distribution List",
+        help="People who receive the issued minutes but need not have attended.")
     chair_id = fields.Many2one("res.users", string="Chaired By",
                                default=lambda self: self.env.user)
     agenda = fields.Html()
     discussion = fields.Html(string="Discussion & Decisions")
     action_ids = fields.One2many("cs.meeting.action", "meeting_id")
+    date_issued = fields.Datetime(readonly=True, copy=False)
+    last_distributed = fields.Datetime(readonly=True, copy=False)
+    distribution_log_ids = fields.One2many(
+        "cs.meeting.distribution", "meeting_id", string="Distribution History",
+        readonly=True, copy=False)
+    distribution_count = fields.Integer(compute="_compute_distribution_count")
     state = fields.Selection([
         ("draft", "Draft"), ("issued", "Issued"), ("cancelled", "Cancelled")],
         default="draft", tracking=True, copy=False)
+
+    def _compute_distribution_count(self):
+        for rec in self:
+            rec.distribution_count = len(rec.distribution_log_ids)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -108,7 +124,8 @@ class GteMeeting(models.Model):
         for rec in self:
             if not rec.attendee_ids:
                 raise ValidationError("Record attendees before issuing %s." % rec.name)
-            rec.state = "issued"
+            rec.write({"state": "issued",
+                       "date_issued": fields.Datetime.now()})
             for action in rec.action_ids.filtered(
                     lambda a: a.owner_user_id and a.state == "open"):
                 action.owner_user_id  # ensure loaded
@@ -120,6 +137,95 @@ class GteMeeting(models.Model):
 
     def action_cancel(self):
         self.write({"state": "cancelled"})
+
+    # ---------------------------------------------------------- distribution
+    def _distribution_recipients(self):
+        """Attendees + distribution list, de-duplicated, only those with an
+        email address."""
+        self.ensure_one()
+        partners = self.attendee_ids | self.distribution_ids
+        return partners.filtered(lambda p: p.email)
+
+    def _render_minutes_pdf(self):
+        self.ensure_one()
+        pdf, _ = self.env["ir.actions.report"]._render_qweb_pdf(
+            "cs_field.report_cs_minutes", res_ids=self.ids)
+        attachment = self.env["ir.attachment"].create({
+            "name": "%s.pdf" % (self.name or "Meeting Minutes"),
+            "type": "binary",
+            "datas": base64.b64encode(pdf),
+            "res_model": "cs.meeting",
+            "res_id": self.id,
+            "mimetype": "application/pdf",
+        })
+        return attachment
+
+    def _do_distribute(self, resend=False):
+        self.ensure_one()
+        if self.state != "issued":
+            raise ValidationError(
+                "%s must be issued before its minutes can be distributed."
+                % self.name)
+        recipients = self._distribution_recipients()
+        if not recipients:
+            raise ValidationError(
+                "%s has no attendees or distribution recipients with an email "
+                "address." % self.name)
+        attachment = self._render_minutes_pdf()
+        subject = "%s — %s" % (
+            self.name, self.project_id.display_name or "")
+        body = (
+            "<p>Please find attached the %sminutes for <strong>%s</strong> "
+            "(%s), held %s.</p>"
+            % ("re-issued " if resend else "",
+               self.project_id.display_name or "",
+               dict(self._fields["meeting_type"].selection).get(
+                   self.meeting_type, self.meeting_type),
+               self.date and self.date.strftime("%Y-%m-%d %H:%M") or ""))
+        self.message_post(
+            body=body, subject=subject,
+            partner_ids=recipients.ids,
+            attachment_ids=attachment.ids,
+            message_type="email",
+            subtype_xmlid="mail.mt_comment")
+        note = "resend" if resend else "initial"
+        now = fields.Datetime.now()
+        self.env["cs.meeting.distribution"].create([{
+            "meeting_id": self.id,
+            "partner_id": p.id,
+            "email": p.email,
+            "date_sent": now,
+            "sent_by_id": self.env.user.id,
+            "note": note,
+        } for p in recipients])
+        self.last_distributed = now
+        return recipients
+
+    def action_distribute(self):
+        for rec in self:
+            recipients = rec._do_distribute(resend=False)
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "type": "success",
+                "message": "Minutes sent to %d recipient(s)." % len(recipients),
+                "next": {"type": "ir.actions.act_window_close"},
+            },
+        }
+
+    def action_resend(self):
+        for rec in self:
+            recipients = rec._do_distribute(resend=True)
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "type": "success",
+                "message": "Minutes re-sent to %d recipient(s)." % len(recipients),
+                "next": {"type": "ir.actions.act_window_close"},
+            },
+        }
 
 
 class GteMeetingAction(models.Model):
@@ -136,6 +242,22 @@ class GteMeetingAction(models.Model):
                              default="open")
     related_rfi_id = fields.Many2one("cs.rfi", string="Related RFI")
     related_co_id = fields.Many2one("cs.change.order", string="Related Change")
+
+
+class GteMeetingDistribution(models.Model):
+    _name = "cs.meeting.distribution"
+    _description = "Meeting Minutes Distribution Record"
+    _order = "date_sent desc, id desc"
+
+    meeting_id = fields.Many2one("cs.meeting", required=True,
+                                 ondelete="cascade", index=True)
+    partner_id = fields.Many2one("res.partner", string="Recipient",
+                                 required=True)
+    email = fields.Char()
+    date_sent = fields.Datetime(default=fields.Datetime.now)
+    sent_by_id = fields.Many2one("res.users", string="Sent By")
+    note = fields.Selection([("initial", "Initial"), ("resend", "Re-sent")],
+                            default="initial")
 
 
 class GteCloseoutItem(models.Model):
