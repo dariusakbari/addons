@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_lookahead" model="ir.actions.report">
+        <field name="name">Look-Ahead Plan</field>
+        <field name="model">cs.lookahead</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">cs_schedule.report_cs_lookahead</field>
+        <field name="report_name">cs_schedule.report_cs_lookahead</field>
+        <field name="print_report_name">'%s - Look-Ahead' % (object.name)</field>
+        <field name="binding_model_id" ref="model_cs_lookahead"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cs_lookahead">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2><span t-field="o.horizon"/>-Week Look-Ahead <span t-field="o.name"/></h2>
+                        <div class="row mt8">
+                            <div class="col-6">
+                                <strong>Project:</strong> <span t-field="o.project_id.display_name"/><br/>
+                                <strong>Week Starting:</strong> <span t-field="o.week_start"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Prepared By:</strong> <span t-field="o.prepared_by_id"/><br/>
+                                <strong>Status:</strong> <span t-field="o.state"/>
+                                <span t-if="o.date_issued"> — issued <span t-field="o.date_issued"/></span>
+                            </div>
+                        </div>
+
+                        <t t-set="weeks" t-value="sorted(set(o.line_ids.mapped('week_no')))"/>
+                        <t t-foreach="weeks" t-as="wk">
+                            <t t-set="wlines" t-value="o.line_ids.filtered(lambda l: l.week_no == wk)"/>
+                            <h4 class="mt16">
+                                <t t-if="wk">Week <t t-esc="wk"/></t>
+                                <t t-else="">Unscheduled</t>
+                                <span class="text-muted" style="font-size:11px;">
+                                    (crew total <t t-esc="sum(wlines.mapped('manpower'))"/>)
+                                </span>
+                            </h4>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Activity</th>
+                                        <th>Trade</th>
+                                        <th>Subcontractor</th>
+                                        <th>Start</th>
+                                        <th>Finish</th>
+                                        <th class="text-end">Crew</th>
+                                        <th>Constraint</th>
+                                        <th>Commit</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="wlines" t-as="l">
+                                        <td><span t-field="l.activity"/></td>
+                                        <td><span t-field="l.trade"/></td>
+                                        <td><span t-field="l.subcontractor_id"/></td>
+                                        <td><span t-field="l.planned_start"/></td>
+                                        <td><span t-field="l.planned_finish"/></td>
+                                        <td class="text-end"><span t-field="l.manpower"/></td>
+                                        <td>
+                                            <span t-field="l.constraint"/>
+                                            <span t-if="l.constraint_status != 'clear'"> (<span t-field="l.constraint_status"/>)</span>
+                                        </td>
+                                        <td><span t-if="l.committed">✓</span></td>
+                                        <td><span t-field="l.status"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <p class="mt16" t-if="o.state != 'draft'">
+                            <strong>PPC (Percent Plan Complete):</strong>
+                            <span t-field="o.ppc"/>% &#8212;
+                            peak manpower <span t-field="o.manpower_peak"/>.
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

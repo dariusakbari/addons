@@ -753,3 +753,22 @@ the TEST field user's group assignment. Redo as needed.
     from the RFI overdue filter): notice_required, not given, not closed,
     deadline in the past. The non-stored compute still drives the list-row red
     decoration and the "Notice Overdue" ribbon. cs_schedule 0.4.2.
+
+## P1 — Look-ahead planner — 26 July 2026
+
+75. NEW (P1): short-interval / look-ahead planner (Last-Planner style).
+    cs.lookahead (header: project, week-starting Monday, 2/3/6-week horizon,
+    prepared-by, notes; workflow draft -> issued -> archived; numbered LA-###)
+    and cs.lookahead.line (planned activity: trade, subcontractor, planned
+    start/finish, computed week bucket, crew/manpower, constraint + status
+    clear/at-risk/blocked, weekly commitment flag, status planned/in-progress/
+    done/missed with a variance reason, optional linked task). Header rolls up
+    activity count, peak manpower (max crew across the weeks) and PPC (Percent
+    Plan Complete = committed activities done / all commitments). "Pull Tasks
+    from Window" seeds lines from project tasks with a deadline in the horizon;
+    "Issue Plan" requires at least one activity and stamps date_issued. Editable
+    list groups by week with red/amber/green decoration for blocked/at-risk/done.
+    Branded PDF snapshot groups activities by week with per-week crew totals and
+    the PPC/peak-manpower footer. Menu under Schedule > Look-Ahead Plans. ACL:
+    field read, coordinator/PM create+edit, admin full; project-scoped record
+    rules; unlink guard. cs_schedule 0.5.0.

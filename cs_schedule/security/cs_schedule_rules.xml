@@ -12,4 +12,17 @@
         <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
     </record>
+
+    <record id="rule_cs_lookahead_member" model="ir.rule">
+        <field name="name">Look-Ahead: project members</field>
+        <field name="model_id" ref="model_cs_lookahead"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_cs_lookahead_manager" model="ir.rule">
+        <field name="name">Look-Ahead: managers all</field>
+        <field name="model_id" ref="model_cs_lookahead"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_coordinator')), (4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
 </odoo>

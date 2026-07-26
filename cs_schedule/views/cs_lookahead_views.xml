@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_lookahead_form" model="ir.ui.view">
+        <field name="name">cs.lookahead.form</field>
+        <field name="model">cs.lookahead</field>
+        <field name="arch" type="xml">
+            <form string="Look-Ahead Plan">
+                <header>
+                    <button name="action_pull_tasks" string="Pull Tasks from Window" type="object" invisible="state != 'draft'"/>
+                    <button name="action_issue" string="Issue Plan" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_reset" string="Reset to Draft" type="object" invisible="state != 'issued'" groups="cs_core.group_cs_coordinator"/>
+                    <button name="action_archive_plan" string="Archive" type="object" invisible="state == 'archived'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,issued"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="project_id" readonly="state != 'draft'"/>
+                            <field name="week_start" readonly="state != 'draft'"/>
+                            <field name="horizon" readonly="state != 'draft'"/>
+                            <field name="prepared_by_id"/>
+                            <field name="date_issued" invisible="not date_issued"/>
+                        </group>
+                        <group>
+                            <field name="activity_count"/>
+                            <field name="manpower_peak"/>
+                            <field name="ppc"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Planned Activities">
+                            <field name="line_ids">
+                                <list editable="bottom" default_order="week_no,sequence"
+                                      decoration-danger="constraint_status == 'blocked' or status == 'missed'"
+                                      decoration-warning="constraint_status == 'at_risk'"
+                                      decoration-success="status == 'done'">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="week_label" readonly="1" optional="show"/>
+                                    <field name="activity"/>
+                                    <field name="trade"/>
+                                    <field name="subcontractor_id" optional="show"/>
+                                    <field name="planned_start"/>
+                                    <field name="planned_finish"/>
+                                    <field name="manpower" sum="Crew"/>
+                                    <field name="constraint" optional="show"/>
+                                    <field name="constraint_status"/>
+                                    <field name="committed"/>
+                                    <field name="status"/>
+                                    <field name="variance_reason" optional="hide"/>
+                                    <field name="task_id" optional="hide"/>
+                                    <field name="week_no" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes"><field name="notes"/></page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cs_lookahead_list" model="ir.ui.view">
+        <field name="name">cs.lookahead.list</field>
+        <field name="model">cs.lookahead</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'archived'">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="week_start"/>
+                <field name="horizon"/>
+                <field name="activity_count"/>
+                <field name="manpower_peak" optional="show"/>
+                <field name="ppc" optional="show"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cs_lookahead_search" model="ir.ui.view">
+        <field name="name">cs.lookahead.search</field>
+        <field name="model">cs.lookahead</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="project_id"/>
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="issued" string="Issued" domain="[('state','=','issued')]"/>
+                <separator/>
+                <filter name="by_project" string="Project" context="{'group_by':'project_id'}"/>
+                <filter name="by_week" string="Week Starting" context="{'group_by':'week_start'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cs_lookahead" model="ir.actions.act_window">
+        <field name="name">Look-Ahead Plans</field>
+        <field name="res_model">cs.lookahead</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_issued': 1}</field>
+    </record>
+
+    <menuitem id="menu_cs_lookahead_plans" name="Look-Ahead Plans" parent="menu_cs_schedule" action="action_cs_lookahead" sequence="5"/>
+</odoo>

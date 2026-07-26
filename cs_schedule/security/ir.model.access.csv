@@ -2,3 +2,11 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_delay_field,cs.delay.event field,model_cs_delay_event,cs_core.group_cs_field,1,1,1,0
 access_delay_pm,cs.delay.event pm,model_cs_delay_event,cs_core.group_cs_pm,1,1,1,1
 access_delay_admin,cs.delay.event admin,model_cs_delay_event,cs_core.group_cs_admin,1,1,1,1
+access_lookahead_field,cs.lookahead field,model_cs_lookahead,cs_core.group_cs_field,1,0,0,0
+access_lookahead_coord,cs.lookahead coordinator,model_cs_lookahead,cs_core.group_cs_coordinator,1,1,1,0
+access_lookahead_pm,cs.lookahead pm,model_cs_lookahead,cs_core.group_cs_pm,1,1,1,1
+access_lookahead_admin,cs.lookahead admin,model_cs_lookahead,cs_core.group_cs_admin,1,1,1,1
+access_lookahead_line_field,cs.lookahead.line field,model_cs_lookahead_line,cs_core.group_cs_field,1,0,0,0
+access_lookahead_line_coord,cs.lookahead.line coordinator,model_cs_lookahead_line,cs_core.group_cs_coordinator,1,1,1,1
+access_lookahead_line_pm,cs.lookahead.line pm,model_cs_lookahead_line,cs_core.group_cs_pm,1,1,1,1
+access_lookahead_line_admin,cs.lookahead.line admin,model_cs_lookahead_line,cs_core.group_cs_admin,1,1,1,1
