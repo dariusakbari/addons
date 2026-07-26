@@ -1,3 +1,7 @@
+import base64
+
+from markupsafe import Markup
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -41,6 +45,16 @@ class CsSiteInstruction(models.Model):
                                       string="Resulting Change Order",
                                       copy=False)
     attachment_ids = fields.Many2many("ir.attachment", string="Attachments")
+    distribution_ids = fields.Many2many(
+        "res.partner", "cs_si_distribution_rel", "si_id", "partner_id",
+        string="Distribution List",
+        help="Additional recipients (besides Issued To) who get the issued "
+             "instruction.")
+    last_distributed = fields.Datetime(readonly=True, copy=False)
+    distribution_log_ids = fields.One2many(
+        "cs.site.instruction.distribution", "instruction_id",
+        string="Distribution History", readonly=True, copy=False)
+    distribution_count = fields.Integer(compute="_compute_distribution_count")
     active = fields.Boolean(default=True)
     state = fields.Selection([
         ("draft", "Draft"), ("issued", "Issued"),
@@ -58,6 +72,10 @@ class CsSiteInstruction(models.Model):
         for rec in self:
             rec.currency_id = (rec.company_id.currency_id
                                or rec.env.company.currency_id)
+
+    def _compute_distribution_count(self):
+        for rec in self:
+            rec.distribution_count = len(rec.distribution_log_ids)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -112,6 +130,72 @@ class CsSiteInstruction(models.Model):
                 "Only project managers can reopen an instruction.")
         self._set_state(("cancelled", "closed"), "draft")
 
+    # ---------------------------------------------------------- distribution
+    def _distribution_recipients(self):
+        self.ensure_one()
+        partners = self.issued_to_id | self.distribution_ids
+        return partners.filtered(lambda p: p.email)
+
+    def _render_si_pdf(self):
+        self.ensure_one()
+        pdf, _ = self.env["ir.actions.report"]._render_qweb_pdf(
+            "cs_field.report_cs_si", res_ids=self.ids)
+        return self.env["ir.attachment"].create({
+            "name": "%s.pdf" % (self.name or "Site Instruction"),
+            "type": "binary",
+            "datas": base64.b64encode(pdf),
+            "res_model": "cs.site.instruction",
+            "res_id": self.id,
+            "mimetype": "application/pdf",
+        })
+
+    def _do_distribute(self, resend=False):
+        self.ensure_one()
+        if self.state not in ("issued", "acknowledged"):
+            raise ValidationError(
+                "%s must be issued before it can be distributed." % self.name)
+        recipients = self._distribution_recipients()
+        if not recipients:
+            raise ValidationError(
+                "%s has no recipient with an email address (set 'Issued To' "
+                "or add people to the Distribution list)." % self.name)
+        attachment = self._render_si_pdf()
+        body = Markup(
+            "<p>Please find attached %sSite Instruction <strong>%s</strong> "
+            "for <strong>%s</strong>: %s.</p>") % (
+            "re-issued " if resend else "", self.name,
+            self.project_id.display_name or "", self.title or "")
+        self.message_post(
+            body=body, subject="%s — %s" % (self.name, self.title or ""),
+            partner_ids=recipients.ids, attachment_ids=attachment.ids,
+            message_type="email", subtype_xmlid="mail.mt_comment")
+        now = fields.Datetime.now()
+        self.env["cs.site.instruction.distribution"].create([{
+            "instruction_id": self.id, "partner_id": p.id, "email": p.email,
+            "date_sent": now, "sent_by_id": self.env.user.id,
+            "note": "resend" if resend else "initial",
+        } for p in recipients])
+        self.last_distributed = now
+        return recipients
+
+    def action_distribute(self):
+        for rec in self:
+            recs = rec._do_distribute(resend=False)
+        return self._cs_notify("Instruction sent to %d recipient(s)." % len(recs))
+
+    def action_resend(self):
+        for rec in self:
+            recs = rec._do_distribute(resend=True)
+        return self._cs_notify(
+            "Instruction re-sent to %d recipient(s)." % len(recs))
+
+    def _cs_notify(self, message):
+        return {
+            "type": "ir.actions.client", "tag": "display_notification",
+            "params": {"type": "success", "message": message,
+                       "next": {"type": "ir.actions.act_window_close"}},
+        }
+
     def action_make_change_order(self):
         self.ensure_one()
         co = self.env["cs.change.order"].create({
@@ -129,3 +213,19 @@ class CsSiteInstruction(models.Model):
     def unlink(self):
         self._cs_unlink_guard()
         return super().unlink()
+
+
+class CsSiteInstructionDistribution(models.Model):
+    _name = "cs.site.instruction.distribution"
+    _description = "Site Instruction Distribution Record"
+    _order = "date_sent desc, id desc"
+
+    instruction_id = fields.Many2one("cs.site.instruction", required=True,
+                                     ondelete="cascade", index=True)
+    partner_id = fields.Many2one("res.partner", string="Recipient",
+                                 required=True)
+    email = fields.Char()
+    date_sent = fields.Datetime(default=fields.Datetime.now)
+    sent_by_id = fields.Many2one("res.users", string="Sent By")
+    note = fields.Selection([("initial", "Initial"), ("resend", "Re-sent")],
+                            default="initial")

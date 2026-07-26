@@ -228,12 +228,20 @@ class ProjectProject(models.Model):
     cs_holdback_percent = fields.Float(
         string="Holdback %", default=lambda self: self._cs_default_holdback(),
         help="Percentage withheld on progress billing for this project. "
-             "Defaults from Construction Settings.")
+             "Set per project/contract; 0 means no holdback. Only pre-fills "
+             "from Construction Settings when a default is configured there.")
 
     @api.model
     def _cs_default_holdback(self):
-        return float(self.env["ir.config_parameter"].sudo().get_param(
-            "cs.holdback_percent", 10.0) or 0.0)
+        """Default holdback for a NEW project. Comes from the optional
+        Construction Settings default; if none is configured, 0 (never a
+        silent 10%). Each project/contract can then set its own percentage."""
+        param = self.env["ir.config_parameter"].sudo().get_param(
+            "cs.holdback_percent")
+        try:
+            return float(param) if param not in (None, False, "") else 0.0
+        except (TypeError, ValueError):
+            return 0.0
 
     def _compute_cs_budget(self):
         for rec in self:

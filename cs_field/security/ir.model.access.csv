@@ -37,3 +37,6 @@ access_closeout_admin,cs.closeout.item admin,model_cs_closeout_item,cs_core.grou
 access_si_field,cs.site.instruction field,model_cs_site_instruction,cs_core.group_cs_field,1,0,0,0
 access_si_coord,cs.site.instruction coordinator,model_cs_site_instruction,cs_core.group_cs_coordinator,1,1,1,0
 access_si_admin,cs.site.instruction admin,model_cs_site_instruction,cs_core.group_cs_admin,1,1,1,1
+access_si_dist_field,cs.site.instruction.distribution field,model_cs_site_instruction_distribution,cs_core.group_cs_field,1,0,0,0
+access_si_dist_coord,cs.site.instruction.distribution coordinator,model_cs_site_instruction_distribution,cs_core.group_cs_coordinator,1,1,1,0
+access_si_dist_admin,cs.site.instruction.distribution admin,model_cs_site_instruction_distribution,cs_core.group_cs_admin,1,1,1,1

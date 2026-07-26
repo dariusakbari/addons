@@ -146,9 +146,12 @@ class CsPaymentApplication(models.Model):
                 if vals.get("name", "New") == "New":
                     vals["name"] = self._cs_next_number(
                         project, "cs.payment.application", "PA")
-                if not vals.get("original_contract"):
+                # Inherit the contract sum / holdback from the project, but
+                # only when the caller didn't pass a value. Testing membership
+                # (not truthiness) means an explicit 0% holdback is honoured.
+                if "original_contract" not in vals:
                     vals["original_contract"] = project.cs_contract_amount
-                if not vals.get("holdback_percent"):
+                if "holdback_percent" not in vals:
                     vals["holdback_percent"] = project.cs_holdback_percent
         return super().create(vals_list)
 
@@ -454,3 +457,33 @@ class CsPaymentApplicationLine(models.Model):
         res = super().unlink()
         apps._sync_completed_from_lines()
         return res
+
+
+class AccountMove(models.Model):
+    """Keep a Payment Application in sync with its invoice: if the invoice is
+    cancelled or deleted, revert the application so it can be re-billed and
+    isn't left stranded in the 'invoiced' state."""
+    _inherit = "account.move"
+
+    def _cs_revert_applications(self, move_ids):
+        PA = self.env["cs.payment.application"].sudo()
+        for pa in PA.search([("invoice_id", "in", move_ids)]):
+            vals = {"invoice_id": False}
+            if pa.state == "invoiced":
+                vals["state"] = "approved"
+            pa.write(vals)
+        for pa in PA.search([("holdback_invoice_id", "in", move_ids)]):
+            pa.write({"holdback_invoice_id": False,
+                      "holdback_released": False})
+
+    def write(self, vals):
+        res = super().write(vals)
+        if vals.get("state") == "cancel":
+            self._cs_revert_applications(self.ids)
+        return res
+
+    def unlink(self):
+        move_ids = self.ids
+        # Revert links before the rows disappear (state won't auto-revert).
+        self._cs_revert_applications(move_ids)
+        return super().unlink()

@@ -121,6 +121,28 @@ class CsLookahead(models.Model):
                 raise ValidationError(
                     "%s needs at least one activity before it can be issued."
                     % rec.name)
+            problems = []
+            for line in rec.line_ids:
+                missing = []
+                if not line.planned_start:
+                    missing.append("planned start")
+                if not line.planned_finish:
+                    missing.append("planned finish")
+                if not line.trade:
+                    missing.append("trade")
+                if not line.manpower:
+                    missing.append("manpower")
+                if (line.planned_start and line.planned_finish
+                        and line.planned_finish < line.planned_start):
+                    missing.append("finish on/after start")
+                if missing:
+                    problems.append("• %s: %s" % (
+                        line.activity or "(untitled)", ", ".join(missing)))
+            if problems:
+                raise ValidationError(
+                    "%s can't be issued until every activity has a planned "
+                    "start, planned finish, trade and manpower:\n%s"
+                    % (rec.name, "\n".join(problems)))
             rec.write({"state": "issued",
                        "date_issued": fields.Datetime.now()})
 

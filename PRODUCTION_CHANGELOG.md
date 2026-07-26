@@ -794,3 +794,28 @@ the TEST field user's group assignment. Redo as needed.
     sent as a direct email (independent of the in-app notification setting);
     resilient per-section gathering; "nothing outstanding" note when clear.
     cs_automation 0.2.0.
+
+## Pre-green-light hardening — 26 July 2026
+
+78. FIX (#1): holdback no longer silently defaults to 10%. The project/contract
+    holdback (project.cs_holdback_percent) now defaults to 0 unless a value is
+    configured in Construction Settings, and Payment Application.create tests
+    key-presence (not truthiness) so an explicit 0% is honoured. cs_commercial.
+79. FIX (#2): RFI and Submittal "Send email" now auto-populate recipients from
+    the record's Distribution list (RFI also adds Addressed To; Submittal adds
+    Supplier/Contractor) and refuse to open the composer when no recipient has
+    an email. cs_mail 0.3.0.
+80. NEW (#3): Site Instruction distribution — Distribution list, Distribute /
+    Re-send actions that email the SI PDF to Issued-To + distribution
+    recipients, a cs.site.instruction.distribution history log, and a
+    Distribution tab. Mirrors Meeting Minutes. cs_field 0.9.0.
+81. FIX (#4): Payment Application stays in sync with its invoice. An
+    account.move override reverts the application from 'invoiced' back to
+    'approved' and clears the link when the linked (progress or holdback)
+    invoice is cancelled or deleted, so it can be re-billed. cs_commercial 0.7.0.
+82. FIX (#5): a Look-Ahead plan can't be issued until every activity has a
+    planned start, planned finish, trade and manpower (and finish on/after
+    start); the error lists each offending line. cs_schedule 0.5.1.
+83. FIX (#6): the default RFI Analysis graph rendered blank (sample="0",
+    state-first). Now bar, project then state, sample="1" — matching the
+    working Submittal/CO analysis graphs. cs_dashboards 0.11.1.

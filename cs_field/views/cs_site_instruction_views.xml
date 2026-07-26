@@ -8,6 +8,8 @@
                 <header>
                     <button name="action_issue" string="Issue" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_acknowledge" string="Record Acknowledgement" type="object" class="btn-primary" invisible="state != 'issued'"/>
+                    <button name="action_distribute" string="Distribute" type="object" class="btn-primary" invisible="state not in ('issued','acknowledged') or last_distributed"/>
+                    <button name="action_resend" string="Re-send" type="object" invisible="state not in ('issued','acknowledged') or not last_distributed"/>
                     <button name="action_make_change_order" string="Raise Change Order" type="object" invisible="state not in ('issued','acknowledged') or change_order_id" groups="cs_core.group_cs_pm,cs_core.group_cs_coordinator"/>
                     <button name="action_close" string="Close" type="object" invisible="state not in ('issued','acknowledged')"/>
                     <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','issued')"/>
@@ -30,11 +32,24 @@
                             <field name="currency_id" invisible="1"/>
                             <field name="cost_amount" invisible="cost_impact != 'yes'"/>
                             <field name="schedule_impact_days"/>
+                            <field name="last_distributed" invisible="not last_distributed"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Instruction">
                             <field name="instruction" placeholder="The direction issued to the contractor / field..."/>
+                        </page>
+                        <page string="Distribution">
+                            <field name="distribution_ids" widget="many2many_tags"/>
+                            <field name="distribution_log_ids" invisible="not distribution_log_ids">
+                                <list>
+                                    <field name="date_sent"/>
+                                    <field name="partner_id"/>
+                                    <field name="email"/>
+                                    <field name="note"/>
+                                    <field name="sent_by_id"/>
+                                </list>
+                            </field>
                         </page>
                         <page string="Acknowledgement">
                             <group>

@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class GteMailActionMixin(models.AbstractModel):
@@ -27,8 +28,23 @@ class GteMailActionMixin(models.AbstractModel):
                 ("notification_status", "in", ("bounce", "exception")),
             ]))
 
+    def _cs_mail_recipients(self):
+        """Partners the email should go to. Defaults to the record's
+        Distribution list; models override to add their primary contact."""
+        self.ensure_one()
+        partners = self.env["res.partner"]
+        if "distribution_ids" in self._fields:
+            partners |= self.distribution_ids
+        return partners
+
     def _cs_open_composer(self, subject_suffix=None):
         self.ensure_one()
+        recipients = self._cs_mail_recipients().filtered("email")
+        if not recipients:
+            raise ValidationError(
+                "%s has no email recipients. Add people to the Distribution "
+                "list (with email addresses) before sending."
+                % (self.display_name or self._description))
         template = self.env.ref(self._cs_mail_template_xmlid,
                                 raise_if_not_found=False)
         ctx = {
@@ -36,6 +52,7 @@ class GteMailActionMixin(models.AbstractModel):
             "default_res_ids": self.ids,
             "default_template_id": template and template.id or False,
             "default_composition_mode": "comment",
+            "default_partner_ids": [(6, 0, recipients.ids)],
         }
         if subject_suffix:
             ctx["cs_subject_suffix"] = subject_suffix
@@ -60,6 +77,10 @@ class GteRfi(models.Model):
     _name = "cs.rfi"
     _inherit = ["cs.rfi", "cs.mail.action.mixin"]
     _cs_mail_template_xmlid = "cs_mail.mail_template_cs_rfi"
+
+    def _cs_mail_recipients(self):
+        partners = super()._cs_mail_recipients()
+        return partners | self.addressed_to_id
 
     @api.model
     def _cron_send_reminders(self):
@@ -95,6 +116,10 @@ class GteSubmittal(models.Model):
     _name = "cs.submittal"
     _inherit = ["cs.submittal", "cs.mail.action.mixin"]
     _cs_mail_template_xmlid = "cs_mail.mail_template_cs_submittal"
+
+    def _cs_mail_recipients(self):
+        partners = super()._cs_mail_recipients()
+        return partners | self.supplier_id | self.contractor_id
 
     @api.model
     def _cron_send_reminders(self):
