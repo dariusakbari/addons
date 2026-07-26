@@ -40,13 +40,13 @@
     </record>
 
     <menuitem id="menu_cs_schedule" name="Schedule" parent="cs_controls.menu_cs_root" sequence="45" groups="cs_core.group_cs_coordinator"/>
-    <menuitem id="menu_cs_lookahead_tasks" name="Tasks" parent="menu_cs_schedule" sequence="10"/>
-    <menuitem id="menu_cs_lookahead_2" name="2-Week Look-Ahead" parent="menu_cs_lookahead_tasks" action="action_cs_lookahead_2wk" sequence="10"/>
-    <menuitem id="menu_cs_lookahead_3" name="3-Week Look-Ahead" parent="menu_cs_lookahead_tasks" action="action_cs_lookahead_3wk" sequence="20"/>
-    <menuitem id="menu_cs_lookahead_6" name="6-Week Look-Ahead" parent="menu_cs_lookahead_tasks" action="action_cs_lookahead_6wk" sequence="30"/>
+    <menuitem id="menu_cs_lookahead_tasks" name="Task Look-Ahead" parent="menu_cs_schedule" sequence="10"/>
+    <menuitem id="menu_cs_lookahead_2" name="Tasks — Next 2 Weeks" parent="menu_cs_lookahead_tasks" action="action_cs_lookahead_2wk" sequence="10"/>
+    <menuitem id="menu_cs_lookahead_3" name="Tasks — Next 3 Weeks" parent="menu_cs_lookahead_tasks" action="action_cs_lookahead_3wk" sequence="20"/>
+    <menuitem id="menu_cs_lookahead_6" name="Tasks — Next 6 Weeks" parent="menu_cs_lookahead_tasks" action="action_cs_lookahead_6wk" sequence="30"/>
     <menuitem id="menu_cs_lookahead_ms" name="Milestone Deadlines" parent="menu_cs_schedule" sequence="20"/>
-    <menuitem id="menu_cs_ms_2" name="2-Week" parent="menu_cs_lookahead_ms" action="action_cs_ms_2wk" sequence="10"/>
-    <menuitem id="menu_cs_ms_3" name="3-Week" parent="menu_cs_lookahead_ms" action="action_cs_ms_3wk" sequence="20"/>
-    <menuitem id="menu_cs_ms_6" name="6-Week" parent="menu_cs_lookahead_ms" action="action_cs_ms_6wk" sequence="30"/>
+    <menuitem id="menu_cs_ms_2" name="Milestones — Next 2 Weeks" parent="menu_cs_lookahead_ms" action="action_cs_ms_2wk" sequence="10"/>
+    <menuitem id="menu_cs_ms_3" name="Milestones — Next 3 Weeks" parent="menu_cs_lookahead_ms" action="action_cs_ms_3wk" sequence="20"/>
+    <menuitem id="menu_cs_ms_6" name="Milestones — Next 6 Weeks" parent="menu_cs_lookahead_ms" action="action_cs_ms_6wk" sequence="30"/>
     <menuitem id="menu_cs_delays" name="Delay Events" parent="menu_cs_schedule" action="action_cs_delay" sequence="40"/>
 </odoo>

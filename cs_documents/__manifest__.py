@@ -1,7 +1,7 @@
 {
     "name": "Construction Documents & Drawings",
     "summary": "Construction document metadata and revision control (supersede, never overwrite)",
-    "version": "19.0.0.2.0",
+    "version": "19.0.0.3.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
