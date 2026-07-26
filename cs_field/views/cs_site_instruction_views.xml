@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_si_form" model="ir.ui.view">
+        <field name="name">cs.site.instruction.form</field>
+        <field name="model">cs.site.instruction</field>
+        <field name="arch" type="xml">
+            <form string="Site Instruction">
+                <header>
+                    <button name="action_issue" string="Issue" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_acknowledge" string="Record Acknowledgement" type="object" class="btn-primary" invisible="state != 'issued'"/>
+                    <button name="action_make_change_order" string="Raise Change Order" type="object" invisible="state not in ('issued','acknowledged') or change_order_id" groups="cs_core.group_cs_pm,cs_core.group_cs_coordinator"/>
+                    <button name="action_close" string="Close" type="object" invisible="state not in ('issued','acknowledged')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','issued')"/>
+                    <button name="action_reset" string="Reopen" type="object" invisible="state not in ('closed','cancelled')" groups="cs_core.group_cs_pm"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,issued,acknowledged,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="project_id"/>
+                            <field name="issued_by_id"/>
+                            <field name="issued_to_id"/>
+                        </group>
+                        <group>
+                            <field name="date_issued" readonly="1"/>
+                            <field name="required_by"/>
+                            <field name="cost_impact"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="cost_amount" invisible="cost_impact != 'yes'"/>
+                            <field name="schedule_impact_days"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Instruction">
+                            <field name="instruction" placeholder="The direction issued to the contractor / field..."/>
+                        </page>
+                        <page string="Acknowledgement">
+                            <group>
+                                <field name="acknowledged_by"/>
+                                <field name="date_acknowledged"/>
+                            </group>
+                            <field name="response"/>
+                        </page>
+                        <page string="Links &amp; Attachments">
+                            <group>
+                                <field name="origin_rfi_id"/>
+                                <field name="change_order_id" readonly="1"/>
+                            </group>
+                            <field name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cs_si_list" model="ir.ui.view">
+        <field name="name">cs.site.instruction.list</field>
+        <field name="model">cs.site.instruction</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'issued'" decoration-muted="state in ('closed','cancelled')">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="project_id"/>
+                <field name="issued_to_id" optional="show"/>
+                <field name="date_issued"/>
+                <field name="required_by" optional="show"/>
+                <field name="cost_impact" optional="show"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cs_si_search" model="ir.ui.view">
+        <field name="name">cs.site.instruction.search</field>
+        <field name="model">cs.site.instruction</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="title"/>
+                <field name="project_id"/>
+                <field name="issued_to_id"/>
+                <filter name="issued" string="Issued" domain="[('state','=','issued')]"/>
+                <filter name="acknowledged" string="Acknowledged" domain="[('state','=','acknowledged')]"/>
+                <filter name="cost" string="Has Cost Impact" domain="[('cost_impact','=','yes')]"/>
+                <separator/>
+                <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
+                <filter name="by_state" string="Status" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cs_si" model="ir.actions.act_window">
+        <field name="name">Site Instructions</field>
+        <field name="res_model">cs.site.instruction</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_cs_si" name="Site Instructions" parent="cs_hse.menu_cs_field_safety" action="action_cs_si" sequence="4"/>
+</odoo>

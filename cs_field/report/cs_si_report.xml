@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_si" model="ir.actions.report">
+        <field name="name">Site Instruction</field>
+        <field name="model">cs.site.instruction</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_field.report_cs_si</field>
+        <field name="report_file">cs_field.report_cs_si</field>
+        <field name="binding_model_id" ref="model_cs_site_instruction"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cs_si">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Site Instruction <span t-field="doc.name"/></h2>
+                        <div class="row mt8">
+                            <div class="col-6">
+                                <strong>Project:</strong> <span t-field="doc.project_id"/><br/>
+                                <strong>Issued To:</strong> <span t-field="doc.issued_to_id"/><br/>
+                                <strong>Issued By:</strong> <span t-field="doc.issued_by_id"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date Issued:</strong> <span t-field="doc.date_issued"/><br/>
+                                <strong>Action Required By:</strong> <span t-field="doc.required_by"/><br/>
+                                <strong>Status:</strong> <span t-field="doc.state"/>
+                            </div>
+                        </div>
+                        <h4 class="mt16"><span t-field="doc.title"/></h4>
+                        <div t-field="doc.instruction"/>
+                        <table class="table table-sm mt16">
+                            <tr><td>Cost impact</td><td><span t-field="doc.cost_impact"/>
+                                <span t-if="doc.cost_impact == 'yes'"> — <span t-field="doc.cost_amount"/></span></td></tr>
+                            <tr><td>Schedule impact</td><td><span t-field="doc.schedule_impact_days"/> days</td></tr>
+                            <tr t-if="doc.acknowledged_by"><td>Acknowledged by</td>
+                                <td><span t-field="doc.acknowledged_by"/> on <span t-field="doc.date_acknowledged"/></td></tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

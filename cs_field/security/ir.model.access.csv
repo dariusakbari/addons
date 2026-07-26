@@ -31,3 +31,6 @@ access_meeting_action_field,cs.meeting.action field,model_cs_meeting_action,cs_c
 access_closeout_coord,cs.closeout.item coordinator,model_cs_closeout_item,cs_core.group_cs_coordinator,1,1,1,0
 access_closeout_field,cs.closeout.item field,model_cs_closeout_item,cs_core.group_cs_field,1,0,0,0
 access_closeout_admin,cs.closeout.item admin,model_cs_closeout_item,cs_core.group_cs_admin,1,1,1,1
+access_si_field,cs.site.instruction field,model_cs_site_instruction,cs_core.group_cs_field,1,0,0,0
+access_si_coord,cs.site.instruction coordinator,model_cs_site_instruction,cs_core.group_cs_coordinator,1,1,1,0
+access_si_admin,cs.site.instruction admin,model_cs_site_instruction,cs_core.group_cs_admin,1,1,1,1

@@ -652,3 +652,14 @@ the TEST field user's group assignment. Redo as needed.
     Construction Administrator; Field role cannot read change orders; Field
     role cannot create RFIs. (Behaviours already proven manually via RPC; this
     formalises them for CI / on-demand test runs.)
+
+## Field Memo / Site Instruction (#7) — 25 July 2026
+
+65. NEW (#7): cs.site.instruction — a formal Field Memo / Site Instruction,
+    distinct from internal Field Issues. Numbered SI-### per project; workflow
+    draft -> issued -> acknowledged -> closed (+ cancelled). Issue gate
+    requires instruction text + recipient (Issued To); acknowledgement records
+    who/when + response; cost impact (none/tbd/yes + amount) and schedule
+    impact (days); "Raise Change Order" action creates a linked CO; branded
+    Site Instruction PDF. Menu under Field & Safety. ACL: field read,
+    coordinator/PM create+edit, admin full; unlink guard. cs_field 0.7.0.
