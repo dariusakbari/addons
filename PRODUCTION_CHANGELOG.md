@@ -663,3 +663,30 @@ the TEST field user's group assignment. Redo as needed.
     impact (days); "Raise Change Order" action creates a linked CO; branded
     Site Instruction PDF. Menu under Field & Safety. ACL: field read,
     coordinator/PM create+edit, admin full; unlink guard. cs_field 0.7.0.
+
+## Schedule of Values + job-cost integration (#5) — 25 July 2026
+
+66. NEW (#5): cs.payment.application.line — a Schedule of Values / AIA G703
+    continuation sheet on each Payment Application. Per line: item #,
+    description, optional budget-line link, scheduled value, from-previous,
+    this-period, materials stored; computes completed-&-stored-to-date, %,
+    balance-to-finish and per-line holdback (from the header holdback %).
+    Line create/write/unlink rolls the completed total up into the header, so
+    all the existing G702 progress math (this-period, holdback, earned-less-
+    holdback, current due) is driven by the schedule when lines exist. Header
+    Completed-to-Date becomes read-only in SOV mode; lump-sum entry still works
+    when there are no lines (backward compatible, no migration).
+67. NEW (#5): "Load Schedule from Budget" builds the SOV from the project's
+    approved budget lines and carries forward previous-completed from the most
+    recent prior application (matched by description).
+68. JOB COST (#5): invoicing now emits one invoice line per SOV item billed
+    this period, each tagged with the project's analytic account
+    (analytic_distribution) so billed revenue lands on the job for cost/
+    revenue reporting; holdback line likewise tagged. Falls back to the single
+    lump line when no SOV.
+69. NEW (#5): "Release Holdback" action creates a separate holdback-release
+    invoice for the accumulated holdback, gated to 100% complete and once only;
+    tracked via holdback_released + holdback_invoice_id with a smart button.
+    Payment Certificate PDF now prints the full SOV continuation sheet with
+    totals. ACL for the line model: PM/Accounting rwc, Admin full.
+    cs_commercial 0.6.0.
