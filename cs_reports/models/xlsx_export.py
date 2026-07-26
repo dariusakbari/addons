@@ -4,8 +4,17 @@ import io
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+# Fallback brand colours, only used when a company hasn't set its own report
+# colours. The engine prefers res.company.primary_color / secondary_color so
+# the workbook matches whatever branding that company's PDFs already use.
 BRAND_PRIMARY = "#0fa1af"
 BRAND_SECONDARY = "#7daf42"
+
+
+def _norm_colour(value, fallback):
+    """Return a valid #rrggbb string; xlsxwriter rejects None/empty."""
+    value = (value or "").strip()
+    return value if value.startswith("#") and len(value) in (4, 7) else fallback
 
 
 class CsXlsxExport(models.AbstractModel):
@@ -140,6 +149,8 @@ class CsXlsxExport(models.AbstractModel):
         cols = spec["columns"]
         ncol = len(cols)
         company = self.env.company
+        primary = _norm_colour(company.primary_color, BRAND_PRIMARY)
+        secondary = _norm_colour(company.secondary_color, BRAND_SECONDARY)
 
         output = io.BytesIO()
         wb = xlsxwriter.Workbook(output, {"in_memory": True})
@@ -147,11 +158,11 @@ class CsXlsxExport(models.AbstractModel):
 
         f_title = wb.add_format({"bold": True, "font_size": 15,
                                  "font_color": "#FFFFFF",
-                                 "bg_color": BRAND_PRIMARY, "valign": "vcenter",
+                                 "bg_color": primary, "valign": "vcenter",
                                  "indent": 1})
         f_sub = wb.add_format({"italic": True, "font_color": "#777777"})
         f_hdr = wb.add_format({"bold": True, "font_color": "#FFFFFF",
-                               "bg_color": BRAND_SECONDARY, "border": 1,
+                               "bg_color": secondary, "border": 1,
                                "align": "center", "valign": "vcenter"})
         f_txt = wb.add_format({"border": 1, "valign": "top"})
         f_money = wb.add_format({"border": 1, "num_format": "#,##0.00"})
