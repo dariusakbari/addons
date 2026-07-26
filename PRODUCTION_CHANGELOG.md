@@ -608,3 +608,33 @@ the TEST field user's group assignment. Redo as needed.
     Schedule > Tasks and Schedule > Milestone Deadlines (cs_schedule 0.2.0).
     Verified project.milestone.deadline/project_id exist.
     cs_dashboards 0.10.0 (+0.10.0 migration).
+
+## Backlog batch 1 — 25 July 2026
+
+58. FIX (P1): renamed the confusing look-ahead menus. Schedule now has
+    "Task Look-Ahead" (Tasks — Next 2/3/6 Weeks) and "Milestone Deadlines"
+    (Milestones — Next 2/3/6 Weeks). cs_schedule 0.3.0.
+59. FIX (P1): RFI Analysis graph set to explicit bar, sample="0" (the sample
+    overlay was the likely "blank" cause). cs_dashboards 0.11.0.
+60. CONFIG (P0): cs.co_approval_limit set to 10000 — change orders approved
+    above $10k require a Construction Administrator. Adjustable in Construction
+    Settings. Non-admin blocking to be proven in the automated test suite.
+61. PARTIAL (P0): Drawings & Documents opens a blank new record. Added a list
+    act_window.view (action now correctly reads view_mode list,form with list
+    first) but the Enterprise Documents app still hijacks the documents.document
+    action to create mode — confirmed a normal model with 8 records would show
+    the list. Proper fix: a dedicated cs.drawing register model we fully
+    control (next build). cs_documents 0.3.0.
+
+## Drawing Register (dedicated) — 25 July 2026
+
+62. FIX (P0 #2): built a dedicated cs.drawing register model to replace the
+    Enterprise-Documents-hijacked register. Fields: doc number, title, project,
+    type, discipline, revision, status (current/superseded), issue date,
+    source, file attachment, predecessor/superseded-by, links (RFI/CO/
+    submittal/task). "Register New Revision" copies to rev+1 (Current) and
+    marks the prior Superseded with a chatter note. Register list opens by
+    default (no more blank new record). Branded Drawing Register PDF. The
+    existing "Drawings & Documents" menu is repointed to the new register.
+    ACL: field read, coordinator/PM create+edit, admin full. cs_documents
+    0.4.0. (documents.document extension retained for Documents-app files.)

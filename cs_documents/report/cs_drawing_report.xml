@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_drawing_register" model="ir.actions.report">
+        <field name="name">Drawing Register</field>
+        <field name="model">cs.drawing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_documents.report_cs_drawing_register</field>
+        <field name="report_file">cs_documents.report_cs_drawing_register</field>
+        <field name="binding_model_id" ref="model_cs_drawing"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cs_drawing_register">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Drawing / Document Register</h2>
+                    <p class="text-muted">Generated <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></p>
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th>No.</th><th>Title</th><th>Project</th>
+                                <th>Type</th><th>Disc.</th><th class="text-center">Rev</th>
+                                <th>Status</th><th>Issued</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="d">
+                                <tr>
+                                    <td><span t-field="d.cs_doc_number"/></td>
+                                    <td><span t-field="d.title"/></td>
+                                    <td><span t-field="d.project_id"/></td>
+                                    <td><span t-field="d.doc_type"/></td>
+                                    <td><span t-field="d.discipline"/></td>
+                                    <td class="text-center"><span t-field="d.revision"/></td>
+                                    <td><span t-field="d.status"/></td>
+                                    <td><span t-field="d.issue_date"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

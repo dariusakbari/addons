@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_drawing_list" model="ir.ui.view">
+        <field name="name">cs.drawing.list</field>
+        <field name="model">cs.drawing</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="status == 'superseded'">
+                <field name="cs_doc_number"/>
+                <field name="title"/>
+                <field name="project_id"/>
+                <field name="doc_type"/>
+                <field name="discipline" optional="show"/>
+                <field name="revision"/>
+                <field name="status" widget="badge" decoration-success="status == 'current'" decoration-warning="status == 'superseded'"/>
+                <field name="issue_date" optional="show"/>
+                <field name="file_name" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cs_drawing_form" model="ir.ui.view">
+        <field name="name">cs.drawing.form</field>
+        <field name="model">cs.drawing</field>
+        <field name="arch" type="xml">
+            <form string="Drawing / Document">
+                <header>
+                    <button name="action_new_revision" string="Register New Revision" type="object" class="btn-primary" invisible="status == 'superseded'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="current,superseded"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Superseded" bg_color="text-bg-warning" invisible="status != 'superseded'"/>
+                    <div class="oe_title">
+                        <label for="cs_doc_number"/>
+                        <h1><field name="cs_doc_number" placeholder="e.g. E-401"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="project_id"/>
+                            <field name="doc_type"/>
+                            <field name="discipline"/>
+                            <field name="revision"/>
+                        </group>
+                        <group>
+                            <field name="issue_date"/>
+                            <field name="source"/>
+                            <field name="file" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="predecessor_id" invisible="not predecessor_id"/>
+                            <field name="superseded_by_id" invisible="not superseded_by_id"/>
+                        </group>
+                    </group>
+                    <group string="Links">
+                        <group>
+                            <field name="rfi_id"/>
+                            <field name="co_id"/>
+                        </group>
+                        <group>
+                            <field name="submittal_id"/>
+                            <field name="task_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cs_drawing_search" model="ir.ui.view">
+        <field name="name">cs.drawing.search</field>
+        <field name="model">cs.drawing</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="cs_doc_number"/>
+                <field name="title"/>
+                <field name="project_id"/>
+                <field name="revision"/>
+                <filter name="current" string="Current" domain="[('status', '=', 'current')]"/>
+                <filter name="superseded" string="Superseded" domain="[('status', '=', 'superseded')]"/>
+                <filter name="drawings" string="Drawings" domain="[('doc_type', '=', 'drawing')]"/>
+                <separator/>
+                <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
+                <filter name="by_type" string="Type" context="{'group_by': 'doc_type'}"/>
+                <filter name="by_discipline" string="Discipline" context="{'group_by': 'discipline'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cs_drawing_register" model="ir.actions.act_window">
+        <field name="name">Drawing Register</field>
+        <field name="res_model">cs.drawing</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_current': 1}</field>
+    </record>
+
+    <!-- Repoint the existing Drawings and Documents menu to the working register -->
+    <menuitem id="menu_cs_documents" name="Drawings &amp; Documents" parent="cs_controls.menu_cs_root" action="action_cs_drawing_register" sequence="37"/>
+</odoo>

@@ -2,3 +2,6 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_cs_doc_rev_wizard,cs.document.revision.wizard,model_cs_document_revision_wizard,cs_core.group_cs_field,1,1,1,1
 access_cs_doc_meta_wizard,cs.document.metadata.wizard,model_cs_document_metadata_wizard,cs_core.group_cs_field,1,1,1,1
 access_cs_issue_pkg_wizard,cs.issue.package.wizard,model_cs_issue_package_wizard,cs_core.group_cs_field,1,1,1,1
+access_cs_drawing_field,cs.drawing field,model_cs_drawing,cs_core.group_cs_field,1,0,0,0
+access_cs_drawing_coord,cs.drawing coordinator,model_cs_drawing,cs_core.group_cs_coordinator,1,1,1,0
+access_cs_drawing_admin,cs.drawing admin,model_cs_drawing,cs_core.group_cs_admin,1,1,1,1
