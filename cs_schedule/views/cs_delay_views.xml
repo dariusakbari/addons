@@ -6,27 +6,65 @@
         <field name="arch" type="xml">
             <form string="Delay Event">
                 <header>
+                    <button name="action_give_notice" string="Record Notice Given" type="object" class="btn-primary" invisible="notice_given or not notice_required or state == 'closed'"/>
                     <button name="action_mitigate" string="Mark Mitigated" type="object" invisible="state != 'open'"/>
                     <button name="action_close" string="Close" type="object" invisible="state == 'closed'"/>
                     <field name="state" widget="statusbar" statusbar_visible="open,mitigated,closed"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Notice Overdue" bg_color="text-bg-danger" invisible="not notice_overdue"/>
                     <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
                     <group>
                         <group>
                             <field name="project_id"/>
                             <field name="date"/>
+                            <field name="date_end"/>
                             <field name="cause"/>
                             <field name="days_impact"/>
+                            <field name="critical_path"/>
                         </group>
                         <group>
-                            <field name="rfi_id"/>
-                            <field name="change_order_id"/>
-                            <field name="daily_log_id"/>
-                            <field name="field_issue_id"/>
+                            <field name="delay_type"/>
+                            <field name="responsible_id"/>
+                            <field name="liable_party"/>
+                            <field name="cost_impact"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="cost_amount" invisible="cost_impact != 'yes'"/>
                         </group>
                     </group>
-                    <group><field name="description"/></group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="What happened and how it affected the work..."/>
+                        </page>
+                        <page string="Mitigation &amp; Recovery">
+                            <group>
+                                <field name="mitigation_plan" placeholder="Steps to reduce or absorb the impact..."/>
+                                <field name="recovery_plan" placeholder="Steps to recover lost time (resequencing, acceleration)..."/>
+                            </group>
+                        </page>
+                        <page string="Notice">
+                            <group>
+                                <group>
+                                    <field name="notice_required"/>
+                                    <field name="notice_recipient_id" invisible="not notice_required"/>
+                                    <field name="notice_deadline" invisible="not notice_required"/>
+                                </group>
+                                <group>
+                                    <field name="notice_given"/>
+                                    <field name="date_notice_given" invisible="not notice_given"/>
+                                    <field name="notice_overdue" invisible="not notice_overdue"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Links">
+                            <group>
+                                <field name="rfi_id"/>
+                                <field name="change_order_id"/>
+                                <field name="daily_log_id"/>
+                                <field name="field_issue_id"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
                 <chatter/>
             </form>
@@ -36,12 +74,17 @@
         <field name="name">cs.delay.event.list</field>
         <field name="model">cs.delay.event</field>
         <field name="arch" type="xml">
-            <list decoration-danger="days_impact >= 5" decoration-warning="days_impact > 0 and days_impact &lt; 5">
+            <list decoration-danger="notice_overdue or days_impact >= 5" decoration-warning="not notice_overdue and days_impact > 0 and days_impact &lt; 5">
+                <field name="notice_overdue" column_invisible="1"/>
                 <field name="name"/>
                 <field name="project_id"/>
                 <field name="date"/>
                 <field name="cause"/>
+                <field name="liable_party" optional="show"/>
                 <field name="days_impact" sum="Total days"/>
+                <field name="critical_path" optional="show"/>
+                <field name="cost_amount" optional="hide"/>
+                <field name="notice_deadline" optional="hide"/>
                 <field name="state" widget="badge"/>
             </list>
         </field>
@@ -63,10 +106,15 @@
             <search>
                 <field name="project_id"/>
                 <field name="cause"/>
+                <field name="responsible_id"/>
                 <filter name="open" string="Open" domain="[('state','=','open')]"/>
+                <filter name="critical" string="Critical Path" domain="[('critical_path','=',True)]"/>
+                <filter name="notice_overdue" string="Notice Overdue" domain="[('notice_overdue','=',True)]"/>
+                <filter name="compensable" string="Compensable" domain="[('delay_type','=','exc_comp')]"/>
                 <separator/>
                 <filter name="by_project" string="Project" context="{'group_by':'project_id'}"/>
                 <filter name="by_cause" string="Cause" context="{'group_by':'cause'}"/>
+                <filter name="by_liable" string="Liability" context="{'group_by':'liable_party'}"/>
             </search>
         </field>
     </record>

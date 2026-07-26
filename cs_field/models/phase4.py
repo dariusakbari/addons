@@ -1,5 +1,7 @@
 import base64
 
+from markupsafe import Markup
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -174,14 +176,14 @@ class GteMeeting(models.Model):
         attachment = self._render_minutes_pdf()
         subject = "%s — %s" % (
             self.name, self.project_id.display_name or "")
-        body = (
+        body = Markup(
             "<p>Please find attached the %sminutes for <strong>%s</strong> "
-            "(%s), held %s.</p>"
-            % ("re-issued " if resend else "",
-               self.project_id.display_name or "",
-               dict(self._fields["meeting_type"].selection).get(
-                   self.meeting_type, self.meeting_type),
-               self.date and self.date.strftime("%Y-%m-%d %H:%M") or ""))
+            "(%s), held %s.</p>") % (
+            "re-issued " if resend else "",
+            self.project_id.display_name or "",
+            dict(self._fields["meeting_type"].selection).get(
+                self.meeting_type, self.meeting_type),
+            self.date and self.date.strftime("%Y-%m-%d %H:%M") or "")
         self.message_post(
             body=body, subject=subject,
             partner_ids=recipients.ids,

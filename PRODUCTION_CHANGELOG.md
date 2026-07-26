@@ -724,3 +724,23 @@ the TEST field user's group assignment. Redo as needed.
     gated to issued state and shown until first sent; "Re-send" appears after.
     A Distribution History tab lists every send. issue now stamps date_issued.
     ACL: coordinator rwc, field read, admin full. cs_field 0.8.0.
+72. FIX (P1): the meeting distribution email body rendered its HTML tags
+    literally. message_post treats a plain str as text and escapes it — wrapped
+    the body in markupsafe.Markup so the paragraph renders, with interpolated
+    values still auto-escaped. cs_field 0.8.1.
+
+## P1 — Delay Events expansion — 26 July 2026
+
+73. EXPANDED (P1): cs.delay.event. Added end date; critical-path flag;
+    entitlement classification (excusable-compensable / excusable-non-
+    compensable / non-excusable); responsible party + liability attribution
+    (owner/consultant/contractor/subcontractor/supplier/force-majeure/shared/
+    tbd); separate Mitigation Plan and Recovery Plan; contractual notice block
+    (notice required, recipient, deadline, notice-given + date, and a computed/
+    searchable notice_overdue) with a "Record Notice Given" action gated on a
+    recipient; and cost impact (none/tbd/yes + amount). action_mitigate now
+    requires a mitigation plan. Form reorganised into Description / Mitigation &
+    Recovery / Notice / Links tabs with a "Notice Overdue" ribbon; list shows
+    liability, critical-path and turns red when notice is overdue; search adds
+    Critical Path, Notice Overdue and Compensable filters plus group-by
+    liability. Now also inherits mail.activity.mixin. cs_schedule 0.4.0.
