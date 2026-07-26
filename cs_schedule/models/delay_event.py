@@ -100,13 +100,14 @@ class CsDelayEvent(models.Model):
 
     def _search_notice_overdue(self, operator, value):
         today = fields.Date.context_today(self)
-        base = [("notice_required", "=", True), ("notice_given", "=", False),
-                ("state", "!=", "closed"), ("notice_deadline", "!=", False),
-                ("notice_deadline", "<", today)]
-        truthy = (operator == "=" and value) or (operator == "!=" and not value)
-        if truthy:
-            return base
-        return ["!", "&", "&", "&", "&"] + base
+        overdue = self.search([
+            ("notice_required", "=", True), ("notice_given", "=", False),
+            ("state", "!=", "closed"), ("notice_deadline", "!=", False),
+            ("notice_deadline", "<", today),
+        ])
+        want_overdue = (operator == "=" and value) or \
+            (operator == "!=" and not value)
+        return [("id", "in" if want_overdue else "not in", overdue.ids)]
 
     @api.model_create_multi
     def create(self, vals_list):

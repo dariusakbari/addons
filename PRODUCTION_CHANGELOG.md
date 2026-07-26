@@ -744,3 +744,8 @@ the TEST field user's group assignment. Redo as needed.
     liability, critical-path and turns red when notice is overdue; search adds
     Critical Path, Notice Overdue and Compensable filters plus group-by
     liability. Now also inherits mail.activity.mixin. cs_schedule 0.4.0.
+74. FIX (P1): the notice_overdue search returned nothing (the prefix-notation
+    negation domain matched neither true nor false). Rewrote
+    _search_notice_overdue to resolve the overdue ids and return a simple
+    id in/not-in domain. Verified: compute true, search true=1/false=0.
+    cs_schedule 0.4.1.
