@@ -772,3 +772,25 @@ the TEST field user's group assignment. Redo as needed.
     the PPC/peak-manpower footer. Menu under Schedule > Look-Ahead Plans. ACL:
     field read, coordinator/PM create+edit, admin full; project-scoped record
     rules; unlink guard. cs_schedule 0.5.0.
+
+## Email noise → weekly digest — 26 July 2026
+
+76. CONFIG (no code): stopped the frequent per-item reminder emails. Root
+    cause: the legacy "Work permit expiry check" cron ran hourly with no
+    dedup (re-raising an activity + email every hour), and the escalation
+    engine raised an activity per overdue RFI (each activity assignment emails
+    the assignee). Deactivated three redundant legacy crons — permit-expiry
+    (hourly), certification-expiry (daily), submittal-on-site (daily) — which
+    the escalation engine already covers. Set the two real project managers
+    (Darius, Mujtaba) to 'in-app' notification delivery so escalation
+    activities still appear in Odoo's Activities systray but no longer email.
+    All reversible from Settings. No construction cron now runs more than daily.
+77. NEW: cs.weekly.digest — a weekly (Monday 08:00 ET) cron that emails each
+    project manager ONE consolidated digest of outstanding items on their
+    projects: overdue RFIs, RFIs due within 7 days, change orders awaiting
+    decision, submittals due within 7 days, open site instructions, open delay
+    events, open punch items, payment applications to action, plus permits
+    expiring within 14 days and certifications within 30 days. Branded HTML,
+    sent as a direct email (independent of the in-app notification setting);
+    resilient per-section gathering; "nothing outstanding" note when clear.
+    cs_automation 0.2.0.
