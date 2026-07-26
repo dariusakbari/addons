@@ -1,7 +1,7 @@
 {
     "name": "Construction Core",
     "summary": "Construction Suite — shared mixins, sequences, security groups",
-    "version": "19.0.0.5.0",
+    "version": "19.0.0.6.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
