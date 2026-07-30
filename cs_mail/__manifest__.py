@@ -1,7 +1,7 @@
 {
     "name": "Construction Mail & Notifications",
     "summary": "Email templates and send actions for construction records",
-    "version": "19.0.0.3.0",
+    "version": "19.0.0.4.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",

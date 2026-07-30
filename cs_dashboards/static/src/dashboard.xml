@@ -9,8 +9,8 @@
             <div t-else="" class="o_cs_wrap">
                 <t t-foreach="state.projects" t-as="proj" t-key="proj.project_id">
                     <div class="o_cs_card">
-                        <!-- header -->
-                        <div class="o_cs_card_head">
+                        <!-- header (click to open the project dashboard) -->
+                        <div class="o_cs_card_head" t-on-click="() => this.openProject(proj.project_id)" title="Open project dashboard">
                             <span class="o_cs_code" t-esc="proj.code"/>
                             <span class="o_cs_pname" t-esc="proj.name"/>
                             <span t-if="proj.partner" class="o_cs_partner" t-esc="'· ' + proj.partner"/>

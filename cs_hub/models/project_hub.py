@@ -15,3 +15,11 @@ class ProjectProject(models.Model):
     cs_incident_ids = fields.One2many("cs.incident", "project_id",
                                        string="Incidents")
     cs_ncr_ids = fields.One2many("cs.ncr", "project_id", string="NCRs")
+    cs_si_ids = fields.One2many("cs.site.instruction", "project_id",
+                                string="Field Memos / Site Instructions")
+    cs_meeting_ids = fields.One2many("cs.meeting", "project_id",
+                                     string="Meeting Minutes")
+    cs_lookahead_ids = fields.One2many("cs.lookahead", "project_id",
+                                       string="Look-Ahead Plans")
+    cs_delay_ids = fields.One2many("cs.delay.event", "project_id",
+                                   string="Delay Events")

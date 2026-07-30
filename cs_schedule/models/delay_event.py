@@ -114,13 +114,36 @@ class CsDelayEvent(models.Model):
             rec.write({"notice_given": True,
                        "date_notice_given": fields.Date.context_today(self)})
 
+    def _check_contractual_fields(self):
+        """A delay can't be mitigated or closed until the contractually
+        significant fields are recorded, so entitlement and notice are
+        defensible."""
+        for rec in self:
+            missing = []
+            if not rec.days_impact:
+                missing.append("schedule impact (days)")
+            if rec.liable_party in (False, "tbd"):
+                missing.append("liability (who is responsible)")
+            if not rec.delay_type:
+                missing.append("entitlement (excusable/compensable)")
+            if rec.notice_required and not rec.notice_given:
+                missing.append("notice served (or clear 'Notice Required')")
+            if rec.cost_impact == "yes" and not rec.cost_amount:
+                missing.append("cost amount")
+            if missing:
+                raise ValidationError(
+                    "%s: record the contractual details first — %s."
+                    % (rec.name, ", ".join(missing)))
+
     def action_mitigate(self):
         for rec in self:
             if not rec.mitigation_plan:
                 raise ValidationError(
                     "%s: record a mitigation plan before marking it mitigated."
                     % rec.name)
+        self._check_contractual_fields()
         self.write({"state": "mitigated"})
 
     def action_close(self):
+        self._check_contractual_fields()
         self.write({"state": "closed"})

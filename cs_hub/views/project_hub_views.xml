@@ -88,6 +88,55 @@
                         </field>
                     </group>
                 </page>
+                <page string="Field Memos" name="cs_field_memos" groups="cs_core.group_cs_coordinator,cs_core.group_cs_field">
+                    <field name="cs_si_ids" context="{'default_project_id': id}">
+                        <list decoration-info="state == 'issued'" decoration-muted="state in ('closed','cancelled')">
+                            <field name="name"/>
+                            <field name="title"/>
+                            <field name="issued_to_id"/>
+                            <field name="date_issued"/>
+                            <field name="required_by"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Meetings" name="cs_meetings" groups="cs_core.group_cs_coordinator">
+                    <field name="cs_meeting_ids" context="{'default_project_id': id}">
+                        <list>
+                            <field name="name"/>
+                            <field name="meeting_type"/>
+                            <field name="date"/>
+                            <field name="chair_id"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Schedule" name="cs_schedule" groups="cs_core.group_cs_coordinator">
+                    <group string="Look-Ahead Plans">
+                        <field name="cs_lookahead_ids" nolabel="1" context="{'default_project_id': id}">
+                            <list>
+                                <field name="name"/>
+                                <field name="week_start"/>
+                                <field name="horizon"/>
+                                <field name="activity_count"/>
+                                <field name="state" widget="badge"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group string="Delay Events">
+                        <field name="cs_delay_ids" nolabel="1" context="{'default_project_id': id}">
+                            <list decoration-danger="notice_overdue or days_impact >= 5">
+                                <field name="notice_overdue" column_invisible="1"/>
+                                <field name="name"/>
+                                <field name="date"/>
+                                <field name="cause"/>
+                                <field name="days_impact" sum="Days"/>
+                                <field name="liable_party" optional="show"/>
+                                <field name="state" widget="badge"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>

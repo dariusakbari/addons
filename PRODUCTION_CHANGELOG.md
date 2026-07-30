@@ -819,3 +819,34 @@ the TEST field user's group assignment. Redo as needed.
 83. FIX (#6): the default RFI Analysis graph rendered blank (sample="0",
     state-first). Now bar, project then state, sample="1" — matching the
     working Submittal/CO analysis graphs. cs_dashboards 0.11.1.
+
+## Second hardening pass + project navigation — 26 July 2026
+
+84. FIX (mail): green-light #2 had put the empty-recipient block in the shared
+    composer, which would have blocked Change Orders, Daily Logs and
+    Transmittals (no distribution list). Reworked: the base recipient set now
+    includes the record's client/partner automatically; the empty-recipient
+    block applies only to distribution-based records (RFI, Submittal, Change
+    Order). Outgoing emails now auto-attach the record's PDF (RFI, CO,
+    Submittal). cs_mail 0.4.0.
+85. NEW: Change Order Distribution list (cs.change.order.distribution_ids,
+    visible on the form). Email/Resend to Client now go to the client +
+    distribution list with the Change Order PDF attached. cs_controls 0.9.3.
+86. FIX: Payment Application also reverts to Approved (and clears its invoice
+    link) when the linked invoice is reset to draft (account.move.button_draft),
+    in addition to cancel/delete. cs_commercial 0.8.0.
+87. NEW: Payment Application onchange fills the contract sum and holdback from
+    the selected project immediately (a project's 0% holdback is preserved).
+    cs_commercial 0.8.0.
+88. FIX: a Delay Event can't be mitigated or closed until the contractual
+    fields are recorded — schedule-impact days, liability, entitlement, notice
+    served (when required) and cost amount (when cost impact = yes).
+    cs_schedule 0.5.2.
+89. FIX/NEW: the Overview page now scrolls (height/overflow), and each project
+    card header is clickable — it opens that project's dashboard (the project
+    form). cs_dashboards 0.11.2.
+90. NEW: the project hub gains Field Memos, Meetings and Schedule (Look-Ahead +
+    Delay Events) tabs alongside the existing RFIs, Change Orders, Submittals
+    and Field & Safety — every construction record type is viewable, filtered
+    to the project, from the project form without entering the Construction app.
+    cs_hub 0.3.0 (now depends on cs_schedule).

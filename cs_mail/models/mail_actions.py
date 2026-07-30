@@ -28,23 +28,47 @@ class GteMailActionMixin(models.AbstractModel):
                 ("notification_status", "in", ("bounce", "exception")),
             ]))
 
+    # Report to auto-attach as a PDF on the outgoing email (report_name string).
+    _cs_mail_report = None
+
     def _cs_mail_recipients(self):
         """Partners the email should go to. Defaults to the record's
-        Distribution list; models override to add their primary contact."""
+        Distribution list plus its client/partner; models override to add
+        their own primary contact (RFI addressed-to, Submittal supplier…)."""
         self.ensure_one()
         partners = self.env["res.partner"]
         if "distribution_ids" in self._fields:
             partners |= self.distribution_ids
+        if "partner_id" in self._fields and self.partner_id:
+            partners |= self.partner_id
         return partners
+
+    def _cs_mail_attachment(self):
+        """Render the record's PDF as an attachment, if a report is set."""
+        self.ensure_one()
+        if not self._cs_mail_report:
+            return self.env["ir.attachment"]
+        import base64 as _b64
+        pdf, _ = self.env["ir.actions.report"]._render_qweb_pdf(
+            self._cs_mail_report, res_ids=self.ids)
+        return self.env["ir.attachment"].create({
+            "name": "%s.pdf" % (self.display_name or self._description),
+            "type": "binary", "datas": _b64.b64encode(pdf),
+            "res_model": self._name, "res_id": self.id,
+            "mimetype": "application/pdf",
+        })
 
     def _cs_open_composer(self, subject_suffix=None):
         self.ensure_one()
         recipients = self._cs_mail_recipients().filtered("email")
-        if not recipients:
+        # Only distribution-based records (RFI, Submittal, Change Order) must
+        # have a recipient before sending; other records keep the old
+        # template/manual behaviour.
+        if "distribution_ids" in self._fields and not recipients:
             raise ValidationError(
                 "%s has no email recipients. Add people to the Distribution "
-                "list (with email addresses) before sending."
-                % (self.display_name or self._description))
+                "list (with email addresses) — the client is included "
+                "automatically — before sending." % (self.display_name or ""))
         template = self.env.ref(self._cs_mail_template_xmlid,
                                 raise_if_not_found=False)
         ctx = {
@@ -52,8 +76,12 @@ class GteMailActionMixin(models.AbstractModel):
             "default_res_ids": self.ids,
             "default_template_id": template and template.id or False,
             "default_composition_mode": "comment",
-            "default_partner_ids": [(6, 0, recipients.ids)],
         }
+        if recipients:
+            ctx["default_partner_ids"] = [(6, 0, recipients.ids)]
+        attachment = self._cs_mail_attachment()
+        if attachment:
+            ctx["default_attachment_ids"] = [(6, 0, attachment.ids)]
         if subject_suffix:
             ctx["cs_subject_suffix"] = subject_suffix
         return {
@@ -77,6 +105,7 @@ class GteRfi(models.Model):
     _name = "cs.rfi"
     _inherit = ["cs.rfi", "cs.mail.action.mixin"]
     _cs_mail_template_xmlid = "cs_mail.mail_template_cs_rfi"
+    _cs_mail_report = "cs_controls.report_cs_rfi"
 
     def _cs_mail_recipients(self):
         partners = super()._cs_mail_recipients()
@@ -110,12 +139,14 @@ class GteChangeOrder(models.Model):
     _name = "cs.change.order"
     _inherit = ["cs.change.order", "cs.mail.action.mixin"]
     _cs_mail_template_xmlid = "cs_mail.mail_template_cs_co"
+    _cs_mail_report = "cs_controls.report_cs_co"
 
 
 class GteSubmittal(models.Model):
     _name = "cs.submittal"
     _inherit = ["cs.submittal", "cs.mail.action.mixin"]
     _cs_mail_template_xmlid = "cs_mail.mail_template_cs_submittal"
+    _cs_mail_report = "cs_controls.report_cs_submittal"
 
     def _cs_mail_recipients(self):
         partners = super()._cs_mail_recipients()

@@ -23,6 +23,17 @@ export class ConstructionDashboard extends Component {
             this.action.doAction(action);
         }
     }
+
+    openProject(projectId) {
+        if (!projectId) { return; }
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            res_model: "project.project",
+            res_id: projectId,
+            views: [[false, "form"]],
+            target: "current",
+        });
+    }
 }
 
 registry.category("actions").add("cs_construction_dashboard", ConstructionDashboard);

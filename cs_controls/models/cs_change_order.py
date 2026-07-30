@@ -26,6 +26,11 @@ class GteChangeOrder(models.Model):
                                  readonly=False, tracking=True)
     user_id = fields.Many2one("res.users", string="Project Manager",
                               default=lambda self: self.env.user, tracking=True)
+    distribution_ids = fields.Many2many(
+        "res.partner", "cs_co_distribution_rel", "co_id", "partner_id",
+        string="Distribution List",
+        help="Recipients of the change-order email. The client is included "
+             "automatically.")
     line_ids = fields.One2many("cs.change.order.line", "order_id", copy=True)
     amount_proposed = fields.Monetary(aggregator="sum", currency_field="currency_id",
                                       compute="_compute_amounts", store=True,

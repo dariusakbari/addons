@@ -137,6 +137,14 @@ class CsPaymentApplication(models.Model):
             rec.previous_payments = prev_earned
             rec.current_due = rec.earned_less_holdback - prev_earned
 
+    @api.onchange("project_id")
+    def _onchange_project_holdback(self):
+        """Fill the contract sum and holdback from the chosen project as soon
+        as it's selected. A project's legitimate 0% holdback is preserved."""
+        if self.project_id:
+            self.original_contract = self.project_id.cs_contract_amount
+            self.holdback_percent = self.project_id.cs_holdback_percent
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -480,6 +488,13 @@ class AccountMove(models.Model):
         res = super().write(vals)
         if vals.get("state") == "cancel":
             self._cs_revert_applications(self.ids)
+        return res
+
+    def button_draft(self):
+        # Resetting the linked invoice to draft also reverts the application,
+        # so a corrected invoice can be regenerated cleanly.
+        res = super().button_draft()
+        self._cs_revert_applications(self.ids)
         return res
 
     def unlink(self):

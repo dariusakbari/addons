@@ -1,6 +1,7 @@
 .o_cs_dashboard {
     background: #f6f7f9;
-    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
 
     .o_cs_wrap {
         display: flex;
@@ -8,6 +9,11 @@
         gap: 16px;
         padding: 16px;
         max-width: 1280px;
+    }
+
+    .o_cs_card_head {
+        cursor: pointer;
+        &:hover .o_cs_pname { text-decoration: underline; }
     }
 
     .o_cs_card {
