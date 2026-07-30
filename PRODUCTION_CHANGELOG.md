@@ -879,3 +879,21 @@ the TEST field user's group assignment. Redo as needed.
 97. FIX (P1): RFI Analysis graph — simplified to a single count-by-status bar
     (was blank for some clients due to a cached two-dimension view). The view
     arch change busts the client cache. cs_dashboards 0.11.3.
+
+## Audit round 4 — 26 July 2026
+
+98. FIX (P0): the escalation engine's two RFI rules ("RFI response due soon",
+    "RFI response overdue") were still active — the last possible source of
+    automated RFI notifications. Deactivated both (durably: active=False in the
+    noupdate data). The engine keeps its submittal/CO/permit/cert rules
+    (in-app only, all recipients on inbox). cs_automation 0.2.1.
+99. FIX (P1): Look-Ahead — the "Issue Plan" button is now hidden until every
+    activity is complete (planned dates, trade, crew), via a can_issue compute,
+    with a red hint when incomplete. The server gate remains as a backstop.
+    cs_schedule 0.5.4.
+100. FIX (P1): Delay Event — "Record Notice Given" only shows once a recipient
+     and deadline are set; "Mark Mitigated"/"Close" only show once the
+     contractual fields (responsible party, entitlement, days, mitigation plan,
+     notice served if required, cost amount if any) are recorded — via
+     can_serve_notice / can_mitigate computes, with a red hint otherwise.
+     cs_schedule 0.5.4.

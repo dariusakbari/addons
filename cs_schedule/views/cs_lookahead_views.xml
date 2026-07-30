@@ -7,7 +7,9 @@
             <form string="Look-Ahead Plan">
                 <header>
                     <button name="action_pull_tasks" string="Pull Tasks from Window" type="object" invisible="state != 'draft'"/>
-                    <button name="action_issue" string="Issue Plan" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <field name="can_issue" invisible="1"/>
+                    <button name="action_issue" string="Issue Plan" type="object" class="btn-primary" invisible="state != 'draft' or not can_issue"/>
+                    <span class="text-danger ms-2" invisible="state != 'draft' or can_issue">Complete every activity (planned dates, trade, crew) before issuing.</span>
                     <button name="action_reset" string="Reset to Draft" type="object" invisible="state != 'issued'" groups="cs_core.group_cs_coordinator"/>
                     <button name="action_archive_plan" string="Archive" type="object" invisible="state == 'archived'"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,issued"/>

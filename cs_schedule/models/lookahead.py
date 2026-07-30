@@ -43,9 +43,20 @@ class CsLookahead(models.Model):
     activity_count = fields.Integer(compute="_compute_stats")
     manpower_peak = fields.Integer(string="Peak Manpower",
                                    compute="_compute_stats")
+    can_issue = fields.Boolean(compute="_compute_can_issue")
     ppc = fields.Float(string="PPC %", compute="_compute_stats",
                        help="Percent Plan Complete: committed activities "
                             "completed as planned, over all commitments.")
+
+    @api.depends("line_ids.planned_start", "line_ids.planned_finish",
+                 "line_ids.trade", "line_ids.manpower")
+    def _compute_can_issue(self):
+        for rec in self:
+            lines = rec.line_ids
+            rec.can_issue = bool(lines) and all(
+                l.planned_start and l.planned_finish and l.trade
+                and l.manpower
+                and l.planned_finish >= l.planned_start for l in lines)
 
     @api.model
     def _default_week_start(self):

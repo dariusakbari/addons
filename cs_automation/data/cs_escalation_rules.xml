@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
+    <!-- RFI escalation rules ship OFF: zero automated RFI notifications.
+         RFIs are covered by the dashboards and the weekly PM digest. -->
     <record id="rule_rfi_due" model="cs.escalation.rule">
         <field name="name">RFI response due soon</field>
         <field name="sequence">10</field>
@@ -7,6 +9,7 @@
         <field name="timing">before</field>
         <field name="days">2</field>
         <field name="notify">pm</field>
+        <field name="active" eval="False"/>
     </record>
     <record id="rule_rfi_overdue" model="cs.escalation.rule">
         <field name="name">RFI response overdue</field>
@@ -15,6 +18,7 @@
         <field name="timing">after</field>
         <field name="days">0</field>
         <field name="notify">pm</field>
+        <field name="active" eval="False"/>
     </record>
     <record id="rule_sub_due" model="cs.escalation.rule">
         <field name="name">Submittal due soon</field>

@@ -2,7 +2,7 @@
     "name": "Construction Automation & Escalations",
     "summary": "Configurable reminder/escalation engine for construction "
                "records (RFIs, submittals, change orders, permits, certs)",
-    "version": "19.0.0.2.0",
+    "version": "19.0.0.2.1",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",

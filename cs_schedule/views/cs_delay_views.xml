@@ -6,9 +6,12 @@
         <field name="arch" type="xml">
             <form string="Delay Event">
                 <header>
-                    <button name="action_give_notice" string="Record Notice Given" type="object" class="btn-primary" invisible="notice_given or not notice_required or state == 'closed'"/>
-                    <button name="action_mitigate" string="Mark Mitigated" type="object" invisible="state != 'open'"/>
-                    <button name="action_close" string="Close" type="object" invisible="state == 'closed'"/>
+                    <field name="can_serve_notice" invisible="1"/>
+                    <field name="can_mitigate" invisible="1"/>
+                    <button name="action_give_notice" string="Record Notice Given" type="object" class="btn-primary" invisible="not can_serve_notice or state == 'closed'"/>
+                    <button name="action_mitigate" string="Mark Mitigated" type="object" invisible="state != 'open' or not can_mitigate"/>
+                    <button name="action_close" string="Close" type="object" invisible="state == 'closed' or not can_mitigate"/>
+                    <span class="text-danger ms-2" invisible="state == 'closed' or can_mitigate">Record responsible party, entitlement, days, mitigation plan (and serve notice if required) to mitigate/close.</span>
                     <field name="state" widget="statusbar" statusbar_visible="open,mitigated,closed"/>
                 </header>
                 <sheet>

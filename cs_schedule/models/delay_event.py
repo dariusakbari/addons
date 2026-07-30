@@ -67,6 +67,8 @@ class CsDelayEvent(models.Model):
     notice_given = fields.Boolean(readonly=True, copy=False, tracking=True)
     date_notice_given = fields.Date(readonly=True, copy=False)
     notice_overdue = fields.Boolean(compute="_compute_notice_overdue")
+    can_serve_notice = fields.Boolean(compute="_compute_gates")
+    can_mitigate = fields.Boolean(compute="_compute_gates")
 
     # Cost impact
     cost_impact = fields.Selection([
@@ -113,6 +115,22 @@ class CsDelayEvent(models.Model):
                     % rec.name)
             rec.write({"notice_given": True,
                        "date_notice_given": fields.Date.context_today(self)})
+
+    @api.depends("days_impact", "liable_party", "delay_type", "responsible_id",
+                 "mitigation_plan", "notice_required", "notice_given",
+                 "notice_recipient_id", "notice_deadline", "cost_impact",
+                 "cost_amount")
+    def _compute_gates(self):
+        for rec in self:
+            rec.can_serve_notice = bool(
+                rec.notice_required and not rec.notice_given
+                and rec.notice_recipient_id and rec.notice_deadline)
+            rec.can_mitigate = bool(
+                rec.days_impact and rec.liable_party
+                and rec.liable_party != "tbd" and rec.delay_type
+                and rec.responsible_id and rec.mitigation_plan
+                and (not rec.notice_required or rec.notice_given)
+                and (rec.cost_impact != "yes" or rec.cost_amount))
 
     def _check_contractual_fields(self):
         """A delay can't be mitigated or closed until the contractually
