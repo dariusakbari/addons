@@ -850,3 +850,32 @@ the TEST field user's group assignment. Redo as needed.
     and Field & Safety — every construction record type is viewable, filtered
     to the project, from the project form without entering the Construction app.
     cs_hub 0.3.0 (now depends on cs_schedule).
+
+## Audit round 3 (P0/P1) — 26 July 2026
+
+92. FIX (P0): a Payment Application (INT-PA-001) was stuck 'invoiced' while its
+    invoice was cancelled — the mismatch predated the account.move sync.
+    Corrected the record (reverted to approved, cleared link) and added a
+    cs_commercial migration (19.0.0.9.0) that reverts any invoiced PA whose
+    invoice is cancelled, so no stale mismatches remain after upgrades.
+    cs_commercial 0.9.0.
+93. FIX (P0): module upgrades had reactivated the legacy per-item reminder
+    crons that were manually disabled (Overdue RFI escalation, RFI response
+    reminders, cert/permit/submittal reminders). Set active=False in each
+    cron's own definition so upgrades keep them OFF permanently. They are
+    superseded by the cs_automation escalation engine (in-app only). Also set
+    the Administrator account to in-app delivery (Darius/Mujtaba already were),
+    so the escalation engine never emails anyone — zero automated per-item
+    emails. cs_controls 0.9.4, cs_mail 0.4.1, cs_hse 0.4.1, cs_commercial 0.9.0.
+94. FIX (P1): Site Instruction Distribution tab — the distribution list is now
+    labelled inside a group, last-distributed shown, delivery history always
+    visible with a "not yet distributed" hint. cs_field 0.9.1.
+95. FIX (P1): Look-Ahead activity fields (activity, trade, planned start/finish,
+    manpower) are now visibly required in the grid, matching the issue gate.
+    cs_schedule 0.5.3.
+96. FIX (P1): Delay Event — responsible party is required, and notice recipient
+    + deadline are required when "Notice Required" is checked (until notice is
+    served). cs_schedule 0.5.3.
+97. FIX (P1): RFI Analysis graph — simplified to a single count-by-status bar
+    (was blank for some clients due to a cached two-dimension view). The view
+    arch change busts the client cache. cs_dashboards 0.11.3.

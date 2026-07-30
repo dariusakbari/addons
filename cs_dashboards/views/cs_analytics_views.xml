@@ -5,8 +5,7 @@
         <field name="name">cs.rfi.graph</field>
         <field name="model">cs.rfi</field>
         <field name="arch" type="xml">
-            <graph string="RFIs" type="bar" sample="1">
-                <field name="project_id"/>
+            <graph string="RFIs by status" type="bar" sample="1">
                 <field name="state"/>
             </graph>
         </field>

@@ -250,8 +250,9 @@
         <field name="state">code</field>
         <field name="code">model._cron_expire_permits()</field>
         <field name="interval_number">1</field>
-        <field name="interval_type">hours</field>
-        <field name="active" eval="True"/>
+        <field name="interval_type">days</field>
+        <!-- Superseded by the cs_automation escalation engine (in-app only). -->
+        <field name="active" eval="False"/>
     </record>
 
     <menuitem id="menu_cs_incident" name="Incident Reports" parent="menu_cs_field_safety" action="action_cs_incident" sequence="30"/>

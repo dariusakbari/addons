@@ -40,8 +40,14 @@
                             <field name="instruction" placeholder="The direction issued to the contractor / field..."/>
                         </page>
                         <page string="Distribution">
-                            <field name="distribution_ids" widget="many2many_tags"/>
-                            <field name="distribution_log_ids" invisible="not distribution_log_ids">
+                            <group>
+                                <field name="distribution_ids" widget="many2many_tags"
+                                       string="Distribution List"
+                                       help="Recipients besides 'Issued To'. Use Distribute to email the PDF; the client/Issued-To is always included."/>
+                                <field name="last_distributed" readonly="1"/>
+                            </group>
+                            <separator string="Delivery history"/>
+                            <field name="distribution_log_ids" nolabel="1">
                                 <list>
                                     <field name="date_sent"/>
                                     <field name="partner_id"/>
@@ -50,6 +56,9 @@
                                     <field name="sent_by_id"/>
                                 </list>
                             </field>
+                            <div class="text-muted" invisible="distribution_log_ids">
+                                Not yet distributed. Use the <b>Distribute</b> button in the header to email the instruction; <b>Re-send</b> appears afterwards.
+                            </div>
                         </page>
                         <page string="Acknowledgement">
                             <group>

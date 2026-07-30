@@ -152,7 +152,8 @@
         <field name="code">model._cron_expiry_reminders()</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="active" eval="True"/>
+        <!-- Superseded by the cs_automation escalation engine (in-app only). -->
+        <field name="active" eval="False"/>
     </record>
 
     <record id="view_project_form_cs_budget" model="ir.ui.view">

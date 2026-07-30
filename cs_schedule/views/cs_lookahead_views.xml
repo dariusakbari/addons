@@ -37,12 +37,12 @@
                                       decoration-success="status == 'done'">
                                     <field name="sequence" widget="handle"/>
                                     <field name="week_label" readonly="1" optional="show"/>
-                                    <field name="activity"/>
-                                    <field name="trade"/>
+                                    <field name="activity" required="1"/>
+                                    <field name="trade" required="1"/>
                                     <field name="subcontractor_id" optional="show"/>
-                                    <field name="planned_start"/>
-                                    <field name="planned_finish"/>
-                                    <field name="manpower" sum="Crew"/>
+                                    <field name="planned_start" required="1"/>
+                                    <field name="planned_finish" required="1"/>
+                                    <field name="manpower" sum="Crew" required="1"/>
                                     <field name="constraint" optional="show"/>
                                     <field name="constraint_status"/>
                                     <field name="committed"/>
