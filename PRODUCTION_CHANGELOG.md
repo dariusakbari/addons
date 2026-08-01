@@ -987,3 +987,8 @@ the TEST field user's group assignment. Redo as needed.
      memos, meetings, look-aheads, delays), its tasks and the project itself,
      in one mail.message list. Built from a computed OR-domain over
      (model, res_id); cs_message_count drives the button badge. cs_hub 0.4.0.
+109. CLEANUP (P2.3): removed 57 stale "Overdue RFI response" to-do activities
+     that sat on already closed/cancelled RFIs (leftovers from the disabled
+     reminder engine). Done via authenticated session with the owner's
+     explicit approval. The 17 activities on still-open RFIs were left in
+     place per that decision. No RFI records were changed.
