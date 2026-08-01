@@ -1017,6 +1017,11 @@ ST5. FIX: the Safety Reports action no longer defaults to hiding locked
 ST6. CONTENT: seeded five published starter templates — Toolbox Talk, Field
      Inspection, Site Inspection, Hazard Assessment, Equipment Inspection —
      each using the configurable yes/no scoring where appropriate.
+ST8. RELIABILITY: seed templates now publish automatically. Added a
+     post_init_hook (fresh install) and a 19.0.0.2.1 migration (upgrades) that
+     publish any seeded starter template still left as draft — the XML
+     same-id publish record only fires on a fresh install, so upgrades that add
+     new seeds previously landed them as draft. cs_hse_templates 0.2.1.
 ST2/7. TESTS: added tests/test_safety.py (11 cases) covering template opening
      (chatter), QR generation + route, configurable yes/no scoring, fail_count,
      required signatures, locking read-only enforcement, reopen + logging, PDF

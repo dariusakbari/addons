@@ -5,7 +5,7 @@
                "pass/fail/N-A questions, corrective actions, required photos, "
                "crew + supervisor signatures, controlled PDF, QR entry and "
                "recipient history.",
-    "version": "19.0.0.2.0",
+    "version": "19.0.0.2.1",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
@@ -21,6 +21,7 @@
         "views/safety_menus.xml",
         "data/safety_template_demo.xml",
     ],
+    "post_init_hook": "post_init_hook",
     "installable": True,
     "application": False,
 }
