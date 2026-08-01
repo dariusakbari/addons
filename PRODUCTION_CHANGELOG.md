@@ -897,3 +897,19 @@ the TEST field user's group assignment. Redo as needed.
      notice served if required, cost amount if any) are recorded — via
      can_serve_notice / can_mitigate computes, with a red hint otherwise.
      cs_schedule 0.5.4.
+
+## Branding — 1 August 2026
+
+101. BRANDING: replaced the Construction app-tile icon with the new
+     Green Tech Electric icon (design-supplied, 840x840 PNG) at
+     cs_controls/static/description/icon.png; bumped cs_controls to 0.9.5 so
+     the app-grid asset refreshes on upgrade. Requires push + upgrade to take
+     effect.
+102. BRANDING: set the website Favicon (Settings > General Settings > Favicon,
+     stored on website id 1) to the same icon via authenticated session.
+     Odoo re-encoded it to a 16x16 .ico served at /web/image/website/1/favicon.
+     NOTE/LIMITATION: the Odoo *backend* browser-tab favicon and the
+     add-to-home-screen (PWA) icon are hardcoded by Odoo core to
+     /web/static/img/favicon.ico and the core manifest; changing those needs a
+     small web.layout / manifest override module (previously declined). The
+     website favicon and app-tile icon do NOT require that module.
