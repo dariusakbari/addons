@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cs_safety_report" name="Safety Reports"
+              parent="cs_hse.menu_cs_field_safety"
+              action="action_cs_safety_report" sequence="5"/>
+    <menuitem id="menu_cs_safety_template" name="Safety Templates"
+              parent="cs_hse.menu_cs_field_safety"
+              action="action_cs_safety_template" sequence="70"
+              groups="cs_core.group_cs_safety,cs_core.group_cs_pm,cs_core.group_cs_admin"/>
+</odoo>

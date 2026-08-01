@@ -1,0 +1,37 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_safety_template_field,safety template field,model_cs_safety_template,cs_core.group_cs_field,1,0,0,0
+access_safety_template_safety,safety template safety,model_cs_safety_template,cs_core.group_cs_safety,1,1,1,1
+access_safety_template_pm,safety template pm,model_cs_safety_template,cs_core.group_cs_pm,1,1,1,0
+access_safety_template_admin,safety template admin,model_cs_safety_template,cs_core.group_cs_admin,1,1,1,1
+access_safety_section_field,safety section field,model_cs_safety_template_section,cs_core.group_cs_field,1,0,0,0
+access_safety_section_safety,safety section safety,model_cs_safety_template_section,cs_core.group_cs_safety,1,1,1,1
+access_safety_section_pm,safety section pm,model_cs_safety_template_section,cs_core.group_cs_pm,1,1,1,0
+access_safety_section_admin,safety section admin,model_cs_safety_template_section,cs_core.group_cs_admin,1,1,1,1
+access_safety_question_field,safety question field,model_cs_safety_template_question,cs_core.group_cs_field,1,0,0,0
+access_safety_question_safety,safety question safety,model_cs_safety_template_question,cs_core.group_cs_safety,1,1,1,1
+access_safety_question_pm,safety question pm,model_cs_safety_template_question,cs_core.group_cs_pm,1,1,1,0
+access_safety_question_admin,safety question admin,model_cs_safety_template_question,cs_core.group_cs_admin,1,1,1,1
+access_safety_report_field,safety report field,model_cs_safety_report,cs_core.group_cs_field,1,1,1,0
+access_safety_report_safety,safety report safety,model_cs_safety_report,cs_core.group_cs_safety,1,1,1,1
+access_safety_report_coord,safety report coordinator,model_cs_safety_report,cs_core.group_cs_coordinator,1,1,1,0
+access_safety_report_pm,safety report pm,model_cs_safety_report,cs_core.group_cs_pm,1,1,1,0
+access_safety_report_admin,safety report admin,model_cs_safety_report,cs_core.group_cs_admin,1,1,1,1
+access_safety_answer_field,safety answer field,model_cs_safety_report_answer,cs_core.group_cs_field,1,1,1,1
+access_safety_answer_safety,safety answer safety,model_cs_safety_report_answer,cs_core.group_cs_safety,1,1,1,1
+access_safety_answer_coord,safety answer coordinator,model_cs_safety_report_answer,cs_core.group_cs_coordinator,1,1,1,1
+access_safety_answer_pm,safety answer pm,model_cs_safety_report_answer,cs_core.group_cs_pm,1,1,1,1
+access_safety_answer_admin,safety answer admin,model_cs_safety_report_answer,cs_core.group_cs_admin,1,1,1,1
+access_safety_sign_field,safety signature field,model_cs_safety_report_signature,cs_core.group_cs_field,1,1,1,1
+access_safety_sign_safety,safety signature safety,model_cs_safety_report_signature,cs_core.group_cs_safety,1,1,1,1
+access_safety_sign_coord,safety signature coordinator,model_cs_safety_report_signature,cs_core.group_cs_coordinator,1,1,1,1
+access_safety_sign_pm,safety signature pm,model_cs_safety_report_signature,cs_core.group_cs_pm,1,1,1,1
+access_safety_sign_admin,safety signature admin,model_cs_safety_report_signature,cs_core.group_cs_admin,1,1,1,1
+access_safety_dist_field,safety distribution field,model_cs_safety_report_distribution,cs_core.group_cs_field,1,1,1,0
+access_safety_dist_safety,safety distribution safety,model_cs_safety_report_distribution,cs_core.group_cs_safety,1,1,1,1
+access_safety_dist_coord,safety distribution coordinator,model_cs_safety_report_distribution,cs_core.group_cs_coordinator,1,1,1,0
+access_safety_dist_pm,safety distribution pm,model_cs_safety_report_distribution,cs_core.group_cs_pm,1,1,1,0
+access_safety_dist_admin,safety distribution admin,model_cs_safety_report_distribution,cs_core.group_cs_admin,1,1,1,1
+access_safety_qr_wizard_safety,safety qr wizard safety,model_cs_safety_qr_wizard,cs_core.group_cs_safety,1,1,1,1
+access_safety_qr_wizard_pm,safety qr wizard pm,model_cs_safety_qr_wizard,cs_core.group_cs_pm,1,1,1,1
+access_safety_qr_wizard_coord,safety qr wizard coordinator,model_cs_safety_qr_wizard,cs_core.group_cs_coordinator,1,1,1,1
+access_safety_qr_wizard_admin,safety qr wizard admin,model_cs_safety_qr_wizard,cs_core.group_cs_admin,1,1,1,1

@@ -913,3 +913,27 @@ the TEST field user's group assignment. Redo as needed.
      /web/static/img/favicon.ico and the core manifest; changing those needs a
      small web.layout / manifest override module (previously declined). The
      website favicon and app-tile icon do NOT require that module.
+
+## Upgrade backlog — 1 August 2026
+
+103. FEATURE (P0.1-3, P0.4): new module **cs_hse_templates** — a version-
+     controlled Safety Report Template Library. Admin/safety-lead build
+     templates (sections + questions) with answer types Pass/Fail/N-A,
+     Yes/No/N-A, Rating, Number, Text; per-question flags for required,
+     photo-required and corrective-action-if-failed. Publishing locks a
+     template's structure (edits require New Version) so historical reports
+     stay reproducible. Field reports snapshot the template version, capture
+     answers, comments, corrective actions, required photos, and crew +
+     supervisor signatures (drawn on-screen or typed name). States:
+     Draft -> Complete -> Issued -> Locked (+ Cancel), with server-side
+     validation (all required answered, required photos present, corrective
+     actions on fails, crew+supervisor signatures before Issue) and an
+     edit-lock once issued. Controlled QWeb PDF, distribution list with
+     recipient history + resend (mirrors Site Instruction). Per-template and
+     per-project QR deep links (/safety/new) via a QR poster wizard for fast
+     mobile entry. Seeded one published "Daily Site Safety Inspection"
+     starter template. Coexists with the existing fixed Toolbox Talk / FLHA /
+     Equipment Inspection forms (migrate-later, per decision). cs_hse_templates
+     0.1.0. Additive only (new tables); no core or existing-model changes.
+     PENDING P0.5: real two-device no-signal offline test (user-side, needs
+     native Odoo mobile app + devices).

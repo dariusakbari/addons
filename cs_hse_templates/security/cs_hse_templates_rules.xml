@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Field crews see safety reports on projects they belong to; managers,
+         safety leads and admins see everything. Templates are global. -->
+    <record id="rule_safety_report_member" model="ir.rule">
+        <field name="name">Safety Report: project members</field>
+        <field name="model_id" ref="model_cs_safety_report"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_field')), (4, ref('cs_core.group_cs_coordinator'))]"/>
+        <field name="domain_force">['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [user.partner_id.id])]</field>
+    </record>
+    <record id="rule_safety_report_manager" model="ir.rule">
+        <field name="name">Safety Report: managers all</field>
+        <field name="model_id" ref="model_cs_safety_report"/>
+        <field name="groups" eval="[(4, ref('cs_core.group_cs_pm')), (4, ref('cs_core.group_cs_safety')), (4, ref('cs_core.group_cs_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

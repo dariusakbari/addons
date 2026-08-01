@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_safety_report_form" model="ir.ui.view">
+        <field name="name">cs.safety.report.form</field>
+        <field name="model">cs.safety.report</field>
+        <field name="arch" type="xml">
+            <form string="Safety Report">
+                <header>
+                    <button name="action_complete" string="Mark Complete"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_issue" string="Issue" type="object"
+                            class="btn-primary"
+                            invisible="state not in ('draft','complete')"/>
+                    <button name="action_lock" string="Lock" type="object"
+                            invisible="state != 'issued'"/>
+                    <button name="action_distribute" string="Email / Distribute"
+                            type="object" icon="fa-paper-plane"
+                            invisible="state not in ('issued','locked')"/>
+                    <button name="action_resend" string="Re-send" type="object"
+                            invisible="distribution_count == 0"/>
+                    <button name="action_reload_template"
+                            string="Reload from Template" type="object"
+                            invisible="state != 'draft'"
+                            confirm="Reload the question list from the template? Recorded answers will be cleared."/>
+                    <button name="action_reset_to_draft" string="Reopen"
+                            type="object"
+                            groups="cs_core.group_cs_safety,cs_core.group_cs_admin"
+                            invisible="state in ('draft','cancelled')"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state in ('locked','cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,complete,issued,locked"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-list-ol" disabled="1">
+                            <field name="answered_count" widget="statinfo"
+                                   string="Answered"/>
+                        </button>
+                        <button class="oe_stat_button" icon="fa-exclamation-triangle" disabled="1">
+                            <field name="fail_count" widget="statinfo" string="Failed"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Needs Attention"
+                            bg_color="text-bg-danger"
+                            invisible="overall_result != 'attention'"/>
+                    <widget name="web_ribbon" title="Locked"
+                            bg_color="text-bg-secondary"
+                            invisible="state != 'locked'"/>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="template_id"
+                                   readonly="state != 'draft'"
+                                   options="{'no_create': True}"/>
+                            <field name="template_version"/>
+                            <field name="project_id" readonly="state != 'draft'"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="title" placeholder="Optional short description"/>
+                            <field name="location"/>
+                            <field name="prepared_by_id"/>
+                            <field name="supervisor_id"/>
+                            <field name="overall_result" widget="badge"
+                                   decoration-success="overall_result == 'pass'"
+                                   decoration-danger="overall_result == 'attention'"/>
+                        </group>
+                    </group>
+                    <field name="intro" invisible="not intro" readonly="1"/>
+                    <notebook>
+                        <page string="Checklist" name="checklist">
+                            <field name="answer_ids" readonly="state in ('issued','locked','cancelled')">
+                                <list string="Answers" editable="bottom"
+                                      decoration-danger="is_fail"
+                                      decoration-muted="qtype == 'text'">
+                                    <field name="qtype" column_invisible="1"/>
+                                    <field name="corrective_on_fail" column_invisible="1"/>
+                                    <field name="is_fail" column_invisible="1"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="section_name" readonly="1"/>
+                                    <field name="question_name" readonly="1"/>
+                                    <field name="value_pfn"
+                                           invisible="qtype != 'passfailna'"/>
+                                    <field name="value_yn"
+                                           invisible="qtype != 'yesno'"/>
+                                    <field name="value_rating"
+                                           invisible="qtype != 'rating'"/>
+                                    <field name="value_number"
+                                           invisible="qtype != 'number'"/>
+                                    <field name="value_text"
+                                           invisible="qtype != 'text'"/>
+                                    <field name="comment"/>
+                                    <field name="corrective_action"
+                                           invisible="not is_fail"
+                                           required="is_fail and corrective_on_fail"/>
+                                    <field name="requires_photo" column_invisible="1"/>
+                                    <field name="photo_ids" widget="many2many_binary"
+                                           string="Photos"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Signatures" name="signatures">
+                            <field name="signature_ids" readonly="state in ('issued','locked','cancelled')">
+                                <list string="Signatures" editable="bottom">
+                                    <field name="role"/>
+                                    <field name="signer_name"/>
+                                    <field name="user_id" optional="hide"/>
+                                    <field name="signature" widget="signature"/>
+                                    <field name="signed_on"/>
+                                    <field name="has_mark" column_invisible="1"/>
+                                </list>
+                            </field>
+                            <p class="text-muted">
+                                At least one <strong>crew</strong> signature and one
+                                <strong>supervisor</strong> signature are required to issue.
+                                Sign on-screen or type the signer's name.
+                            </p>
+                        </page>
+                        <page string="Distribution" name="distribution">
+                            <group>
+                                <field name="distribution_ids" widget="many2many_tags"
+                                       options="{'no_create_edit': True}"/>
+                                <field name="last_distributed"/>
+                                <field name="distribution_count"/>
+                            </group>
+                            <field name="distribution_log_ids" readonly="1">
+                                <list string="Sent">
+                                    <field name="date_sent"/>
+                                    <field name="partner_id"/>
+                                    <field name="email"/>
+                                    <field name="sent_by_id"/>
+                                    <field name="note" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cs_safety_report_list" model="ir.ui.view">
+        <field name="name">cs.safety.report.list</field>
+        <field name="model">cs.safety.report</field>
+        <field name="arch" type="xml">
+            <list string="Safety Reports"
+                  decoration-danger="overall_result == 'attention'"
+                  decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="template_id"/>
+                <field name="template_type"/>
+                <field name="project_id"/>
+                <field name="prepared_by_id" optional="show"/>
+                <field name="fail_count" optional="show"/>
+                <field name="overall_result" widget="badge"
+                       decoration-success="overall_result == 'pass'"
+                       decoration-danger="overall_result == 'attention'"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'issued'"
+                       decoration-success="state == 'locked'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cs_safety_report_search" model="ir.ui.view">
+        <field name="name">cs.safety.report.search</field>
+        <field name="model">cs.safety.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="template_id"/>
+                <filter name="my" string="My Reports"
+                        domain="[('prepared_by_id','=',uid)]"/>
+                <filter name="attention" string="Needs Attention"
+                        domain="[('overall_result','=','attention')]"/>
+                <filter name="open" string="Not Locked"
+                        domain="[('state','not in',('locked','cancelled'))]"/>
+                <separator/>
+                <filter name="by_project" string="Project" context="{'group_by':'project_id'}"/>
+                <filter name="by_type" string="Type" context="{'group_by':'template_type'}"/>
+                <filter name="by_state" string="Status" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_cs_safety_report_calendar" model="ir.ui.view">
+        <field name="name">cs.safety.report.calendar</field>
+        <field name="model">cs.safety.report</field>
+        <field name="arch" type="xml">
+            <calendar string="Safety Reports" date_start="date" color="template_type" mode="month">
+                <field name="template_id"/>
+                <field name="project_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="action_cs_safety_report" model="ir.actions.act_window">
+        <field name="name">Safety Reports</field>
+        <field name="res_model">cs.safety.report</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="context">{'search_default_open': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Log your first safety report</p>
+            <p>Pick a published template, answer each item, capture signatures, then Issue.</p>
+        </field>
+    </record>
+</odoo>

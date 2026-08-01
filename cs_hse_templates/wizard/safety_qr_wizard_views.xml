@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cs_safety_qr_wizard_form" model="ir.ui.view">
+        <field name="name">cs.safety.qr.wizard.form</field>
+        <field name="model">cs.safety.qr.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Safety QR Poster">
+                <group>
+                    <field name="template_id" options="{'no_create': True}"/>
+                    <field name="project_id" options="{'no_create': True}"/>
+                </group>
+                <div class="text-center">
+                    <field name="qr_image" widget="image" options="{'size': [220, 220]}"/>
+                    <p class="text-muted mt-2">
+                        Scan to start a new report from this template.
+                        Print this and post it at the site or on the equipment.
+                    </p>
+                    <field name="url" readonly="1" widget="CopyClipboardChar"/>
+                </div>
+                <footer>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

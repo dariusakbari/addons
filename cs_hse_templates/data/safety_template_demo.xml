@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Starter template so the library is usable on install. Safety leads
+             can edit it via New Version or build their own. -->
+        <record id="tpl_daily_inspection" model="cs.safety.template">
+            <field name="name">Daily Site Safety Inspection</field>
+            <field name="code">DSI</field>
+            <field name="template_type">inspection</field>
+            <field name="intro"><![CDATA[<p>Complete at the start of each shift. Flag any Fail with a corrective action.</p>]]></field>
+        </record>
+
+        <record id="sec_site_conditions" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_daily_inspection"/>
+            <field name="sequence">10</field>
+            <field name="name">Site Conditions</field>
+        </record>
+        <record id="q_access" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_site_conditions"/>
+            <field name="sequence">10</field>
+            <field name="name">Site access clear and safe</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_housekeeping" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_site_conditions"/>
+            <field name="sequence">20</field>
+            <field name="name">Housekeeping acceptable (no trip hazards, debris)</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_lighting" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_site_conditions"/>
+            <field name="sequence">30</field>
+            <field name="name">Adequate lighting for the work</field>
+            <field name="qtype">passfailna</field>
+        </record>
+
+        <record id="sec_ppe" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_daily_inspection"/>
+            <field name="sequence">20</field>
+            <field name="name">PPE &amp; Equipment</field>
+        </record>
+        <record id="q_ppe" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_ppe"/>
+            <field name="sequence">10</field>
+            <field name="name">All workers wearing required PPE</field>
+            <field name="qtype">passfailna</field>
+            <field name="corrective_on_fail" eval="True"/>
+        </record>
+        <record id="q_fire" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_ppe"/>
+            <field name="sequence">20</field>
+            <field name="name">Fire extinguishers present and accessible</field>
+            <field name="qtype">yesno</field>
+        </record>
+        <record id="q_access_equip" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_ppe"/>
+            <field name="sequence">30</field>
+            <field name="name">Ladders / scaffolds inspected and tagged</field>
+            <field name="qtype">passfailna</field>
+            <field name="requires_photo" eval="True"/>
+        </record>
+
+        <record id="sec_hazards" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_daily_inspection"/>
+            <field name="sequence">30</field>
+            <field name="name">Hazards &amp; Observations</field>
+        </record>
+        <record id="q_new_hazard" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_hazards"/>
+            <field name="sequence">10</field>
+            <field name="name">Any new hazards identified today?</field>
+            <field name="qtype">yesno</field>
+            <field name="corrective_on_fail" eval="False"/>
+        </record>
+        <record id="q_observations" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_hazards"/>
+            <field name="sequence">20</field>
+            <field name="name">General observations</field>
+            <field name="qtype">text</field>
+            <field name="required" eval="False"/>
+        </record>
+
+        <!-- Publish last, after the structure exists (draft during build so the
+             section/question guards allow creation). -->
+        <record id="tpl_daily_inspection" model="cs.safety.template">
+            <field name="state">published</field>
+        </record>
+    </data>
+</odoo>
