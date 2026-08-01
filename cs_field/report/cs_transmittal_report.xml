@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cs_transmittal" model="ir.actions.report">
+        <field name="name">Transmittal</field>
+        <field name="model">cs.transmittal</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cs_field.report_cs_transmittal</field>
+        <field name="report_file">cs_field.report_cs_transmittal</field>
+        <field name="print_report_name">(object.name or 'Transmittal')</field>
+        <field name="binding_model_id" ref="model_cs_transmittal"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cs_transmittal">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Letter of Transmittal <span t-field="doc.name"/></h2>
+                        <div class="row mt8">
+                            <div class="col-6">
+                                <strong>Project:</strong> <span t-field="doc.project_id"/><br/>
+                                <strong>To:</strong> <span t-field="doc.partner_id"/><br/>
+                                <strong>From:</strong> <span t-field="doc.sent_by_id"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong> <span t-field="doc.date"/><br/>
+                                <strong>Via:</strong> <span t-field="doc.via"/><br/>
+                                <strong>Status:</strong> <span t-field="doc.state"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm mt16">
+                            <thead>
+                                <tr>
+                                    <th>#</th><th>Description</th>
+                                    <th class="text-center">Qty</th>
+                                    <th>Format</th><th>Rev</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.line_ids" t-as="line">
+                                    <td><span t-esc="line_index + 1"/></td>
+                                    <td><span t-field="line.description"/></td>
+                                    <td class="text-center"><span t-field="line.quantity"/></td>
+                                    <td><span t-field="line.doc_format"/></td>
+                                    <td><span t-field="line.revision"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div t-if="doc.description" class="mt16">
+                            <strong>Remarks:</strong>
+                            <div t-field="doc.description"/>
+                        </div>
+
+                        <div t-if="doc.attachment_ids" class="mt16">
+                            <strong>Attached files:</strong>
+                            <ul>
+                                <li t-foreach="doc.attachment_ids" t-as="att">
+                                    <span t-field="att.name"/>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <table class="table table-sm mt32" style="width:60%;">
+                            <tr>
+                                <td style="border-top:1px solid #000;">Received by (print &amp; sign)</td>
+                                <td style="border-top:1px solid #000;">Date</td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

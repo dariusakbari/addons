@@ -952,4 +952,24 @@ the TEST field user's group assignment. Redo as needed.
      bumped to 1.0.0.
      NOTE (P1.2): the RFI Analysis graph already defaults to a bar grouped by
      State with Count as the measure (arch has a single state dimension and no
-     numeric measure, so Count is the default). Re-verifying render post-deploy.
+     numeric measure, so Count is the default). Verified via read_group:
+     Closed 57 / Open 7 / Sent 1.
+105. FEATURE (P1.3): Transmittal now has a controlled PDF (Letter of
+     Transmittal — items table, remarks, attached-files list, received-by
+     sign-off) at cs_field.report_cs_transmittal, wired as the auto-attached
+     PDF on the transmittal email (_cs_mail_report). Added Email Transmittal +
+     Resend buttons to the transmittal form (via cs_mail inherited view), and a
+     transmittal-aware recipient list (To + CC). cs_field 0.10.0, cs_mail
+     0.5.0. Shop Drawing and Closeout registers already have full state flows
+     (draft->received->under review->approved/rejected; required->received->
+     reviewed->accepted) and are exercised as-is (internal registers, no
+     external PDF needed).
+106. FEATURE (P1.5): Project Budget now tracks real purchase commitment.
+     amount_committed is redefined as the uninvoiced value of confirmed
+     purchase-order lines allocated to the project's analytic account
+     (ordered - billed, prorated by analytic %), giving a true
+     budget -> commitment -> vendor bill -> actual -> forecast cost picture.
+     Change-order exposure moved to its own amount_change_exposure field
+     (shown on the budget form; optional column on the list). Actual still
+     comes from negative analytic lines; forecast = actual + cost to complete.
+     cs_commercial 0.10.0.

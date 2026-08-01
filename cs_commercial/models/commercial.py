@@ -19,7 +19,11 @@ class GteProjectBudget(models.Model):
     line_ids = fields.One2many("cs.project.budget.line", "budget_id", copy=True)
     amount_budget = fields.Monetary(aggregator="sum", currency_field="currency_id",
                                     compute="_compute_amounts", store=True)
-    amount_committed = fields.Monetary(aggregator="sum", 
+    amount_committed = fields.Monetary(aggregator="sum",
+        currency_field="currency_id", compute="_compute_amounts",
+        help="Open purchase commitment: the uninvoiced value of confirmed "
+             "purchase orders allocated to this project's analytic account.")
+    amount_change_exposure = fields.Monetary(aggregator="sum",
         currency_field="currency_id", compute="_compute_amounts",
         help="Open + approved change-order exposure on this project.")
     amount_actual = fields.Monetary(aggregator="sum",
@@ -65,9 +69,10 @@ class GteProjectBudget(models.Model):
             cos = self.env["cs.change.order"].search(
                 [("project_id", "=", rec.project_id.id),
                  ("state", "not in", ("closed", "cancelled", "rejected"))])
-            rec.amount_committed = sum(cos.mapped("exposure"))
-            actual = 0.0
+            rec.amount_change_exposure = sum(cos.mapped("exposure"))
             account = rec.project_id.account_id
+            rec.amount_committed = rec._open_po_commitment(account)
+            actual = 0.0
             if account:
                 lines = self.env["account.analytic.line"].search(
                     [("account_id", "=", account.id), ("amount", "<", 0)])
@@ -76,6 +81,31 @@ class GteProjectBudget(models.Model):
             rec.amount_variance = rec.amount_budget - rec.amount_actual
             rec.amount_forecast = actual + rec.amount_cost_to_complete
             rec.amount_forecast_variance = rec.amount_budget - rec.amount_forecast
+
+    def _open_po_commitment(self, account):
+        """Uninvoiced value of confirmed purchase-order lines allocated to the
+        project's analytic account. This is the classic 'committed cost' — a
+        PO you've issued but not yet been billed for."""
+        if not account or "purchase.order.line" not in self.env:
+            return 0.0
+        pols = self.env["purchase.order.line"].search(
+            [("state", "in", ("purchase", "done")),
+             ("analytic_distribution", "!=", False)])
+        total = 0.0
+        for line in pols:
+            pct = 0.0
+            for key, percentage in (line.analytic_distribution or {}).items():
+                ids = [int(a) for a in str(key).split(",") if a.isdigit()]
+                if account.id in ids:
+                    pct += percentage
+            if not pct:
+                continue
+            qty = line.product_qty or 0.0
+            remaining = 1.0
+            if qty:
+                remaining = max(0.0, (qty - line.qty_invoiced) / qty)
+            total += line.price_subtotal * remaining * pct / 100.0
+        return total
 
     def action_approve(self):
         for rec in self:

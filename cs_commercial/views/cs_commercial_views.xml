@@ -19,6 +19,7 @@
                         <group>
                             <field name="amount_budget"/>
                             <field name="amount_committed"/>
+                            <field name="amount_change_exposure"/>
                             <field name="amount_actual"/>
                             <field name="amount_variance"/>
                         </group>
@@ -48,6 +49,7 @@
                 <field name="project_id"/>
                 <field name="amount_budget" sum="Budget"/>
                 <field name="amount_committed" sum="Committed"/>
+                <field name="amount_change_exposure" sum="Change Exposure" optional="hide"/>
                 <field name="amount_actual" sum="Actual"/>
                 <field name="amount_variance"/>
                 <field name="amount_forecast" sum="Forecast" optional="show"/>

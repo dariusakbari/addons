@@ -184,3 +184,10 @@ class GteTransmittal(models.Model):
     _name = "cs.transmittal"
     _inherit = ["cs.transmittal", "cs.mail.action.mixin"]
     _cs_mail_template_xmlid = "cs_mail.mail_template_cs_transmittal"
+    _cs_mail_report = "cs_field.report_cs_transmittal"
+
+    def _cs_mail_recipients(self):
+        # Transmittal uses partner_id as "To" plus the CC distribution list.
+        self.ensure_one()
+        partners = self.partner_id | self.distribution_ids
+        return partners

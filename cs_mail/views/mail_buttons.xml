@@ -46,4 +46,15 @@
             </xpath>
         </field>
     </record>
+    <record id="view_cs_transmittal_form_mail" model="ir.ui.view">
+        <field name="name">cs.transmittal.form.mail</field>
+        <field name="model">cs.transmittal</field>
+        <field name="inherit_id" ref="cs_field.view_cs_transmittal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_email" string="Email Transmittal" type="object" invisible="state in ('draft','cancelled')"/>
+                <button name="action_resend_email" string="Resend" type="object" invisible="state in ('draft','cancelled')"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

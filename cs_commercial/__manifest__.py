@@ -1,7 +1,7 @@
 {
     "name": "Construction Commercial & Resources",
     "summary": "Project budgets, restricted labour rates, worker certifications",
-    "version": "19.0.0.9.0",
+    "version": "19.0.0.10.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
