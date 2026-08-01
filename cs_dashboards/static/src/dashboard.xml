@@ -28,6 +28,13 @@
                             </div>
                             <span class="o_cs_pct" t-esc="proj.progress + '%'"/>
                             <span class="o_cs_tasks" t-esc="proj.tasks_done + ' / ' + proj.tasks_total + ' tasks · ' + proj.tasks_open + ' open'"/>
+                            <span t-if="proj.activity.pending" class="o_cs_activity"
+                                  t-att-data-over="proj.activity.overdue ? 1 : 0"
+                                  title="Scheduled activities on this project's records">
+                                <i class="fa fa-bell"/>
+                                <t t-esc="proj.activity.pending"/>
+                                <t t-if="proj.activity.overdue" t-esc="' · ' + proj.activity.overdue + ' overdue'"/>
+                            </span>
                         </div>
 
                         <!-- metric sections -->

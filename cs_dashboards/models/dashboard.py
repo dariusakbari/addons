@@ -80,6 +80,32 @@ class CsDashboard(models.AbstractModel):
         return out
 
     @api.model
+    def _activity_counts_by_project(self):
+        """Return ({pid: pending}, {pid: overdue}) for scheduled activities on
+        the project's construction records — the 'needs a human' signal."""
+        today = fields.Date.to_string(fields.Date.context_today(self))
+        acts = self.env["mail.activity"].search_read(
+            [("res_model", "in", self._CONSTRUCTION_MODELS)],
+            ["res_model", "res_id", "date_deadline"])
+        by_model = {}
+        for a in acts:
+            by_model.setdefault(a["res_model"], set()).add(a["res_id"])
+        rec_project = {}
+        for model, ids in by_model.items():
+            for rec in self.env[model].browse(list(ids)).exists():
+                rec_project[(model, rec.id)] = (
+                    rec.project_id.id if rec.project_id else False)
+        pending, overdue = {}, {}
+        for a in acts:
+            pid = rec_project.get((a["res_model"], a["res_id"]))
+            if not pid:
+                continue
+            pending[pid] = pending.get(pid, 0) + 1
+            if a["date_deadline"] and str(a["date_deadline"]) < today:
+                overdue[pid] = overdue.get(pid, 0) + 1
+        return pending, overdue
+
+    @api.model
     def get_project_kpis(self):
         """One card per construction project: progress + grouped metric
         sections (RFIs, Submittals & changes, Field & safety) with urgency
@@ -120,7 +146,11 @@ class CsDashboard(models.AbstractModel):
             "inc": self._counts_by_project("cs.incident", inc_dom),
             "fi": self._counts_by_project("cs.field.issue", fi_dom),
             "wp": self._counts_by_project("cs.work.permit", wp_dom),
+            "rfi_total": self._counts_by_project("cs.rfi", []),
+            "sub_total": self._counts_by_project("cs.submittal", []),
+            "co_total": self._counts_by_project("cs.change.order", []),
         }
+        act_pending, act_overdue = self._activity_counts_by_project()
 
         proj_ids = set()
         for model in self._CONSTRUCTION_MODELS:
@@ -166,6 +196,9 @@ class CsDashboard(models.AbstractModel):
                 {"label": "Overdue", "value": c["rfi_over"].get(pid, 0),
                  "tone": tone(c["rfi_over"].get(pid, 0), "red"),
                  "action": win("Overdue RFIs", "cs.rfi", rfi_over_dom)},
+                {"label": "Total", "value": c["rfi_total"].get(pid, 0),
+                 "tone": "muted",
+                 "action": win("All RFIs", "cs.rfi", [])},
             ]
             changes = [
                 {"label": "Pending submittals", "value": c["sub"].get(pid, 0),
@@ -183,6 +216,12 @@ class CsDashboard(models.AbstractModel):
                  "tone": tone(c["co_unb"].get(pid, 0), "amber"),
                  "action": win("Approved, unbilled", "cs.change.order",
                                co_unb_dom)},
+                {"label": "Submittals total", "value": c["sub_total"].get(pid, 0),
+                 "tone": "muted",
+                 "action": win("All submittals", "cs.submittal", [])},
+                {"label": "Changes total", "value": c["co_total"].get(pid, 0),
+                 "tone": "muted",
+                 "action": win("All change orders", "cs.change.order", [])},
             ]
             field_safety = [
                 {"label": "Deficiencies", "value": c["punch"].get(pid, 0),
@@ -243,6 +282,8 @@ class CsDashboard(models.AbstractModel):
                 "tasks_open": p.open_task_count,
                 "tasks_action": self._win("%s — Tasks" % label, "project.task",
                                           [("project_id", "=", pid)]),
+                "activity": {"pending": act_pending.get(pid, 0),
+                             "overdue": act_overdue.get(pid, 0)},
                 "sections": [
                     {"name": "RFIs", "metrics": rfis},
                     {"name": "Submittals & changes", "metrics": changes},

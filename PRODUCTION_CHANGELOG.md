@@ -973,3 +973,17 @@ the TEST field user's group assignment. Redo as needed.
      (shown on the budget form; optional column on the list). Actual still
      comes from negative analytic lines; forecast = actual + cost to complete.
      cs_commercial 0.10.0.
+107. FEATURE (P2.1): Project Overview (the command centre) now shows open/total
+     counts and a message/activity indicator. Added Total metrics for RFIs,
+     Submittals and Change Orders on each card, and a per-project activity
+     badge in the header (bell + count of scheduled activities on the project's
+     construction records, turning red with an "N overdue" note when any are
+     past due). New data helpers _activity_counts_by_project + total counts;
+     small OWL template + SCSS additions. cs_dashboards 0.11.4.
+108. FEATURE (P2.2): Consolidated project Communications feed. New Comms smart
+     button on the project form (coordinator+) opens every message — chatter,
+     emails and logged activities — across all of the project's construction
+     records (RFIs, COs, submittals, daily logs, FLHAs, incidents, NCRs, field
+     memos, meetings, look-aheads, delays), its tasks and the project itself,
+     in one mail.message list. Built from a computed OR-domain over
+     (model, res_id); cs_message_count drives the button badge. cs_hub 0.4.0.

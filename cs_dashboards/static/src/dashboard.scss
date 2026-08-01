@@ -59,6 +59,13 @@
         .o_cs_bar_fill { height: 100%; background: #2c8257; border-radius: 20px; }
         .o_cs_pct { font-size: 15px; font-weight: 600; min-width: 42px; color: #1f2937; }
         .o_cs_tasks { font-size: 13px; color: #8b9099; }
+        .o_cs_activity {
+            margin-left: auto; font-size: 12px; font-weight: 600;
+            padding: 2px 8px; border-radius: 10px;
+            background: #eef2f6; color: #4b5563;
+            i { margin-right: 4px; }
+            &[data-over="1"] { background: #fdecec; color: #dc3545; }
+        }
     }
 
     /* sections */

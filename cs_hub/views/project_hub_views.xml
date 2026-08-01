@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="view_cs_project_message_list" model="ir.ui.view">
+        <field name="name">cs.project.communications.list</field>
+        <field name="model">mail.message</field>
+        <field name="arch" type="xml">
+            <list string="Communications" create="false">
+                <field name="date"/>
+                <field name="author_id"/>
+                <field name="message_type"/>
+                <field name="model" optional="show"/>
+                <field name="record_name" string="On record"/>
+                <field name="subject" optional="show"/>
+                <field name="email_from" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
     <record id="view_project_form_cs_hub" model="ir.ui.view">
         <field name="name">project.project.form.cs.hub</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_communications" type="object"
+                        class="oe_stat_button" icon="fa-comments"
+                        groups="cs_core.group_cs_coordinator">
+                    <field name="cs_message_count" widget="statinfo" string="Comms"/>
+                </button>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="RFIs" name="cs_rfis" groups="cs_core.group_cs_coordinator">
                     <field name="cs_rfi_ids" context="{'default_project_id': id}">
