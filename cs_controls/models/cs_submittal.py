@@ -47,6 +47,37 @@ class GteSubmittal(models.Model):
     drawing_ref = fields.Char(string="Linked Drawing")
     rfi_id = fields.Many2one("cs.rfi", string="Linked RFI", copy=False)
     task_ids = fields.Many2many("project.task", string="Related Tasks")
+
+    # --- Procurement / delivery tracking (P1.1) ---
+    date_released = fields.Date(
+        string="Released for Fabrication", tracking=True,
+        help="Date the reviewed submittal was released to the supplier to "
+             "begin fabrication.")
+    production_lead_days = fields.Integer(
+        string="Production Lead Time (days)",
+        help="Supplier's stated fabrication / production lead time.")
+    date_delivery_anticipated = fields.Date(
+        string="Anticipated Delivery", tracking=True,
+        help="Expected delivery date (release date + lead time unless set "
+             "manually).")
+    date_delivery_confirmed = fields.Date(
+        string="Supplier-Confirmed Delivery", tracking=True)
+    date_delivery_actual = fields.Date(
+        string="Actual Delivery", tracking=True, copy=False)
+    delivery_status = fields.Selection([
+        ("pending", "Not Released"),
+        ("in_production", "In Production"),
+        ("delivered", "Delivered")],
+        string="Delivery Status", compute="_compute_delivery_status",
+        store=True)
+    delivery_overdue = fields.Boolean(
+        string="Delivery Overdue", compute="_compute_delivery_overdue")
+    purchase_order_id = fields.Many2one(
+        "purchase.order", string="Purchase Order", tracking=True,
+        help="Procurement PO that fulfils this submittal.")
+    date_po_receipt = fields.Date(
+        string="PO Receipt Date", compute="_compute_date_po_receipt",
+        help="Latest completed incoming receipt date on the linked PO.")
     distribution_ids = fields.Many2many("res.partner", "cs_submittal_distribution_rel",
                                         string="Distribution List")
     active = fields.Boolean(default=True)
@@ -67,6 +98,52 @@ class GteSubmittal(models.Model):
     def _compute_current_revision(self):
         for rec in self:
             rec.current_revision = max(rec.revision_ids.mapped("revision"), default=0)
+
+    @api.depends("date_released", "date_delivery_actual")
+    def _compute_delivery_status(self):
+        for rec in self:
+            if rec.date_delivery_actual:
+                rec.delivery_status = "delivered"
+            elif rec.date_released:
+                rec.delivery_status = "in_production"
+            else:
+                rec.delivery_status = "pending"
+
+    def _compute_delivery_overdue(self):
+        # Date-based, so kept unstored (mirrors the delay/RFI overdue pattern).
+        today = fields.Date.context_today(self)
+        for rec in self:
+            due = rec.date_delivery_confirmed or rec.date_delivery_anticipated
+            rec.delivery_overdue = bool(
+                not rec.date_delivery_actual and rec.date_released
+                and due and due < today)
+
+    @api.depends("purchase_order_id")
+    def _compute_date_po_receipt(self):
+        for rec in self:
+            date = False
+            po = rec.purchase_order_id
+            if po and "picking_ids" in po._fields:
+                done = po.picking_ids.filtered(
+                    lambda p: p.state == "done"
+                    and p.picking_type_code == "incoming" and p.date_done)
+                dates = done.mapped("date_done")
+                if dates:
+                    date = max(dates).date()
+            rec.date_po_receipt = date
+
+    @api.onchange("date_released", "production_lead_days")
+    def _onchange_delivery_dates(self):
+        if (self.date_released and self.production_lead_days
+                and not self.date_delivery_anticipated):
+            from datetime import timedelta
+            self.date_delivery_anticipated = (
+                self.date_released + timedelta(days=self.production_lead_days))
+
+    @api.onchange("purchase_order_id")
+    def _onchange_purchase_order(self):
+        if self.purchase_order_id and not self.supplier_id:
+            self.supplier_id = self.purchase_order_id.partner_id
 
     @api.model_create_multi
     def create(self, vals_list):

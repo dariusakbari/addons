@@ -937,3 +937,19 @@ the TEST field user's group assignment. Redo as needed.
      0.1.0. Additive only (new tables); no core or existing-model changes.
      PENDING P0.5: real two-device no-signal offline test (user-side, needs
      native Odoo mobile app + devices).
+104. FEATURE (P1.1): Submittal procurement / delivery tracking. Added to
+     cs.submittal: Released for Fabrication, Production Lead Time (days),
+     Anticipated Delivery (auto = release + lead unless set), Supplier-
+     Confirmed Delivery, Actual Delivery, a computed Delivery Status
+     (Not Released / In Production / Delivered), an unstored Delivery-Overdue
+     flag (date-based, mirrors the delay/RFI overdue pattern), a Purchase
+     Order link, and a computed PO Receipt Date pulled from the PO's completed
+     incoming receipts (guarded so it's inert if purchase_stock is absent).
+     New "Procurement & Delivery" form page, a Delivery-Overdue ribbon, list
+     columns + "In Production"/"Delivery Overdue" filters and a Delivery-Status
+     group-by. Revision history already existed (cs.submittal.revision) and is
+     unchanged. cs_controls now depends on `purchase` (already installed);
+     bumped to 1.0.0.
+     NOTE (P1.2): the RFI Analysis graph already defaults to a bar grouped by
+     State with Count as the measure (arch has a single state dimension and no
+     numeric measure, so Count is the default). Re-verifying render post-deploy.

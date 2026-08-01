@@ -20,6 +20,8 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,requested,received,review,submitted,approved,closed"/>
                 </header>
                 <sheet>
+                    <field name="delivery_overdue" invisible="1"/>
+                    <widget name="web_ribbon" title="Delivery Overdue" bg_color="text-bg-danger" invisible="not delivery_overdue"/>
                     <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
                     <group>
                         <group>
@@ -54,6 +56,24 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Procurement &amp; Delivery">
+                            <group>
+                                <group string="Fabrication">
+                                    <field name="purchase_order_id"/>
+                                    <field name="date_released"/>
+                                    <field name="production_lead_days"/>
+                                </group>
+                                <group string="Delivery">
+                                    <field name="date_delivery_anticipated"/>
+                                    <field name="date_delivery_confirmed"/>
+                                    <field name="date_delivery_actual"/>
+                                    <field name="date_po_receipt" readonly="1"/>
+                                    <field name="delivery_status" widget="badge" readonly="1"
+                                           decoration-success="delivery_status == 'delivered'"
+                                           decoration-info="delivery_status == 'in_production'"/>
+                                </group>
+                            </group>
+                        </page>
                         <page string="Comments"><field name="comments"/></page>
                         <page string="Distribution"><field name="distribution_ids" widget="many2many_tags"/></page>
                         <page string="Links">
@@ -77,13 +97,19 @@
         <field name="name">cs.submittal.list</field>
         <field name="model">cs.submittal</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-danger="delivery_overdue">
+                <field name="delivery_overdue" column_invisible="1"/>
                 <field name="name"/>
                 <field name="title"/>
                 <field name="project_id"/>
                 <field name="spec_section"/>
                 <field name="current_revision"/>
                 <field name="date_required_onsite"/>
+                <field name="date_delivery_anticipated" optional="show"/>
+                <field name="date_delivery_actual" optional="hide"/>
+                <field name="delivery_status" widget="badge" optional="show"
+                       decoration-success="delivery_status == 'delivered'"
+                       decoration-info="delivery_status == 'in_production'"/>
                 <field name="state" widget="badge"/>
                 <field name="migration_incomplete" optional="hide"/>
             </list>
@@ -99,10 +125,13 @@
                 <field name="project_id"/>
                 <field name="spec_section"/>
                 <filter name="pending" string="Pending" domain="[('state', 'in', ('draft','requested','received','review','submitted'))]"/>
+                <filter name="in_production" string="In Production" domain="[('delivery_status', '=', 'in_production')]"/>
+                <filter name="delivery_overdue" string="Delivery Overdue" domain="[('date_delivery_actual','=',False),('date_released','!=',False),'|','&amp;',('date_delivery_confirmed','!=',False),('date_delivery_confirmed','&lt;',context_today().strftime('%Y-%m-%d')),'&amp;',('date_delivery_confirmed','=',False),('date_delivery_anticipated','&lt;',context_today().strftime('%Y-%m-%d'))]"/>
                 <filter name="mig_exceptions" string="Migration Exceptions" domain="[('migration_incomplete', '=', True)]"/>
                 <separator/>
                 <filter name="by_project" string="Project" context="{'group_by': 'project_id'}"/>
                 <filter name="by_state" string="Status" context="{'group_by': 'state'}"/>
+                <filter name="by_delivery" string="Delivery Status" context="{'group_by': 'delivery_status'}"/>
             </search>
         </field>
     </record>
