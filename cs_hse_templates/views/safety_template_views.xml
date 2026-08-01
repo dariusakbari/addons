@@ -68,6 +68,9 @@
                                     <field name="sequence" widget="handle"/>
                                     <field name="name"/>
                                     <field name="qtype"/>
+                                    <field name="yesno_pass"
+                                           readonly="qtype != 'yesno'"
+                                           optional="show"/>
                                     <field name="required"/>
                                     <field name="requires_photo"/>
                                     <field name="corrective_on_fail"/>

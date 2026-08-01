@@ -85,5 +85,207 @@
         <record id="tpl_daily_inspection" model="cs.safety.template">
             <field name="state">published</field>
         </record>
+
+        <!-- ============================ TOOLBOX TALK ==================== -->
+        <record id="tpl_toolbox" model="cs.safety.template">
+            <field name="name">Toolbox Talk</field>
+            <field name="code">TBT</field>
+            <field name="template_type">toolbox</field>
+            <field name="intro"><![CDATA[<p>Record the pre-shift safety talk. Capture the topic, attendance and any concerns raised.</p>]]></field>
+        </record>
+        <record id="sec_tbt" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_toolbox"/>
+            <field name="sequence">10</field>
+            <field name="name">Talk</field>
+        </record>
+        <record id="q_tbt_topic" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_tbt"/><field name="sequence">10</field>
+            <field name="name">Topic covered and understood by crew</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_tbt_attend" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_tbt"/><field name="sequence">20</field>
+            <field name="name">All crew attended and signed in</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_tbt_hazards" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_tbt"/><field name="sequence">30</field>
+            <field name="name">Hazards for today's tasks reviewed</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_tbt_concerns" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_tbt"/><field name="sequence">40</field>
+            <field name="name">Any unresolved safety concerns raised?</field>
+            <field name="qtype">yesno</field>
+            <field name="yesno_pass">no</field>
+            <field name="corrective_on_fail" eval="True"/>
+        </record>
+        <record id="tpl_toolbox" model="cs.safety.template">
+            <field name="state">published</field>
+        </record>
+
+        <!-- ========================== FIELD INSPECTION ================= -->
+        <record id="tpl_field_insp" model="cs.safety.template">
+            <field name="name">Field Inspection</field>
+            <field name="code">FI</field>
+            <field name="template_type">inspection</field>
+        </record>
+        <record id="sec_fi_area" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_field_insp"/>
+            <field name="sequence">10</field><field name="name">Work Area</field>
+        </record>
+        <record id="q_fi_ppe" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_fi_area"/><field name="sequence">10</field>
+            <field name="name">PPE in use for the task</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_fi_house" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_fi_area"/><field name="sequence">20</field>
+            <field name="name">Housekeeping acceptable</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_fi_tools" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_fi_area"/><field name="sequence">30</field>
+            <field name="name">Tools / equipment in good condition</field>
+            <field name="qtype">passfailna</field>
+            <field name="requires_photo" eval="True"/>
+        </record>
+        <record id="sec_fi_comp" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_field_insp"/>
+            <field name="sequence">20</field><field name="name">Compliance</field>
+        </record>
+        <record id="q_fi_permit" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_fi_comp"/><field name="sequence">10</field>
+            <field name="name">Required permits in place</field>
+            <field name="qtype">yesno</field><field name="yesno_pass">yes</field>
+        </record>
+        <record id="q_fi_unsafe" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_fi_comp"/><field name="sequence">20</field>
+            <field name="name">Any unsafe conditions observed?</field>
+            <field name="qtype">yesno</field><field name="yesno_pass">no</field>
+            <field name="corrective_on_fail" eval="True"/>
+        </record>
+        <record id="tpl_field_insp" model="cs.safety.template">
+            <field name="state">published</field>
+        </record>
+
+        <!-- =========================== SITE INSPECTION ================= -->
+        <record id="tpl_site_insp" model="cs.safety.template">
+            <field name="name">Site Inspection</field>
+            <field name="code">SITE</field>
+            <field name="template_type">inspection</field>
+        </record>
+        <record id="sec_site_access" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_site_insp"/>
+            <field name="sequence">10</field><field name="name">Access &amp; Egress</field>
+        </record>
+        <record id="q_site_access" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_site_access"/><field name="sequence">10</field>
+            <field name="name">Access / egress routes clear</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_site_signage" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_site_access"/><field name="sequence">20</field>
+            <field name="name">Signage and barriers in place</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="sec_site_env" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_site_insp"/>
+            <field name="sequence">20</field><field name="name">Environment</field>
+        </record>
+        <record id="q_site_spill" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_site_env"/><field name="sequence">10</field>
+            <field name="name">Spill kits available and stocked</field>
+            <field name="qtype">yesno</field><field name="yesno_pass">yes</field>
+        </record>
+        <record id="q_site_env" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_site_env"/><field name="sequence">20</field>
+            <field name="name">Any environmental concerns?</field>
+            <field name="qtype">yesno</field><field name="yesno_pass">no</field>
+        </record>
+        <record id="tpl_site_insp" model="cs.safety.template">
+            <field name="state">published</field>
+        </record>
+
+        <!-- ========================= HAZARD ASSESSMENT ================= -->
+        <record id="tpl_hazard" model="cs.safety.template">
+            <field name="name">Hazard Assessment</field>
+            <field name="code">HA</field>
+            <field name="template_type">hazard</field>
+            <field name="intro"><![CDATA[<p>Identify the task, its hazards and the controls before work begins.</p>]]></field>
+        </record>
+        <record id="sec_ha_task" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_hazard"/>
+            <field name="sequence">10</field><field name="name">Task</field>
+        </record>
+        <record id="q_ha_task" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_ha_task"/><field name="sequence">10</field>
+            <field name="name">Task and steps identified</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="sec_ha_haz" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_hazard"/>
+            <field name="sequence">20</field><field name="name">Hazards &amp; Controls</field>
+        </record>
+        <record id="q_ha_controls" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_ha_haz"/><field name="sequence">10</field>
+            <field name="name">Hazards identified and controls in place</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_ha_uncontrolled" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_ha_haz"/><field name="sequence">20</field>
+            <field name="name">Any high-risk hazard left uncontrolled?</field>
+            <field name="qtype">yesno</field><field name="yesno_pass">no</field>
+            <field name="corrective_on_fail" eval="True"/>
+        </record>
+        <record id="q_ha_emerg" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_ha_haz"/><field name="sequence">30</field>
+            <field name="name">Emergency procedures known to crew</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="tpl_hazard" model="cs.safety.template">
+            <field name="state">published</field>
+        </record>
+
+        <!-- ======================== EQUIPMENT INSPECTION =============== -->
+        <record id="tpl_equipment" model="cs.safety.template">
+            <field name="name">Equipment Inspection</field>
+            <field name="code">EQ</field>
+            <field name="template_type">inspection</field>
+        </record>
+        <record id="sec_eq_preuse" model="cs.safety.template.section">
+            <field name="template_id" ref="tpl_equipment"/>
+            <field name="sequence">10</field><field name="name">Pre-Use Check</field>
+        </record>
+        <record id="q_eq_guards" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_eq_preuse"/><field name="sequence">10</field>
+            <field name="name">Guards / safety devices intact</field>
+            <field name="qtype">passfailna</field>
+            <field name="requires_photo" eval="True"/>
+        </record>
+        <record id="q_eq_damage" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_eq_preuse"/><field name="sequence">20</field>
+            <field name="name">No visible damage or leaks</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_eq_estop" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_eq_preuse"/><field name="sequence">30</field>
+            <field name="name">Controls and e-stop functional</field>
+            <field name="qtype">passfailna</field>
+        </record>
+        <record id="q_eq_tag" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_eq_preuse"/><field name="sequence">40</field>
+            <field name="name">Inspection tag / certification current</field>
+            <field name="qtype">yesno</field><field name="yesno_pass">yes</field>
+        </record>
+        <record id="q_eq_defects" model="cs.safety.template.question">
+            <field name="section_id" ref="sec_eq_preuse"/><field name="sequence">50</field>
+            <field name="name">Any defects found?</field>
+            <field name="qtype">yesno</field><field name="yesno_pass">no</field>
+            <field name="corrective_on_fail" eval="True"/>
+        </record>
+        <record id="tpl_equipment" model="cs.safety.template">
+            <field name="state">published</field>
+        </record>
     </data>
 </odoo>

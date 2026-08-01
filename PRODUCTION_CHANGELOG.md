@@ -987,6 +987,48 @@ the TEST field user's group assignment. Redo as needed.
      memos, meetings, look-aheads, delays), its tasks and the project itself,
      in one mail.message list. Built from a computed OR-domain over
      (model, res_id); cs_message_count drives the button badge. cs_hub 0.4.0.
+110. BRANDING: enlarged the Construction app icon. The design icon had ~58%
+     empty margin, so it looked small next to other apps. Cropped to the
+     artwork and re-padded to ~80% fill at 512x512
+     (cs_controls/static/description/icon.png); this drives the Settings/Apps
+     icon (icon_image), the app-grid tile (web_icon_data, refreshed by the
+     upgrade) and is the favicon source. Website favicon reissued from a
+     tighter 78%-fill crop for small-size legibility. cs_controls 1.0.1.
+     (Browsers cache app icons — hard refresh to see it.)
+## Safety templates hardening — 1 August 2026 (cs_hse_templates 0.2.0)
+
+ST1. FIX (production blocker): cs.safety.template now inherits mail.thread +
+     mail.activity.mixin, so its form chatter works and the
+     _get_thread_with_access errors are gone (the form had <chatter/> but the
+     model wasn't a thread).
+ST3. SECURITY: a Locked (or Issued) safety report is now fully read-only
+     server-side — not just in the view. Added create/write/unlink guards on
+     answer lines, photos and signatures, plus the existing header-field guard,
+     all raising unless the report is reopened. action_lock and
+     action_reset_to_draft (Reopen) both post to the chatter, so lock/reopen
+     are logged.
+ST4. FEATURE: yes/no questions carry a configurable Passing Answer
+     (yesno_pass, default Yes). Scoring no longer assumes Yes=pass — is_fail
+     and fail_count use each question's expected result (e.g. "Any uncontrolled
+     hazard?" passes on No). Snapshotted onto each answer at report creation.
+ST5. FIX: the Safety Reports action no longer defaults to hiding locked
+     reports (removed search_default_open); issued/locked reports stay visible
+     and searchable, with the "Not Locked" filter still available.
+ST6. CONTENT: seeded five published starter templates — Toolbox Talk, Field
+     Inspection, Site Inspection, Hazard Assessment, Equipment Inspection —
+     each using the configurable yes/no scoring where appropriate.
+ST2/7. TESTS: added tests/test_safety.py (11 cases) covering template opening
+     (chatter), QR generation + route, configurable yes/no scoring, fail_count,
+     required signatures, locking read-only enforcement, reopen + logging, PDF
+     rendering, distribution and resend, and that the seeded templates are
+     published.
+
+111. FIX: the Construction section in the Settings left sidebar had no icon.
+     Its <app> block used name="cs_construction" (not a real module), so Odoo
+     could not resolve an icon. Added an explicit
+     logo="/cs_controls/static/description/icon.png" on the block. Applied to
+     the live view arch immediately and staged in code. cs_core 0.6.1.
+
 109. CLEANUP (P2.3): removed 57 stale "Overdue RFI response" to-do activities
      that sat on already closed/cancelled RFIs (leftovers from the disabled
      reminder engine). Done via authenticated session with the owner's

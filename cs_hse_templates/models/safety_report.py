@@ -7,9 +7,6 @@ from odoo.exceptions import ValidationError
 
 from .safety_template import QTYPE
 
-# How each answer type is scored for pass/fail roll-up.
-FAIL_VALUES = {"fail", "no"}
-
 
 class CsSafetyReport(models.Model):
     _name = "cs.safety.report"
@@ -127,6 +124,7 @@ class CsSafetyReport(models.Model):
                     "question_name": q.name,
                     "help_text": q.help_text,
                     "qtype": q.qtype,
+                    "yesno_pass": q.yesno_pass,
                     "required": q.required,
                     "requires_photo": q.requires_photo,
                     "corrective_on_fail": q.corrective_on_fail,
@@ -226,10 +224,19 @@ class CsSafetyReport(models.Model):
                 raise ValidationError(
                     "%s must be issued before it can be locked." % rec.name)
             rec.state = "locked"
+            rec.message_post(body=Markup(
+                "<p>Report <strong>locked</strong> by %s — content is now "
+                "read-only.</p>") % (rec.env.user.name or ""))
 
     def action_reset_to_draft(self):
-        # Restricted to admins/safety leads via the button's groups.
-        self.write({"state": "draft"})
+        # Restricted to admins/safety leads via the button's groups. This is the
+        # only way to edit an issued/locked report, and it is logged.
+        for rec in self:
+            prev = dict(rec._fields["state"].selection).get(rec.state, rec.state)
+            rec.state = "draft"
+            rec.message_post(body=Markup(
+                "<p>Report <strong>reopened</strong> for editing by %s "
+                "(was %s).</p>") % (rec.env.user.name or "", prev))
 
     def action_cancel(self):
         self.write({"state": "cancelled"})
@@ -323,6 +330,8 @@ class CsSafetyReportAnswer(models.Model):
     question_name = fields.Char(string="Question", readonly=True)
     help_text = fields.Char(readonly=True)
     qtype = fields.Selection(QTYPE, readonly=True)
+    yesno_pass = fields.Selection(
+        [("yes", "Yes"), ("no", "No")], readonly=True, default="yes")
     required = fields.Boolean(readonly=True)
     requires_photo = fields.Boolean(readonly=True)
     corrective_on_fail = fields.Boolean(readonly=True)
@@ -345,14 +354,25 @@ class CsSafetyReportAnswer(models.Model):
     is_answered = fields.Boolean(compute="_compute_status", store=True)
     is_fail = fields.Boolean(compute="_compute_status", store=True)
 
-    @api.depends("qtype", "value_pfn", "value_yn", "value_rating",
-                 "value_number", "value_text")
+    @api.depends("qtype", "yesno_pass", "value_pfn", "value_yn",
+                 "value_rating", "value_number", "value_text")
     def _compute_status(self):
         for a in self:
             val = a._current_value()
             a.is_answered = bool(val not in (False, None, ""))
-            a.is_fail = a.qtype in ("passfailna", "yesno") and (
-                (a.value_pfn in FAIL_VALUES) or (a.value_yn in FAIL_VALUES))
+            a.is_fail = a._is_fail_value()
+
+    def _is_fail_value(self):
+        """A Pass/Fail question fails on 'fail'. A Yes/No question fails when a
+        definite answer (not N/A) differs from the question's configured
+        passing answer — so Yes is not universally 'pass'."""
+        self.ensure_one()
+        if self.qtype == "passfailna":
+            return self.value_pfn == "fail"
+        if self.qtype == "yesno":
+            return bool(self.value_yn and self.value_yn != "na"
+                        and self.value_yn != (self.yesno_pass or "yes"))
+        return False
 
     def _current_value(self):
         self.ensure_one()
@@ -364,17 +384,29 @@ class CsSafetyReportAnswer(models.Model):
             "text": self.value_text,
         }.get(self.qtype, False)
 
-    def _guard(self):
-        locked = self.mapped("report_id")._locked()
-        if locked:
+    @api.model
+    def _guard_reports(self, reports):
+        if reports._locked():
             raise ValidationError(
-                "This report is issued and locked; its answers can't change.")
+                "This safety report is issued/locked; its answers and photos "
+                "can't change. Reopen it first.")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        reports = self.env["cs.safety.report"].browse(
+            [v.get("report_id") for v in vals_list if v.get("report_id")])
+        self._guard_reports(reports)
+        return super().create(vals_list)
 
     def write(self, vals):
-        # Photos and everything else are frozen once the report is issued.
-        if self.mapped("report_id")._locked():
-            self._guard()
+        # Answers, comments, corrective actions and photos are all frozen
+        # once the report is issued/locked.
+        self._guard_reports(self.mapped("report_id"))
         return super().write(vals)
+
+    def unlink(self):
+        self._guard_reports(self.mapped("report_id"))
+        return super().unlink()
 
 
 class CsSafetyReportSignature(models.Model):
@@ -397,6 +429,28 @@ class CsSafetyReportSignature(models.Model):
     def _compute_has_mark(self):
         for s in self:
             s.has_mark = bool(s.signature) or bool(s.signer_name)
+
+    @api.model
+    def _guard_reports(self, reports):
+        if reports._locked():
+            raise ValidationError(
+                "This safety report is issued/locked; signatures can't change. "
+                "Reopen it first.")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        reports = self.env["cs.safety.report"].browse(
+            [v.get("report_id") for v in vals_list if v.get("report_id")])
+        self._guard_reports(reports)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        self._guard_reports(self.mapped("report_id"))
+        return super().write(vals)
+
+    def unlink(self):
+        self._guard_reports(self.mapped("report_id"))
+        return super().unlink()
 
 
 class CsSafetyReportDistribution(models.Model):

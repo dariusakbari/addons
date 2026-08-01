@@ -5,7 +5,7 @@
                "pass/fail/N-A questions, corrective actions, required photos, "
                "crew + supervisor signatures, controlled PDF, QR entry and "
                "recipient history.",
-    "version": "19.0.0.1.0",
+    "version": "19.0.0.2.0",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",

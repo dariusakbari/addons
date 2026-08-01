@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app string="Construction" name="cs_construction">
+                <app string="Construction" name="cs_construction" logo="/cs_controls/static/description/icon.png">
                     <block title="Approvals">
                         <setting string="Change order approval limit" help="Approvals above this amount require a Construction Administrator. 0 disables.">
                             <field name="cs_co_approval_limit"/>

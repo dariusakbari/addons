@@ -21,7 +21,7 @@ class CsSafetyTemplate(models.Model):
 
     _name = "cs.safety.template"
     _description = "Safety Report Template"
-    _inherit = ["cs.qr.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin", "cs.qr.mixin"]
     _order = "name, version desc"
 
     name = fields.Char(required=True, tracking=True)
@@ -229,12 +229,16 @@ class CsSafetyTemplateQuestion(models.Model):
     help_text = fields.Char(string="Guidance")
     qtype = fields.Selection(QTYPE, string="Answer Type", required=True,
                              default="passfailna")
+    yesno_pass = fields.Selection(
+        [("yes", "Yes"), ("no", "No")], string="Passing Answer", default="yes",
+        help="For Yes/No questions, which answer counts as a pass. "
+             "e.g. 'Any uncontrolled hazards?' should pass on No.")
     required = fields.Boolean(default=True)
     requires_photo = fields.Boolean(string="Photo Required")
     corrective_on_fail = fields.Boolean(
         string="Corrective Action if Failed", default=True,
         help="Require a written corrective action when the answer is a "
-             "Fail / No.")
+             "Fail / a non-passing Yes/No.")
 
     @api.model_create_multi
     def create(self, vals_list):
