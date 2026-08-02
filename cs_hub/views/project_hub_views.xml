@@ -28,10 +28,9 @@
                     <field name="cs_message_count" widget="statinfo" string="Comms"/>
                 </button>
             </xpath>
-            <!-- Construction projects don't use the Sales/Invoicing flow. -->
-            <xpath expr="//button[@name='action_view_sos']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
+            <!-- Construction projects don't use the Sales/Invoicing flow; the
+                 Sales Order stat button is already auto-hidden because
+                 sale_order_count is 0. We just relabel the tasks field. -->
             <xpath expr="//field[@name='label_tasks']" position="attributes">
                 <attribute name="string">Task Label</attribute>
             </xpath>
