@@ -1022,6 +1022,18 @@ UX3. RFI actions simplified. The header now shows one clear primary per state �
      menu as bound server actions. action_send now accepts Draft (the interim
      Open button is removed). cs_controls 1.0.2, cs_mail 0.5.1.
 
+## Safety QR straight-to-form — 2 August 2026 (cs_hse_templates 0.2.4)
+
+ST13. A scanned project QR now drops the worker straight into the form. The
+     /safety/new controller: if the QR carries a project it creates the report
+     and opens it immediately — the project picker is never shown. The picker
+     only appears for a project-less QR, and it now lists real active projects
+     only (excludes template projects). An out-of-date QR (project deleted)
+     shows a clear message instead of a random project list. Added a
+     print-ready, project-specific QR poster (/safety/qr_poster) plus a
+     "Print Poster" button on the QR wizard, so what gets posted on site always
+     carries its project. Wizard already requires a project.
+
 ## Safety templates hardening — 1 August 2026 (cs_hse_templates 0.2.0)
 
 ST1. FIX (production blocker): cs.safety.template now inherits mail.thread +

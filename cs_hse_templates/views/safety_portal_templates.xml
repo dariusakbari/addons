@@ -32,4 +32,57 @@
             </body>
         </html>
     </template>
+
+    <!-- Shown by /safety/new when a QR carries a project that no longer exists. -->
+    <template id="safety_qr_invalid" name="Safety: invalid QR project">
+        <html>
+            <head>
+                <title>QR out of date</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 0; padding: 24px;
+                           color: #1f2937; background: #f7f8fa; }
+                    h2 { margin: 0 0 8px; }
+                    p { color: #6b7280; }
+                </style>
+            </head>
+            <body>
+                <h2>This QR is out of date</h2>
+                <p>The project on this <t t-esc="template.name"/> poster no longer
+                   exists. Ask your supervisor for an updated QR poster.</p>
+            </body>
+        </html>
+    </template>
+
+    <!-- Print-ready, project-specific poster (/safety/qr_poster). -->
+    <template id="safety_qr_poster" name="Safety QR poster">
+        <html>
+            <head>
+                <title>QR — <t t-esc="template.name"/></title>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 0; padding: 40px;
+                           color: #14202e; text-align: center; }
+                    .code { font-size: 18px; letter-spacing: 1px; color: #0f766e;
+                            font-weight: 700; }
+                    h1 { font-size: 34px; margin: 6px 0 2px; }
+                    .proj { font-size: 22px; margin: 0 0 24px; color: #374151; }
+                    img { width: 320px; height: 320px; }
+                    .scan { font-size: 20px; font-weight: 600; margin-top: 18px; }
+                    .hint { color: #6b7280; margin-top: 4px; }
+                    .print { margin-top: 24px; }
+                    @media print { .print { display: none; } body { padding: 20px; } }
+                </style>
+            </head>
+            <body>
+                <div class="code"><t t-esc="template.code or ''"/></div>
+                <h1><t t-esc="template.name"/></h1>
+                <p class="proj"><t t-esc="project.display_name"/></p>
+                <img t-att-src="qr_uri" alt="QR"/>
+                <div class="scan">Scan to start this safety report</div>
+                <div class="hint">Sign in with your Odoo login the first time.</div>
+                <button class="print" onclick="window.print()">Print this poster</button>
+            </body>
+        </html>
+    </template>
 </odoo>

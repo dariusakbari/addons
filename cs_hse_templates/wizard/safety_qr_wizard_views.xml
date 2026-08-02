@@ -18,6 +18,8 @@
                     <field name="url" readonly="1" widget="CopyClipboardChar"/>
                 </div>
                 <footer>
+                    <button string="Print Poster" name="action_open_poster"
+                            type="object" class="btn-primary" icon="fa-print"/>
                     <button string="Close" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
