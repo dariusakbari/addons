@@ -1006,8 +1006,11 @@ UX1. Dashboard (Overview) made actionable. The overdue-activities badge is now
      list view. cs_dashboards 0.11.5.
 UX2. Project form cleaned. Removed the duplicate "Schedule" tab (cs_schedule no
      longer adds its own page; cs_hub's Schedule tab now carries Baseline/
-     Forecast + Look-Aheads + Delays). Hid the unused Sales Order stat button
-     (action_view_sos). Renamed "Name of the Tasks" to "Task Label". Added a
+     Forecast + Look-Aheads + Delays). The Sales Order stat button stays
+     auto-hidden (sale_order_count is 0 on construction projects; an explicit
+     xpath was dropped because that button is injected by sale_project's view
+     after ours and can't be targeted safely). Renamed "Name of the Tasks" to
+     "Task Label". Added a
      "Holdback Applies" toggle on the project; the Holdback % only shows and
      applies when it's on (onchange clears % when off, seeds a default when on).
      cs_schedule 0.5.5, cs_hub 0.4.1, cs_commercial 0.10.1.
