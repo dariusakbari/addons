@@ -4,12 +4,17 @@
     overflow-y: auto;
 
     .o_cs_wrap {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(540px, 1fr));
         gap: 16px;
         padding: 16px;
-        max-width: 1280px;
+        align-items: start;
     }
+    /* one column on narrow / mobile viewports */
+    @media (max-width: 900px) {
+        .o_cs_wrap { grid-template-columns: 1fr; }
+    }
+    .o_cs_card { min-width: 0; }
 
     .o_cs_card_head {
         cursor: pointer;
