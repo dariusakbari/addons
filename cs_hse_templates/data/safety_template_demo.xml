@@ -70,6 +70,7 @@
             <field name="sequence">10</field>
             <field name="name">Any new hazards identified today?</field>
             <field name="qtype">yesno</field>
+            <field name="yesno_pass">no</field>
             <field name="corrective_on_fail" eval="False"/>
         </record>
         <record id="q_observations" model="cs.safety.template.question">

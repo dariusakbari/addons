@@ -9,9 +9,9 @@ class CsSafetyQrWizard(models.TransientModel):
         "cs.safety.template", string="Template", required=True,
         domain="[('state','=','published')]")
     project_id = fields.Many2one(
-        "project.project", string="Project (optional)",
-        help="Leave empty for a generic QR; pick a project to pre-fill it on "
-             "the report.")
+        "project.project", string="Project", required=True,
+        help="A safety report always belongs to a project, so the QR is "
+             "scoped to one. Print a separate poster per project.")
     url = fields.Char(compute="_compute_qr", readonly=True)
     qr_image = fields.Image(compute="_compute_qr", readonly=True)
 

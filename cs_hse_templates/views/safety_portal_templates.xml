@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Shown by /safety/new when the scanned QR has no valid project. -->
+    <template id="safety_pick_project" name="Safety: select project">
+        <html>
+            <head>
+                <title>Select a project</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 0; padding: 24px;
+                           color: #1f2937; background: #f7f8fa; }
+                    h2 { margin: 0 0 4px; }
+                    .sub { color: #6b7280; margin: 0 0 20px; }
+                    a.proj { display: block; padding: 14px 16px; margin: 8px 0;
+                             background: #fff; border: 1px solid #e5e7eb;
+                             border-radius: 8px; text-decoration: none;
+                             color: #0f766e; font-weight: 600; }
+                    a.proj:active { background: #eef2f6; }
+                    .empty { color: #6b7280; }
+                </style>
+            </head>
+            <body>
+                <h2><t t-esc="template.name"/></h2>
+                <p class="sub">Select the project this report is for:</p>
+                <t t-if="projects">
+                    <a t-foreach="projects" t-as="p" class="proj"
+                       t-attf-href="/safety/new?template_id={{template.id}}&amp;project_id={{p.id}}">
+                        <t t-esc="p.display_name"/>
+                    </a>
+                </t>
+                <p t-else="" class="empty">You have no projects available.</p>
+            </body>
+        </html>
+    </template>
+</odoo>

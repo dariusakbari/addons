@@ -1017,6 +1017,22 @@ ST5. FIX: the Safety Reports action no longer defaults to hiding locked
 ST6. CONTENT: seeded five published starter templates — Toolbox Talk, Field
      Inspection, Site Inspection, Hazard Assessment, Equipment Inspection —
      each using the configurable yes/no scoring where appropriate.
+ST9. QR: the QR Poster wizard now requires a project, so generated links are
+     always /safety/new?template_id=X&project_id=Y. The /safety/new route no
+     longer errors when a project is missing/invalid — it renders a
+     project-selection page (safety_pick_project) so the user picks one before
+     the report is created. HttpCase route tests (valid + missing project).
+     cs_hse_templates 0.2.2.
+ST10. SECURITY: Reopen (action_reset_to_draft) now enforces its permission
+     server-side — only cs_core.group_cs_safety / group_cs_admin may reopen an
+     issued/locked report (AccessError otherwise), not just via the button's
+     groups; every reopen is logged to the chatter. The locked read-only
+     write() guards from ST3 remain. Test: a coordinator is refused, a safety
+     lead succeeds.
+ST11. CONTENT: corrected version of the Daily Site Safety Inspection published
+     via the version workflow — "Any new hazards identified today?" scores
+     No = pass, Yes = fail, N/A = neutral (yesno_pass = no); seed fixed for
+     fresh installs too. Test asserts fail_count / overall_result recalc.
 ST8. RELIABILITY: seed templates now publish automatically. Added a
      post_init_hook (fresh install) and a 19.0.0.2.1 migration (upgrades) that
      publish any seeded starter template still left as draft — the XML

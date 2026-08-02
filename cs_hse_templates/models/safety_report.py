@@ -3,9 +3,12 @@ import base64
 from markupsafe import Markup
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 
 from .safety_template import QTYPE
+
+# Only these roles may reopen an issued/locked report.
+REOPEN_GROUPS = ("cs_core.group_cs_safety", "cs_core.group_cs_admin")
 
 
 class CsSafetyReport(models.Model):
@@ -229,8 +232,13 @@ class CsSafetyReport(models.Model):
                 "read-only.</p>") % (rec.env.user.name or ""))
 
     def action_reset_to_draft(self):
-        # Restricted to admins/safety leads via the button's groups. This is the
-        # only way to edit an issued/locked report, and it is logged.
+        # The only way to edit an issued/locked report. Permission is enforced
+        # server-side (not just by the button's groups) and every reopen is
+        # written to the chatter for the audit trail.
+        if not any(self.env.user.has_group(g) for g in REOPEN_GROUPS):
+            raise AccessError(
+                "Only safety leads or administrators can reopen a locked "
+                "safety report.")
         for rec in self:
             prev = dict(rec._fields["state"].selection).get(rec.state, rec.state)
             rec.state = "draft"

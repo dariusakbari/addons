@@ -1,5 +1,5 @@
-from odoo.tests import TransactionCase, tagged
-from odoo.exceptions import ValidationError
+from odoo.tests import TransactionCase, HttpCase, tagged
+from odoo.exceptions import AccessError, ValidationError
 
 # A valid 16x16 PNG so ir.attachment image validation accepts it.
 PNG_16 = ("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAGUlEQVR4nGM8"
@@ -31,6 +31,14 @@ class TestSafetyTemplates(TransactionCase):
         ])
         tpl.action_publish()
         cls.template = tpl
+        cls.safety_user = cls.env["res.users"].create({
+            "name": "Safety Lead UT", "login": "safety_lead_ut",
+            "groups_id": [(4, cls.env.ref("cs_core.group_cs_safety").id),
+                          (4, cls.env.ref("base.group_user").id)]})
+        cls.plain_user = cls.env["res.users"].create({
+            "name": "Coordinator UT", "login": "coordinator_ut",
+            "groups_id": [(4, cls.env.ref("cs_core.group_cs_coordinator").id),
+                          (4, cls.env.ref("base.group_user").id)]})
 
     # -------------------------------------------------------------- helpers
     def _new_report(self):
@@ -180,3 +188,63 @@ class TestSafetyTemplates(TransactionCase):
             tpl = self.env.ref("cs_hse_templates.%s" % xmlid)
             self.assertEqual(tpl.state, "published")
             self.assertTrue(tpl.question_count)
+
+    def test_12_reopen_requires_permission(self):
+        r = self._new_report()
+        self._issue(r)
+        r.action_lock()
+        # a coordinator (not safety/admin) may not reopen
+        with self.assertRaises(AccessError):
+            r.with_user(self.plain_user).action_reset_to_draft()
+        self.assertEqual(r.state, "locked")
+        # a safety lead may, and it stays audited
+        n = len(r.message_ids)
+        r.with_user(self.safety_user).action_reset_to_draft()
+        self.assertEqual(r.state, "draft")
+        self.assertGreater(len(r.message_ids), n)
+
+    def test_13_new_hazard_question_scores_correctly(self):
+        """The seeded 'Any new hazards identified today?' passes on No, fails
+        on Yes and is neutral on N/A, and the roll-up follows suit."""
+        tpl = self.env.ref("cs_hse_templates.tpl_daily_inspection")
+        r = self.env["cs.safety.report"].create({
+            "template_id": tpl.id, "project_id": self.project.id})
+        hz = r.answer_ids.filtered(
+            lambda a: "new hazards identified" in (a.question_name or ""))
+        self.assertEqual(len(hz), 1)
+        self.assertEqual(hz.yesno_pass, "no")
+        hz.value_yn = "no"
+        self.assertFalse(hz.is_fail)
+        hz.value_yn = "na"
+        self.assertFalse(hz.is_fail)          # neutral
+        hz.value_yn = "yes"
+        self.assertTrue(hz.is_fail)           # failing
+        self.assertGreaterEqual(r.fail_count, 1)
+        self.assertEqual(r.overall_result, "attention")
+
+
+@tagged("post_install", "-at_install")
+class TestSafetyRoute(HttpCase):
+    """The /safety/new QR deep link: valid project starts a report, a missing
+    project falls back to a selection page instead of erroring."""
+
+    def test_route_valid_and_missing_project(self):
+        project = self.env["project.project"].create({"name": "RT-SAFE"})
+        tpl = self.env.ref("cs_hse_templates.tpl_toolbox")
+        user = self.env["res.users"].create({
+            "name": "Route Tester", "login": "route_tester",
+            "password": "route_tester_pw",
+            "groups_id": [(4, self.env.ref("cs_core.group_cs_safety").id),
+                          (4, self.env.ref("base.group_user").id)]})
+        self.authenticate("route_tester", "route_tester_pw")
+        Report = self.env["cs.safety.report"]
+        base = Report.search_count([])
+        # valid project -> a report is created (then redirected to the backend)
+        self.url_open("/safety/new?template_id=%s&project_id=%s"
+                      % (tpl.id, project.id))
+        self.assertEqual(Report.search_count([]), base + 1)
+        # missing project -> selection page, no report created
+        resp = self.url_open("/safety/new?template_id=%s" % tpl.id)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"Select the project", resp.content)
+        self.assertEqual(Report.search_count([]), base + 1)
