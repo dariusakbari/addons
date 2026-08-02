@@ -155,15 +155,25 @@ class CsSafetyReport(models.Model):
                                                     "cancelled"))
 
     def write(self, vals):
-        # Once issued, the content is frozen; only distribution/administrative
-        # fields may change.
+        # 1) The content of an issued/locked report is frozen — only the
+        #    distribution and chatter/administrative fields may move. This
+        #    also stops direct RPC / import / API writes, not just the UI.
         allowed = {"distribution_ids", "distribution_log_ids",
                    "last_distributed", "state", "message_follower_ids",
-                   "message_ids", "activity_ids"}
-        if set(vals) - allowed and self._locked():
+                   "message_ids", "message_main_attachment_id",
+                   "activity_ids"}
+        if (set(vals) - allowed) and self._locked():
             raise ValidationError(
-                "This report is issued and locked. Reopen it (admins) before "
-                "editing, or file a new report.")
+                "This safety report is issued/locked; its content is "
+                "read-only. Use Reopen (authorized and logged) to edit it.")
+        # 2) A LOCKED report may only leave the locked state through the
+        #    audited Reopen action — a raw state write cannot unlock it.
+        if ("state" in vals and vals.get("state") != "locked"
+                and not self.env.context.get("cs_reopen")
+                and self.filtered(lambda r: r.state == "locked")):
+            raise ValidationError(
+                "A locked safety report can only be changed with the Reopen "
+                "action, which records who reopened it, when and why.")
         return super().write(vals)
 
     # ------------------------------------------------------------ workflow
@@ -231,20 +241,41 @@ class CsSafetyReport(models.Model):
                 "<p>Report <strong>locked</strong> by %s — content is now "
                 "read-only.</p>") % (rec.env.user.name or ""))
 
-    def action_reset_to_draft(self):
-        # The only way to edit an issued/locked report. Permission is enforced
-        # server-side (not just by the button's groups) and every reopen is
-        # written to the chatter for the audit trail.
+    def _check_reopen_access(self):
         if not any(self.env.user.has_group(g) for g in REOPEN_GROUPS):
             raise AccessError(
                 "Only safety leads or administrators can reopen a locked "
                 "safety report.")
+
+    def action_reopen(self):
+        """Button entry point: verify permission, then open the reason wizard.
+        The wizard calls _do_reopen, which is the single audited path back to
+        draft."""
+        self.ensure_one()
+        self._check_reopen_access()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Reopen Safety Report",
+            "res_model": "cs.safety.reopen.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_report_id": self.id},
+        }
+
+    def _do_reopen(self, reason):
+        """Authorised, audited reopen. Records the user, date and reason in the
+        chatter and is the only route that may unlock a locked report."""
+        self._check_reopen_access()
+        if not reason or not reason.strip():
+            raise ValidationError("A reason is required to reopen a report.")
         for rec in self:
             prev = dict(rec._fields["state"].selection).get(rec.state, rec.state)
-            rec.state = "draft"
+            rec.with_context(cs_reopen=True).write({"state": "draft"})
             rec.message_post(body=Markup(
-                "<p>Report <strong>reopened</strong> for editing by %s "
-                "(was %s).</p>") % (rec.env.user.name or "", prev))
+                "<p>Report <strong>reopened</strong> for editing by "
+                "<strong>%s</strong> on %s (was %s).<br/>"
+                "<strong>Reason:</strong> %s</p>") % (
+                rec.env.user.name or "", fields.Datetime.now(), prev, reason))
 
     def action_cancel(self):
         self.write({"state": "cancelled"})

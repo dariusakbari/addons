@@ -35,15 +35,23 @@ class TestSafetyTemplates(TransactionCase):
             "name": "Safety Lead UT", "login": "safety_lead_ut",
             "groups_id": [(4, cls.env.ref("cs_core.group_cs_safety").id),
                           (4, cls.env.ref("base.group_user").id)]})
-        cls.plain_user = cls.env["res.users"].create({
-            "name": "Coordinator UT", "login": "coordinator_ut",
-            "groups_id": [(4, cls.env.ref("cs_core.group_cs_coordinator").id),
+        cls.field_user = cls.env["res.users"].create({
+            "name": "Field User UT", "login": "field_ut",
+            "groups_id": [(4, cls.env.ref("cs_core.group_cs_field").id),
                           (4, cls.env.ref("base.group_user").id)]})
+        # make the project visible to the non-manager test users
+        cls.project.message_subscribe(
+            partner_ids=[cls.field_user.partner_id.id])
 
     # -------------------------------------------------------------- helpers
     def _new_report(self):
         return self.env["cs.safety.report"].create({
             "template_id": self.template.id, "project_id": self.project.id})
+
+    def _reopen(self, report, user, reason="fix a typo"):
+        wiz = self.env["cs.safety.reopen.wizard"].with_user(user).create(
+            {"report_id": report.id, "reason": reason})
+        return wiz.action_confirm()
 
     def _answer_pass(self, report):
         for a in report.answer_ids:
@@ -153,12 +161,14 @@ class TestSafetyTemplates(TransactionCase):
     def test_08_reopen_unlocks_and_is_logged(self):
         r = self._new_report()
         self._issue(r)
-        before = len(r.message_ids)
         r.action_lock()
-        r.action_reset_to_draft()
+        before = len(r.message_ids)
+        self._reopen(r, self.env.user, reason="corrected the location")
         self.assertEqual(r.state, "draft")
-        # lock + reopen both posted to the chatter
-        self.assertGreaterEqual(len(r.message_ids), before + 2)
+        # the reopen is logged with the reason
+        self.assertGreater(len(r.message_ids), before)
+        self.assertIn("corrected the location",
+                      r.message_ids[0].body or "")
         # editing works again after reopen
         r.answer_ids[0].value_pfn = "fail"
         self.assertEqual(r.answer_ids[0].value_pfn, "fail")
@@ -189,19 +199,44 @@ class TestSafetyTemplates(TransactionCase):
             self.assertEqual(tpl.state, "published")
             self.assertTrue(tpl.question_count)
 
-    def test_12_reopen_requires_permission(self):
+    def test_12_reopen_requires_permission_and_reason(self):
         r = self._new_report()
         self._issue(r)
         r.action_lock()
-        # a coordinator (not safety/admin) may not reopen
+        # a normal field user may not reopen (server-side, not just the button)
         with self.assertRaises(AccessError):
-            r.with_user(self.plain_user).action_reset_to_draft()
+            r.with_user(self.field_user)._do_reopen("please")
+        with self.assertRaises(AccessError):
+            r.with_user(self.field_user).action_reopen()
         self.assertEqual(r.state, "locked")
-        # a safety lead may, and it stays audited
-        n = len(r.message_ids)
-        r.with_user(self.safety_user).action_reset_to_draft()
+        # a reason is mandatory
+        with self.assertRaises(ValidationError):
+            r.with_user(self.safety_user)._do_reopen("   ")
+        # a safety lead with a reason may, and it stays audited
+        self._reopen(r, self.safety_user, reason="client dispute")
         self.assertEqual(r.state, "draft")
-        self.assertGreater(len(r.message_ids), n)
+        self.assertIn("client dispute", r.message_ids[0].body or "")
+
+    def test_12b_locked_is_immutable_via_api_for_all_roles(self):
+        """Direct write/unlink are blocked even for an administrator, and a raw
+        state write cannot bypass the audited Reopen."""
+        r = self._new_report()
+        self._issue(r)
+        r.action_lock()
+        # admin (full ACL) is still stopped by the server-side guard
+        with self.assertRaises(ValidationError):
+            r.write({"location": "elsewhere"})
+        with self.assertRaises(ValidationError):
+            r.answer_ids[0].write({"value_pfn": "fail"})
+        with self.assertRaises(ValidationError):
+            r.unlink()
+        # a raw state write cannot unlock it (must go through Reopen)
+        with self.assertRaises(ValidationError):
+            r.write({"state": "draft"})
+        self.assertEqual(r.state, "locked")
+        # a field user is likewise blocked by the guard, not just by ACL
+        with self.assertRaises(ValidationError):
+            r.with_user(self.field_user).write({"location": "x"})
 
     def test_13_new_hazard_question_scores_correctly(self):
         """The seeded 'Any new hazards identified today?' passes on No, fails

@@ -1017,6 +1017,21 @@ ST5. FIX: the Safety Reports action no longer defaults to hiding locked
 ST6. CONTENT: seeded five published starter templates — Toolbox Talk, Field
      Inspection, Site Inspection, Hazard Assessment, Equipment Inspection —
      each using the configurable yes/no scoring where appropriate.
+ST12. SECURITY (release blocker): full locked-report immutability.
+     cs.safety.report.write() now (a) freezes all content on an issued/locked
+     report against any RPC/import/API write, and (b) refuses to move a report
+     out of 'locked' via a raw state write — closing the hole where
+     write({'state':'draft'}) could silently unlock without audit. unlink() on
+     an issued/locked report is blocked. The ONLY way to change a locked report
+     is the new Reopen action, which (1) checks permission server-side (safety
+     lead / admin, AccessError otherwise), (2) opens a wizard requiring a
+     Reason, and (3) records the user, date and reason in the chatter, then
+     writes state=draft under a private cs_reopen context flag that the guard
+     recognises. Form view: date/title/location/prepared-by/supervisor plus
+     answers and signatures are all read-only when state=='locked'. New tests
+     cover admin and field-user roles: content/unlink/state-bypass all blocked
+     for both, reason mandatory, and only safety/admin may reopen.
+     cs_hse_templates 0.2.3.
 ST9. QR: the QR Poster wizard now requires a project, so generated links are
      always /safety/new?template_id=X&project_id=Y. The /safety/new route no
      longer errors when a project is missing/invalid — it renders a

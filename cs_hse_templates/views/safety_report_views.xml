@@ -23,7 +23,7 @@
                             string="Reload from Template" type="object"
                             invisible="state != 'draft'"
                             confirm="Reload the question list from the template? Recorded answers will be cleared."/>
-                    <button name="action_reset_to_draft" string="Reopen"
+                    <button name="action_reopen" string="Reopen"
                             type="object"
                             groups="cs_core.group_cs_safety,cs_core.group_cs_admin"
                             invisible="state in ('draft','cancelled')"/>
@@ -58,13 +58,14 @@
                                    options="{'no_create': True}"/>
                             <field name="template_version"/>
                             <field name="project_id" readonly="state != 'draft'"/>
-                            <field name="date"/>
+                            <field name="date" readonly="state == 'locked'"/>
                         </group>
                         <group>
-                            <field name="title" placeholder="Optional short description"/>
-                            <field name="location"/>
-                            <field name="prepared_by_id"/>
-                            <field name="supervisor_id"/>
+                            <field name="title" placeholder="Optional short description"
+                                   readonly="state == 'locked'"/>
+                            <field name="location" readonly="state == 'locked'"/>
+                            <field name="prepared_by_id" readonly="state == 'locked'"/>
+                            <field name="supervisor_id" readonly="state == 'locked'"/>
                             <field name="overall_result" widget="badge"
                                    decoration-success="overall_result == 'pass'"
                                    decoration-danger="overall_result == 'attention'"/>

@@ -23,4 +23,25 @@
             </form>
         </field>
     </record>
+
+    <record id="view_cs_safety_reopen_wizard_form" model="ir.ui.view">
+        <field name="name">cs.safety.reopen.wizard.form</field>
+        <field name="model">cs.safety.reopen.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reopen Safety Report">
+                <p class="text-muted">
+                    Reopening unlocks this report for editing. Your name, the date
+                    and the reason below are recorded in the report's chatter.
+                </p>
+                <group>
+                    <field name="report_id" invisible="1"/>
+                    <field name="reason" placeholder="Why is this locked report being reopened?"/>
+                </group>
+                <footer>
+                    <button string="Reopen" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
 </odoo>
