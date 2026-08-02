@@ -95,15 +95,48 @@ class CsDashboard(models.AbstractModel):
             for rec in self.env[model].browse(list(ids)).exists():
                 rec_project[(model, rec.id)] = (
                     rec.project_id.id if rec.project_id else False)
-        pending, overdue = {}, {}
+        pending, overdue, by_pid = {}, {}, {}
         for a in acts:
             pid = rec_project.get((a["res_model"], a["res_id"]))
             if not pid:
                 continue
             pending[pid] = pending.get(pid, 0) + 1
+            by_pid.setdefault(pid, {}).setdefault(
+                a["res_model"], set()).add(a["res_id"])
             if a["date_deadline"] and str(a["date_deadline"]) < today:
                 overdue[pid] = overdue.get(pid, 0) + 1
-        return pending, overdue
+        return pending, overdue, by_pid
+
+    @api.model
+    def _new_action(self, name, model, pid):
+        """A quick-create action pre-scoped to the project."""
+        return {
+            "type": "ir.actions.act_window", "name": name, "res_model": model,
+            "views": [[False, "form"]], "target": "current",
+            "context": {"default_project_id": pid},
+        }
+
+    @api.model
+    def _activity_action(self, name, model_ids):
+        """Open the project's scheduled activities (across its construction
+        records) in one list."""
+        leaves = []
+        for model, ids in model_ids.items():
+            if ids:
+                leaves.append(["&", ("res_model", "=", model),
+                               ("res_id", "in", list(ids))])
+        if not leaves:
+            domain = [("id", "=", 0)]
+        else:
+            domain = ["|"] * (len(leaves) - 1)
+            for leaf in leaves:
+                domain += leaf
+        view = self.env.ref("cs_dashboards.view_cs_activity_list")
+        return {
+            "type": "ir.actions.act_window", "name": name,
+            "res_model": "mail.activity", "views": [[view.id, "list"]],
+            "domain": domain,
+        }
 
     @api.model
     def get_project_kpis(self):
@@ -150,7 +183,11 @@ class CsDashboard(models.AbstractModel):
             "sub_total": self._counts_by_project("cs.submittal", []),
             "co_total": self._counts_by_project("cs.change.order", []),
         }
-        act_pending, act_overdue = self._activity_counts_by_project()
+        act_pending, act_overdue, act_by_pid = \
+            self._activity_counts_by_project()
+        doc_ref = self.env.ref("cs_documents.action_cs_doc_register",
+                               raise_if_not_found=False)
+        doc_action_id = doc_ref.id if doc_ref else False
 
         proj_ids = set()
         for model in self._CONSTRUCTION_MODELS:
@@ -282,8 +319,30 @@ class CsDashboard(models.AbstractModel):
                 "tasks_open": p.open_task_count,
                 "tasks_action": self._win("%s — Tasks" % label, "project.task",
                                           [("project_id", "=", pid)]),
-                "activity": {"pending": act_pending.get(pid, 0),
-                             "overdue": act_overdue.get(pid, 0)},
+                "activity": {
+                    "pending": act_pending.get(pid, 0),
+                    "overdue": act_overdue.get(pid, 0),
+                    "action": self._activity_action(
+                        "%s — Activities" % label, act_by_pid.get(pid, {})),
+                },
+                "quick_actions": [
+                    {"label": "New RFI", "icon": "fa-question-circle",
+                     "action": self._new_action(
+                         "New RFI — %s" % label, "cs.rfi", pid)},
+                    {"label": "New CO", "icon": "fa-exchange",
+                     "action": self._new_action(
+                         "New Change Order — %s" % label,
+                         "cs.change.order", pid)},
+                    {"label": "Daily Log", "icon": "fa-pencil-square-o",
+                     "action": self._new_action(
+                         "New Daily Log — %s" % label, "cs.daily.log", pid)},
+                    {"label": "Safety Report", "icon": "fa-shield",
+                     "action": self._new_action(
+                         "New Safety Report — %s" % label,
+                         "cs.safety.report", pid)},
+                    {"label": "Upload Drawing", "icon": "fa-upload",
+                     "action": doc_action_id},
+                ],
                 "sections": [
                     {"name": "RFIs", "metrics": rfis},
                     {"name": "Submittals & changes", "metrics": changes},

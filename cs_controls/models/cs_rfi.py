@@ -116,7 +116,9 @@ class GteRfi(models.Model):
             if missing:
                 raise ValidationError(
                     "%s cannot be sent. Missing: %s." % (rec.name, ", ".join(missing)))
-        self._set_state(("open",), "sent")
+        # "Send RFI" is the single primary from Draft or Open (the interim
+        # Open step is no longer a separate button).
+        self._set_state(("draft", "open"), "sent")
 
     def action_answer(self):
         for rec in self:

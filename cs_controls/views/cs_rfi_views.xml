@@ -6,13 +6,13 @@
         <field name="arch" type="xml">
             <form string="RFI">
                 <header>
-                    <button name="action_open" string="Open" type="object" invisible="state != 'draft'"/>
-                    <button name="action_send" string="Send" type="object" class="btn-primary" invisible="state != 'open'"/>
-                    <button name="action_answer" string="Record Answer" type="object" class="btn-primary" invisible="state != 'sent'"/>
-                    <button name="action_distribute" string="Distribute" type="object" class="btn-primary" invisible="state != 'answered'"/>
-                    <button name="action_close" string="Close" type="object" invisible="state not in ('answered','distributed')"/>
-                    <button name="action_open_reason_wizard" string="Cancel" type="object" context="{'cs_action': 'cancel'}" invisible="state not in ('draft','open','sent')"/>
-                    <button name="action_open_reason_wizard" string="Reopen" type="object" context="{'cs_action': 'reopen'}" invisible="state not in ('closed','cancelled')" groups="cs_core.group_cs_pm"/>
+                    <!-- One clear primary action per state. Send RFI also
+                         emails it (see cs_mail). Secondary actions (Resend,
+                         Cancel, Reopen, Reminder) live in the cog Actions menu. -->
+                    <button name="action_send" string="Send RFI" type="object" class="btn-primary" invisible="state not in ('draft','open')"/>
+                    <button name="action_answer" string="Record Response" type="object" class="btn-primary" invisible="state != 'sent'"/>
+                    <button name="action_distribute" string="Distribute Response" type="object" class="btn-primary" invisible="state != 'answered'"/>
+                    <button name="action_close" string="Close RFI" type="object" class="btn-primary" invisible="state != 'distributed'"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,open,sent,answered,distributed,closed"/>
                 </header>
                 <sheet>
@@ -110,6 +110,25 @@
             </search>
         </field>
     </record>
+    <!-- Secondary RFI actions live in the form's Actions (cog) menu. -->
+    <record id="action_server_rfi_cancel" model="ir.actions.server">
+        <field name="name">Cancel RFI</field>
+        <field name="model_id" ref="model_cs_rfi"/>
+        <field name="binding_model_id" ref="model_cs_rfi"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.with_context(cs_action='cancel').action_open_reason_wizard()</field>
+    </record>
+    <record id="action_server_rfi_reopen" model="ir.actions.server">
+        <field name="name">Reopen RFI</field>
+        <field name="model_id" ref="model_cs_rfi"/>
+        <field name="binding_model_id" ref="model_cs_rfi"/>
+        <field name="binding_view_types">form</field>
+        <field name="groups_id" eval="[(4, ref('cs_core.group_cs_pm'))]"/>
+        <field name="state">code</field>
+        <field name="code">action = records.with_context(cs_action='reopen').action_open_reason_wizard()</field>
+    </record>
+
     <record id="action_cs_rfi" model="ir.actions.act_window">
         <field name="name">RFIs</field>
         <field name="res_model">cs.rfi</field>

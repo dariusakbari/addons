@@ -61,10 +61,23 @@
         .o_cs_tasks { font-size: 13px; color: #8b9099; }
         .o_cs_activity {
             margin-left: auto; font-size: 12px; font-weight: 600;
-            padding: 2px 8px; border-radius: 10px;
+            padding: 2px 8px; border-radius: 10px; cursor: pointer;
             background: #eef2f6; color: #4b5563;
             i { margin-right: 4px; }
+            &:hover { filter: brightness(0.96); }
             &[data-over="1"] { background: #fdecec; color: #dc3545; }
+        }
+    }
+    .o_cs_quick {
+        display: flex; flex-wrap: wrap; gap: 6px;
+        padding: 8px 12px 4px;
+        .o_cs_qa {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 12px; font-weight: 600; color: #0f766e;
+            background: #fff; border: 1px solid #d7dde3; border-radius: 6px;
+            padding: 5px 9px; cursor: pointer;
+            i { font-size: 12px; }
+            &:hover { background: #f0fdfa; border-color: #0f766e; }
         }
     }
 

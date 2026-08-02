@@ -30,11 +30,22 @@
                             <span class="o_cs_tasks" t-esc="proj.tasks_done + ' / ' + proj.tasks_total + ' tasks · ' + proj.tasks_open + ' open'"/>
                             <span t-if="proj.activity.pending" class="o_cs_activity"
                                   t-att-data-over="proj.activity.overdue ? 1 : 0"
-                                  title="Scheduled activities on this project's records">
+                                  t-on-click.stop="() => this.open(proj.activity.action)"
+                                  title="Open this project's scheduled activities">
                                 <i class="fa fa-bell"/>
                                 <t t-esc="proj.activity.pending"/>
                                 <t t-if="proj.activity.overdue" t-esc="' · ' + proj.activity.overdue + ' overdue'"/>
                             </span>
+                        </div>
+
+                        <!-- quick create actions -->
+                        <div class="o_cs_quick">
+                            <t t-foreach="proj.quick_actions" t-as="qa" t-key="qa.label">
+                                <button class="o_cs_qa" t-on-click="() => this.open(qa.action)">
+                                    <i t-attf-class="fa {{qa.icon}}"/>
+                                    <t t-esc="qa.label"/>
+                                </button>
+                            </t>
                         </div>
 
                         <!-- metric sections -->

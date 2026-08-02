@@ -995,6 +995,30 @@ the TEST field user's group assignment. Redo as needed.
      upgrade) and is the favicon source. Website favicon reissued from a
      tighter 78%-fill crop for small-size legibility. cs_controls 1.0.1.
      (Browsers cache app icons — hard refresh to see it.)
+## UX cleanup — 2 August 2026
+
+UX1. Dashboard (Overview) made actionable. The overdue-activities badge is now
+     clickable and opens the project's scheduled activities (across its
+     construction records) in a list; RFI/Submittal/CO metrics were already
+     click-through. Each project card gained a quick-action row: New RFI,
+     New CO, Daily Log, Safety Report and Upload Drawing — each pre-scoped to
+     the project. New _new_action / _activity_action helpers + a mail.activity
+     list view. cs_dashboards 0.11.5.
+UX2. Project form cleaned. Removed the duplicate "Schedule" tab (cs_schedule no
+     longer adds its own page; cs_hub's Schedule tab now carries Baseline/
+     Forecast + Look-Aheads + Delays). Hid the unused Sales Order stat button
+     (action_view_sos). Renamed "Name of the Tasks" to "Task Label". Added a
+     "Holdback Applies" toggle on the project; the Holdback % only shows and
+     applies when it's on (onchange clears % when off, seeds a default when on).
+     cs_schedule 0.5.5, cs_hub 0.4.1, cs_commercial 0.10.1.
+UX3. RFI actions simplified. The header now shows one clear primary per state —
+     Send RFI (Draft/Open) / Record Response (Sent) / Distribute Response
+     (Answered) / Close RFI (Distributed). "Send RFI" both records the send and
+     opens the email, so the separate confusing "Email RFI" button is gone.
+     Resend, Send Reminder, Cancel and Reopen moved to the form's Actions (cog)
+     menu as bound server actions. action_send now accepts Draft (the interim
+     Open button is removed). cs_controls 1.0.2, cs_mail 0.5.1.
+
 ## Safety templates hardening — 1 August 2026 (cs_hse_templates 0.2.0)
 
 ST1. FIX (production blocker): cs.safety.template now inherits mail.thread +

@@ -107,6 +107,13 @@ class GteRfi(models.Model):
     _cs_mail_template_xmlid = "cs_mail.mail_template_cs_rfi"
     _cs_mail_report = "cs_controls.report_cs_rfi"
 
+    def action_send(self):
+        # "Send RFI" records the send AND opens the email to the recipients,
+        # so there is no longer a separate confusing "Email RFI" button.
+        super().action_send()
+        if len(self) == 1:
+            return self._cs_open_composer()
+
     def _cs_mail_recipients(self):
         partners = super()._cs_mail_recipients()
         return partners | self.addressed_to_id

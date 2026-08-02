@@ -171,7 +171,8 @@
             <xpath expr="//div[hasclass('oe_title')]" position="after">
                 <group name="cs_commercial" string="Commercial" groups="cs_core.group_cs_pm,cs_core.group_cs_accounting">
                     <field name="cs_contract_amount"/>
-                    <field name="cs_holdback_percent"/>
+                    <field name="cs_holdback_applies"/>
+                    <field name="cs_holdback_percent" invisible="not cs_holdback_applies"/>
                 </group>
             </xpath>
         </field>

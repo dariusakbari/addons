@@ -255,11 +255,22 @@ class ProjectProject(models.Model):
         string="Original Contract", currency_field="currency_id",
         help="Base contract value, before change orders. Used for progress "
              "billing.")
+    cs_holdback_applies = fields.Boolean(
+        string="Holdback Applies",
+        default=lambda self: bool(self._cs_default_holdback()),
+        help="Tick when this project/contract withholds a holdback on progress "
+             "billing. The percentage is only used when this is on.")
     cs_holdback_percent = fields.Float(
         string="Holdback %", default=lambda self: self._cs_default_holdback(),
         help="Percentage withheld on progress billing for this project. "
-             "Set per project/contract; 0 means no holdback. Only pre-fills "
-             "from Construction Settings when a default is configured there.")
+             "Applied only when 'Holdback Applies' is on.")
+
+    @api.onchange("cs_holdback_applies")
+    def _onchange_cs_holdback_applies(self):
+        if not self.cs_holdback_applies:
+            self.cs_holdback_percent = 0.0
+        elif not self.cs_holdback_percent:
+            self.cs_holdback_percent = self._cs_default_holdback() or 10.0
 
     @api.model
     def _cs_default_holdback(self):

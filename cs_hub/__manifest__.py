@@ -1,7 +1,7 @@
 {
     "name": "Construction Project Hub",
     "summary": "SmartBuild-style project-centric navigation: all construction records inside the project form",
-    "version": "19.0.0.4.0",
+    "version": "19.0.0.4.1",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
