@@ -253,8 +253,38 @@ class ProjectProject(models.Model):
                                        currency_field="currency_id")
     cs_contract_amount = fields.Monetary(
         string="Original Contract", currency_field="currency_id",
-        help="Base contract value, before change orders. Used for progress "
-             "billing.")
+        help="Base contract value (net of sales tax), before change orders. "
+             "Filled automatically from the sales order's untaxed total when "
+             "the project is created from an approved estimate. Used for "
+             "progress billing.")
+    cs_change_order_approved = fields.Monetary(
+        string="Approved Changes", currency_field="currency_id",
+        compute="_compute_cs_contract_value",
+        help="Sum of approved change orders (net of tax) on this project.")
+    cs_contract_value = fields.Monetary(
+        string="Contract Value", currency_field="currency_id",
+        compute="_compute_cs_contract_value",
+        help="Current contract value: original contract plus approved change "
+             "orders, net of sales tax.")
+
+    @api.depends("cs_contract_amount")
+    def _compute_cs_contract_value(self):
+        # Approved change-order totals are grouped in one query, then each
+        # project's revised contract value is original + approved changes.
+        approved_by_project = {}
+        if self.ids:
+            groups = self.env["cs.change.order"].sudo().read_group(
+                [("project_id", "in", self.ids),
+                 ("state", "in", ("approved", "billed", "paid", "closed"))],
+                ["project_id", "amount_approved:sum"], ["project_id"])
+            for grp in groups:
+                if grp.get("project_id"):
+                    approved_by_project[grp["project_id"][0]] = \
+                        grp.get("amount_approved") or 0.0
+        for rec in self:
+            approved = approved_by_project.get(rec.id, 0.0)
+            rec.cs_change_order_approved = approved
+            rec.cs_contract_value = (rec.cs_contract_amount or 0.0) + approved
     cs_holdback_applies = fields.Boolean(
         string="Holdback Applies",
         default=lambda self: bool(self._cs_default_holdback()),

@@ -211,6 +211,10 @@ class CsDashboard(models.AbstractModel):
             key=lambda p: (p.cs_code or "", p.name or ""))
 
         show_money = any(self.env.user.has_group(g) for g in self._MONEY_GROUPS)
+        # Contract value shows to the same finance-trusted roles as the other
+        # money KPIs: Project Managers, Accounting and Construction
+        # Administrators (owners) — never field/other employees.
+        show_contract = show_money
         currency = self.env.company.currency_id.symbol or "$"
         exposure, budgets = {}, {}
         if show_money:
@@ -296,7 +300,16 @@ class CsDashboard(models.AbstractModel):
                         [("account_id", "=", p.account_id.id),
                          ("amount", "<", 0)])
                     actual = -sum(lines.mapped("amount"))
-                money = [
+                money = []
+                if show_contract:
+                    money.append(
+                        {"label": "Contract",
+                         "value": self._money(currency, p.cs_contract_value),
+                         "action": win(
+                             "Approved change orders", "cs.change.order",
+                             [("state", "in",
+                               ("approved", "billed", "paid", "closed"))])})
+                money += [
                     {"label": "Budget",
                      "value": self._money(currency, bud.amount_budget) if bud
                               else "—",

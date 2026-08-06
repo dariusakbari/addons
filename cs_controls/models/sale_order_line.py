@@ -28,4 +28,8 @@ class SaleOrderLine(models.Model):
             )
             if base_name and project.name != base_name:
                 project.name = base_name
+            # Seed the Original Contract with the sales order's untaxed total
+            # (net of sales tax). Change orders add to it via cs_contract_value.
+            if "cs_contract_amount" in project._fields and not project.cs_contract_amount:
+                project.cs_contract_amount = order.amount_untaxed
         return project

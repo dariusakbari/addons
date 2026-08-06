@@ -322,9 +322,11 @@ class GteChangeOrderLine(models.Model):
     price_sell = fields.Monetary(currency_field="currency_id",
                                  compute="_compute_amounts", store=True)
 
-    @api.depends("quantity", "unit_cost", "markup_pct", "tax_pct")
+    @api.depends("quantity", "unit_cost", "markup_pct")
     def _compute_amounts(self):
         for line in self:
             line.subtotal_cost = line.quantity * line.unit_cost
-            sell = line.subtotal_cost * (1.0 + line.markup_pct / 100.0)
-            line.price_sell = sell * (1.0 + line.tax_pct / 100.0)
+            # Sell price is net of sales tax. tax_pct is retained for reference
+            # only and is NOT folded into the change-order value, so contract
+            # value and all KPIs stay net of tax.
+            line.price_sell = line.subtotal_cost * (1.0 + line.markup_pct / 100.0)
