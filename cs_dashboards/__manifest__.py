@@ -2,7 +2,7 @@
     "name": "Construction Reporting & Dashboards",
     "summary": "Graph/pivot analytics, project & portfolio dashboards, "
                "and printable log reports for construction records",
-    "version": "19.0.0.11.6",
+    "version": "19.0.0.11.7",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",

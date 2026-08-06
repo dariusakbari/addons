@@ -1,11 +1,11 @@
 {
     "name": "Construction Controls",
     "summary": "RFIs, Change Orders and Submittals as dedicated business records",
-    "version": "19.0.1.0.3",
+    "version": "19.0.1.0.4",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
-    "depends": ["cs_core", "sale", "account", "purchase"],
+    "depends": ["cs_core", "sale", "sale_project", "account", "purchase"],
     "data": [
         "security/ir.model.access.csv",
         "security/cs_rules.xml",

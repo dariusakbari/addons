@@ -195,8 +195,19 @@ class CsDashboard(models.AbstractModel):
                                                   ["project_id"]):
                 if grp.get("project_id"):
                     proj_ids.add(grp["project_id"][0])
+        # Also surface real construction jobs that were created from an estimate
+        # (their sale line's product carries a project template) even before they
+        # have any construction records yet — so a freshly-approved estimate shows
+        # up immediately. Generic per-SO "Tasks" projects have no project template
+        # and stay out.
+        gen_lines = self.env["sale.order.line"].sudo().search([
+            ("product_id.project_template_id", "!=", False),
+            ("project_id", "!=", False),
+        ])
+        proj_ids |= set(gen_lines.mapped("project_id").ids)
         projects = self.env["project.project"].browse(sorted(proj_ids))
-        projects = projects.filtered("active").sorted(
+        projects = projects.filtered(
+            lambda p: p.active and not p.is_template).sorted(
             key=lambda p: (p.cs_code or "", p.name or ""))
 
         show_money = any(self.env.user.has_group(g) for g in self._MONEY_GROUPS)
