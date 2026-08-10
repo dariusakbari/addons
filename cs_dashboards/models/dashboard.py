@@ -195,14 +195,22 @@ class CsDashboard(models.AbstractModel):
                                                   ["project_id"]):
                 if grp.get("project_id"):
                     proj_ids.add(grp["project_id"][0])
-        # Also surface real construction jobs that were created from an estimate
-        # (their sale line's product carries a project template) even before they
-        # have any construction records yet — so a freshly-approved estimate shows
-        # up immediately. Generic per-SO "Tasks" projects have no project template
-        # and stay out.
+        # Also surface real construction jobs linked to a CONFIRMED (accepted)
+        # sales order, even before they have any records yet — so an accepted
+        # estimate/contract shows up immediately. Projects tied to draft or sent
+        # quotations are deliberately excluded (a job isn't real until accepted),
+        # and generic per-SO "Tasks" projects (no confirmed SO, no records) stay
+        # out.
+        confirmed = self.env["project.project"].sudo().search([
+            ("active", "=", True), ("is_template", "=", False),
+            ("sale_order_id.state", "in", ("sale", "done")),
+        ])
+        proj_ids |= set(confirmed.ids)
+        # Manually-created projects whose generating SO line is on a confirmed
+        # order (covers jobs linked via the sale line rather than sale_order_id).
         gen_lines = self.env["sale.order.line"].sudo().search([
-            ("product_id.project_template_id", "!=", False),
             ("project_id", "!=", False),
+            ("order_id.state", "in", ("sale", "done")),
         ])
         proj_ids |= set(gen_lines.mapped("project_id").ids)
         projects = self.env["project.project"].browse(sorted(proj_ids))
