@@ -48,27 +48,42 @@ class ProjectTask(models.Model):
     cs_co_count = fields.Integer(compute="_compute_cs_counts")
     cs_submittal_count = fields.Integer(compute="_compute_cs_counts")
 
+    def _cs_task_domain(self, model):
+        """Records of `model` linked to this task. Only RFIs and submittals
+        carry a many2many `task_ids`; change orders link through the single
+        `origin_task_id`. Building the domain from the fields that actually
+        exist avoids "Invalid field" errors when a model lacks `task_ids`."""
+        self.ensure_one()
+        if "task_ids" in self.env[model]._fields:
+            return ["|", ("task_ids", "in", self.id),
+                    ("origin_task_id", "=", self.id)]
+        return [("origin_task_id", "=", self.id)]
+
     def _compute_cs_counts(self):
         for rec in self:
-            dom = ["|", ("task_ids", "in", rec.id), ("origin_task_id", "=", rec.id)]
-            rec.cs_rfi_count = self.env["cs.rfi"].search_count(dom)
-            rec.cs_co_count = self.env["cs.change.order"].search_count(dom)
-            rec.cs_submittal_count = self.env["cs.submittal"].search_count(dom)
+            rec.cs_rfi_count = rec.env["cs.rfi"].search_count(
+                rec._cs_task_domain("cs.rfi"))
+            rec.cs_co_count = rec.env["cs.change.order"].search_count(
+                rec._cs_task_domain("cs.change.order"))
+            rec.cs_submittal_count = rec.env["cs.submittal"].search_count(
+                rec._cs_task_domain("cs.submittal"))
 
-    def _cs_task_action(self, xmlid, name):
+    def _cs_task_action(self, xmlid, name, model):
         self.ensure_one()
         action = self.env["ir.actions.act_window"]._for_xml_id(xmlid)
-        action["domain"] = ["|", ("task_ids", "in", self.id),
-                            ("origin_task_id", "=", self.id)]
+        action["domain"] = self._cs_task_domain(model)
         action["context"] = {"default_project_id": self.project_id.id}
         action["display_name"] = "%s — %s" % (self.display_name, name)
         return action
 
     def action_view_cs_rfis(self):
-        return self._cs_task_action("cs_controls.action_cs_rfi", "RFIs")
+        return self._cs_task_action(
+            "cs_controls.action_cs_rfi", "RFIs", "cs.rfi")
 
     def action_view_cs_cos(self):
-        return self._cs_task_action("cs_controls.action_cs_co", "Change Orders")
+        return self._cs_task_action(
+            "cs_controls.action_cs_co", "Change Orders", "cs.change.order")
 
     def action_view_cs_submittals(self):
-        return self._cs_task_action("cs_controls.action_cs_submittal", "Submittals")
+        return self._cs_task_action(
+            "cs_controls.action_cs_submittal", "Submittals", "cs.submittal")
