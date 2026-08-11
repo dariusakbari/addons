@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Purchase order: type selector + subcontract details -->
+    <record id="view_purchase_order_form_cs" model="ir.ui.view">
+        <field name="name">purchase.order.form.cs</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="project_id" position="after">
+                <field name="cs_po_kind" widget="radio" options="{'horizontal': True}"/>
+            </field>
+            <notebook position="inside">
+                <page string="Subcontract" name="cs_subcontract"
+                      invisible="cs_po_kind != 'subcontract'">
+                    <group>
+                        <group string="Holdback">
+                            <field name="cs_holdback_applies"/>
+                            <field name="cs_holdback_percent"
+                                   invisible="not cs_holdback_applies"/>
+                        </group>
+                        <group string="Totals">
+                            <field name="cs_sov_total"/>
+                        </group>
+                    </group>
+                    <separator string="Scope of Work"/>
+                    <field name="cs_scope_of_work"
+                           placeholder="Describe the contracted scope for this subcontract…"/>
+                    <separator string="Schedule of Values"/>
+                    <field name="cs_sov_line_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="amount"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!-- Purchase order list: show the type -->
+    <record id="view_purchase_order_tree_cs" model="ir.ui.view">
+        <field name="name">purchase.order.list.cs</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="cs_po_kind" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Project smart buttons -->
+    <record id="view_project_form_cs_purchase" model="ir.ui.view">
+        <field name="name">project.project.form.cs.purchase</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_cs_subcontracts" type="object"
+                        class="oe_stat_button" icon="fa-handshake-o"
+                        groups="cs_core.group_cs_pm,cs_core.group_cs_accounting">
+                    <field name="cs_subcontract_count" widget="statinfo"
+                           string="Subcontracts"/>
+                </button>
+                <button name="action_view_cs_material_pos" type="object"
+                        class="oe_stat_button" icon="fa-truck"
+                        groups="cs_core.group_cs_pm,cs_core.group_cs_accounting">
+                    <field name="cs_material_po_count" widget="statinfo"
+                           string="Material POs"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Global filtered actions -->
+    <record id="action_cs_subcontracts" model="ir.actions.act_window">
+        <field name="name">Subcontracts</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cs_po_kind', '=', 'subcontract')]</field>
+        <field name="context">{'default_cs_po_kind': 'subcontract'}</field>
+    </record>
+
+    <record id="action_cs_material_pos" model="ir.actions.act_window">
+        <field name="name">Material POs</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cs_po_kind', '=', 'material')]</field>
+        <field name="context">{'default_cs_po_kind': 'material'}</field>
+    </record>
+
+    <!-- Construction > Purchasing menu -->
+    <menuitem id="menu_cs_purchasing" name="Purchasing"
+              parent="cs_controls.menu_cs_root" sequence="35"
+              groups="cs_core.group_cs_pm,cs_core.group_cs_accounting"/>
+    <menuitem id="menu_cs_subcontracts" name="Subcontracts"
+              parent="menu_cs_purchasing" action="action_cs_subcontracts"
+              sequence="10"/>
+    <menuitem id="menu_cs_material_pos" name="Material POs"
+              parent="menu_cs_purchasing" action="action_cs_material_pos"
+              sequence="20"/>
+
+</odoo>
