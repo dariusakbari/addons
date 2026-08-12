@@ -20,3 +20,4 @@ access_payappline_admin,cs.payment.application.line admin,model_cs_payment_appli
 access_sov_purchase_user,cs.po.sov.line purchase user,model_cs_po_sov_line,purchase.group_purchase_user,1,1,1,1
 access_sov_pm,cs.po.sov.line pm,model_cs_po_sov_line,cs_core.group_cs_pm,1,1,1,1
 access_sov_acct,cs.po.sov.line accounting,model_cs_po_sov_line,cs_core.group_cs_accounting,1,1,1,1
+access_sov_admin,cs.po.sov.line admin,model_cs_po_sov_line,cs_core.group_cs_admin,1,1,1,1
