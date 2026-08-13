@@ -360,8 +360,13 @@ class CsDashboard(models.AbstractModel):
                          [("account_id", "=", p.account_id.id)])
                          if p.account_id else False},
                     {"label": "Variance",
-                     "value": self._money(currency, bud.amount_budget - actual)
+                     "value": self._money(
+                         currency,
+                         bud.amount_budget - actual - committed)
                               if bud else "—",
+                     "tone": ("red" if bud and
+                              (bud.amount_budget - actual - committed) < 0
+                              else "muted"),
                      "action": win("Budget", "cs.project.budget", [])},
                 ]
 
