@@ -224,7 +224,7 @@ class CsDashboard(models.AbstractModel):
         # Administrators (owners) — never field/other employees.
         show_contract = show_money
         currency = self.env.company.currency_id.symbol or "$"
-        exposure, budgets = {}, {}
+        exposure, budgets, po_committed = {}, {}, {}
         if show_money:
             for grp in self.env["cs.change.order"].sudo().read_group(
                     self._EXPOSURE_DOMAIN, ["project_id", "exposure:sum"],
@@ -233,6 +233,28 @@ class CsDashboard(models.AbstractModel):
                     exposure[grp["project_id"][0]] = grp.get("exposure") or 0.0
             for bud in self.env["cs.project.budget"].sudo().search([]):
                 budgets[bud.project_id.id] = bud
+            # Open purchase commitment per project: uninvoiced value of
+            # confirmed purchase-order / subcontract lines allocated to each
+            # project's analytic account.
+            acct_to_pid = {p.account_id.id: p.id
+                           for p in projects if p.account_id}
+            if acct_to_pid and "purchase.order.line" in self.env:
+                pols = self.env["purchase.order.line"].sudo().search([
+                    ("state", "in", ("purchase", "done")),
+                    ("analytic_distribution", "!=", False)])
+                for line in pols:
+                    for key, pct in (line.analytic_distribution or {}).items():
+                        for a in str(key).split(","):
+                            if not a.isdigit():
+                                continue
+                            tgt = acct_to_pid.get(int(a))
+                            if not tgt:
+                                continue
+                            qty = line.product_qty or 0.0
+                            remaining = (max(0.0, (qty - line.qty_invoiced) / qty)
+                                         if qty else 1.0)
+                            po_committed[tgt] = po_committed.get(tgt, 0.0) + \
+                                line.price_subtotal * remaining * pct / 100.0
 
         def tone(v, base):
             return base if v else "muted"
@@ -301,7 +323,8 @@ class CsDashboard(models.AbstractModel):
             money = []
             if show_money:
                 bud = budgets.get(pid)
-                committed = exposure.get(pid, 0.0)
+                committed = po_committed.get(pid, 0.0)
+                change_exposure = exposure.get(pid, 0.0)
                 actual = 0.0
                 if p.account_id:
                     lines = self.env["account.analytic.line"].sudo().search(
@@ -324,6 +347,10 @@ class CsDashboard(models.AbstractModel):
                      "action": win("Budget", "cs.project.budget", [])},
                     {"label": "Committed",
                      "value": self._money(currency, committed),
+                     "action": win("Purchase orders & subcontracts",
+                                   "purchase.order", [])},
+                    {"label": "Change exposure",
+                     "value": self._money(currency, change_exposure),
                      "action": win("Open change orders", "cs.change.order",
                                    self._EXPOSURE_DOMAIN)},
                     {"label": "Actual cost",
