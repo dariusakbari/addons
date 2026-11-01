@@ -38,6 +38,18 @@
                             </span>
                         </div>
 
+                        <!-- at-a-glance status strip -->
+                        <div class="o_cs_badges">
+                            <t t-foreach="proj.status_badges" t-as="b" t-key="b.label">
+                                <div class="o_cs_badge" t-att-data-tone="b.tone"
+                                     t-on-click="() => this.open(b.action)"
+                                     t-attf-title="{{b.label}} — done / total">
+                                    <span class="o_cs_badge_lbl" t-esc="b.label"/>
+                                    <span class="o_cs_badge_val" t-esc="b.text"/>
+                                </div>
+                            </t>
+                        </div>
+
                         <!-- quick create actions -->
                         <div class="o_cs_quick">
                             <t t-foreach="proj.quick_actions" t-as="qa" t-key="qa.label">

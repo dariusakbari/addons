@@ -162,6 +162,9 @@ class CsDashboard(models.AbstractModel):
                                   ("date_required_submit", "<=", sub_soon)]
         co_await_dom = [("state", "=", "submitted")]
         co_unb_dom = [("state", "=", "approved")]
+        co_open_dom = [("state", "not in",
+                        ("closed", "cancelled", "rejected", "billed", "paid"))]
+        sub_over_dom = sub_dom + [("date_required_submit", "<", today)]
         punch_dom = [("state", "not in", ("closed", "cancelled"))]
         inc_dom = [("state", "not in", ("closed", "cancelled"))]
         fi_dom = [("state", "=", "submitted")]
@@ -179,9 +182,12 @@ class CsDashboard(models.AbstractModel):
             "inc": self._counts_by_project("cs.incident", inc_dom),
             "fi": self._counts_by_project("cs.field.issue", fi_dom),
             "wp": self._counts_by_project("cs.work.permit", wp_dom),
+            "co_open": self._counts_by_project("cs.change.order", co_open_dom),
+            "sub_over": self._counts_by_project("cs.submittal", sub_over_dom),
             "rfi_total": self._counts_by_project("cs.rfi", []),
             "sub_total": self._counts_by_project("cs.submittal", []),
             "co_total": self._counts_by_project("cs.change.order", []),
+            "punch_total": self._counts_by_project("cs.punch.item", []),
         }
         act_pending, act_overdue, act_by_pid = \
             self._activity_counts_by_project()
@@ -214,8 +220,13 @@ class CsDashboard(models.AbstractModel):
         ])
         proj_ids |= set(gen_lines.mapped("project_id").ids)
         projects = self.env["project.project"].browse(sorted(proj_ids))
+        # Drop completed / cancelled jobs from the active dashboard: a folded
+        # stage (Done, Cancelled) or a "Complete" status update takes a project
+        # off the board. They remain fully accessible under Projects.
         projects = projects.filtered(
-            lambda p: p.active and not p.is_template).sorted(
+            lambda p: p.active and not p.is_template
+            and not p.stage_id.fold
+            and p.last_update_status != "done").sorted(
             key=lambda p: (p.cs_code or "", p.name or ""))
 
         show_money = any(self.env.user.has_group(g) for g in self._MONEY_GROUPS)
@@ -267,6 +278,37 @@ class CsDashboard(models.AbstractModel):
             def win(name, model, dom):
                 return self._win("%s — %s" % (label, name), model,
                                  [("project_id", "=", pid)] + dom)
+
+            # At-a-glance status strip (done / total per workflow), colour-coded
+            # like the reference board: green = nothing outstanding, amber = work
+            # in progress, red = something overdue, grey = none on this job.
+            def badge(blabel, outstanding, overdue, total, action):
+                done = max(0, total - outstanding)
+                if not total:
+                    btone = "muted"
+                elif overdue:
+                    btone = "red"
+                elif outstanding:
+                    btone = "amber"
+                else:
+                    btone = "green"
+                return {"label": blabel, "text": "%d/%d" % (done, total),
+                        "tone": btone, "action": action}
+
+            status_badges = [
+                badge("RFIs", c["rfi_open"].get(pid, 0),
+                      c["rfi_over"].get(pid, 0), c["rfi_total"].get(pid, 0),
+                      win("All RFIs", "cs.rfi", [])),
+                badge("Changes", c["co_open"].get(pid, 0), 0,
+                      c["co_total"].get(pid, 0),
+                      win("All change orders", "cs.change.order", [])),
+                badge("Submittals", c["sub"].get(pid, 0),
+                      c["sub_over"].get(pid, 0), c["sub_total"].get(pid, 0),
+                      win("All submittals", "cs.submittal", [])),
+                badge("Deficiencies", c["punch"].get(pid, 0), 0,
+                      c["punch_total"].get(pid, 0),
+                      win("Open deficiencies", "cs.punch.item", punch_dom)),
+            ]
 
             rfis = [
                 {"label": "Open", "value": c["rfi_open"].get(pid, 0),
@@ -378,6 +420,7 @@ class CsDashboard(models.AbstractModel):
                 "partner": p.partner_id.name or "",
                 "tags": p.tag_ids.mapped("name"),
                 "progress": pct,
+                "status_badges": status_badges,
                 "tasks_done": p.closed_task_count,
                 "tasks_total": p.task_count,
                 "tasks_open": p.open_task_count,

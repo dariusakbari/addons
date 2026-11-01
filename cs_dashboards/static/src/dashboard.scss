@@ -73,6 +73,37 @@
             &[data-over="1"] { background: #fdecec; color: #dc3545; }
         }
     }
+    /* at-a-glance status strip (done/total per workflow) */
+    .o_cs_badges {
+        display: flex; flex-wrap: wrap; gap: 8px;
+        margin-bottom: 14px;
+
+        .o_cs_badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 12px; cursor: pointer;
+            border: 1px solid #e2e5e9; border-radius: 8px;
+            padding: 4px 10px; background: #fff;
+            &:hover { filter: brightness(0.98); }
+
+            .o_cs_badge_lbl { color: #6b7280; font-weight: 500; }
+            .o_cs_badge_val { font-weight: 700; font-size: 13px; color: #6b7280; }
+
+            &[data-tone="green"] {
+                background: #e9f6ef; border-color: #bfe6d1;
+                .o_cs_badge_lbl { color: #1d6f4f; } .o_cs_badge_val { color: #1d6f4f; }
+            }
+            &[data-tone="amber"] {
+                background: #fff5e5; border-color: #f3dcae;
+                .o_cs_badge_lbl { color: #9a6b00; } .o_cs_badge_val { color: #9a6b00; }
+            }
+            &[data-tone="red"] {
+                background: #fdecec; border-color: #f4c7c7;
+                .o_cs_badge_lbl { color: #c02a37; } .o_cs_badge_val { color: #c02a37; }
+            }
+            /* muted (0/0) keeps the grey defaults */
+        }
+    }
+
     .o_cs_quick {
         display: flex; flex-wrap: wrap; gap: 6px;
         padding: 8px 12px 4px;
