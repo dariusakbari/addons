@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- RFIs: keep overdue=red, add done=green / cancelled=grey, priority,
+         and a "To Do" next-action column. -->
+    <record id="view_cs_rfi_list_ux" model="ir.ui.view">
+        <field name="name">cs.rfi.list.ux</field>
+        <field name="model">cs.rfi</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_rfi_list"/>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="decoration-success">state in ('closed', 'distributed')</attribute>
+                <attribute name="decoration-muted">state == 'cancelled'</attribute>
+            </list>
+            <field name="date_required" position="after">
+                <field name="cs_next_action" string="To Do"/>
+            </field>
+            <field name="state" position="before">
+                <field name="priority" widget="badge" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Change Orders: add overdue=red, approved/billed/paid/closed=green,
+         cancelled/rejected=grey, a decision-due date and a "To Do" column. -->
+    <record id="view_cs_co_list_ux" model="ir.ui.view">
+        <field name="name">cs.change.order.list.ux</field>
+        <field name="model">cs.change.order</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_co_list"/>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="decoration-danger">is_overdue</attribute>
+                <attribute name="decoration-success">state in ('approved', 'billed', 'paid', 'closed')</attribute>
+                <attribute name="decoration-muted">state in ('cancelled', 'rejected')</attribute>
+            </list>
+            <field name="project_id" position="after">
+                <field name="date_required" string="Decision Due" optional="show"/>
+                <field name="cs_next_action" string="To Do"/>
+                <field name="is_overdue" column_invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Submittals: keep delivery-overdue=red, add submission-overdue=amber,
+         approved=green, cancelled/rejected=grey, submit-due and "To Do". -->
+    <record id="view_cs_submittal_list_ux" model="ir.ui.view">
+        <field name="name">cs.submittal.list.ux</field>
+        <field name="model">cs.submittal</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_submittal_list"/>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="decoration-warning">is_submit_overdue</attribute>
+                <attribute name="decoration-success">state in ('approved', 'approved_noted', 'closed')</attribute>
+                <attribute name="decoration-muted">state in ('cancelled', 'rejected')</attribute>
+            </list>
+            <field name="date_required_onsite" position="before">
+                <field name="date_required_submit" string="Submit Due" optional="show"/>
+                <field name="cs_next_action" string="To Do"/>
+                <field name="is_submit_overdue" column_invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
