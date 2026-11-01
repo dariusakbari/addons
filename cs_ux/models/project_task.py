@@ -34,7 +34,13 @@ class ProjectTask(models.Model):
             return self.env["project.task.type"]
         stages = self.env["project.task.type"].search(
             [("project_ids", "in", self.project_id.id)], order="sequence, id")
-        return stages.filtered(lambda s: not self._cs_stage_is_done(s))[:1]
+        open_stages = stages.filtered(lambda s: not self._cs_stage_is_done(s))
+        # Prefer an active "In Progress"-style stage when the project has one,
+        # so reopening a task lands somewhere sensible rather than the backlog.
+        preferred = open_stages.filtered(
+            lambda s: (s.name or "").strip().lower()
+            in ("in progress", "in-progress", "doing", "started", "active"))
+        return (preferred[:1] or open_stages[:1])
 
     def write(self, vals):
         # Re-entrancy guard: our own sync writes skip the logic below.
