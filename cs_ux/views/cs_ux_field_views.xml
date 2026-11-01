@@ -14,4 +14,30 @@
         </field>
     </record>
 
+    <!-- Deficiency: move Before/After photos above the description so a field
+         worker can snap the defect first, then describe it. -->
+    <record id="view_cs_punch_form_ux" model="ir.ui.view">
+        <field name="name">cs.punch.item.form.ux</field>
+        <field name="model">cs.punch.item</field>
+        <field name="inherit_id" ref="cs_field.view_cs_punch_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[field[@name='description']]" position="before">
+                <xpath expr="//group[group[@string='Before']]" position="move"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Incident: make the Evidence (photos) tab first for quick on-site
+         capture. -->
+    <record id="view_cs_incident_form_ux" model="ir.ui.view">
+        <field name="name">cs.incident.form.ux</field>
+        <field name="model">cs.incident</field>
+        <field name="inherit_id" ref="cs_hse.view_cs_incident_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@string='What Happened']" position="before">
+                <xpath expr="//page[@string='Evidence']" position="move"/>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>
