@@ -3,7 +3,7 @@
     "summary": "Presentation-layer polish: colour-coded workflow lists, "
                "next-action ('To Do') hints, one-click log reports, and "
                "task done/complete sync",
-    "version": "19.0.1.0.2",
+    "version": "19.0.1.0.3",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",

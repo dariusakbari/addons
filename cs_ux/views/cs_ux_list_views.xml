@@ -82,4 +82,30 @@
         </field>
     </record>
 
+    <!-- Change Orders: one-click Overdue filter (decision past due). -->
+    <record id="view_cs_co_search_ux" model="ir.ui.view">
+        <field name="name">cs.change.order.search.ux</field>
+        <field name="model">cs.change.order</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_co_search"/>
+        <field name="arch" type="xml">
+            <filter name="awaiting" position="before">
+                <filter name="overdue" string="Overdue"
+                        domain="[('date_required', '&lt;', context_today().strftime('%Y-%m-%d')), ('state', 'in', ['draft','pricing','review','submitted','changes'])]"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- Submittals: one-click Submission Overdue filter (not yet submitted). -->
+    <record id="view_cs_submittal_search_ux" model="ir.ui.view">
+        <field name="name">cs.submittal.search.ux</field>
+        <field name="model">cs.submittal</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_submittal_search"/>
+        <field name="arch" type="xml">
+            <filter name="pending" position="after">
+                <filter name="submit_overdue" string="Submission Overdue"
+                        domain="[('date_required_submit', '&lt;', context_today().strftime('%Y-%m-%d')), ('state', 'in', ['draft','requested','received','review','submitted','revise'])]"/>
+            </filter>
+        </field>
+    </record>
+
 </odoo>
