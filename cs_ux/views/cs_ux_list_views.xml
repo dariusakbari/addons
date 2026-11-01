@@ -12,6 +12,13 @@
                 <attribute name="decoration-success">state in ('closed', 'distributed')</attribute>
                 <attribute name="decoration-muted">state == 'cancelled'</attribute>
             </list>
+            <list position="inside">
+                <header>
+                    <button name="%(cs_dashboards.action_report_cs_rfi_log)d"
+                            type="action" string="Report (PDF)"
+                            class="btn-secondary" display="always"/>
+                </header>
+            </list>
             <field name="date_required" position="after">
                 <field name="cs_next_action" string="To Do"/>
             </field>
@@ -33,6 +40,13 @@
                 <attribute name="decoration-success">state in ('approved', 'billed', 'paid', 'closed')</attribute>
                 <attribute name="decoration-muted">state in ('cancelled', 'rejected')</attribute>
             </list>
+            <list position="inside">
+                <header>
+                    <button name="%(cs_dashboards.action_report_cs_co_log)d"
+                            type="action" string="Report (PDF)"
+                            class="btn-secondary" display="always"/>
+                </header>
+            </list>
             <field name="project_id" position="after">
                 <field name="date_required" string="Decision Due" optional="show"/>
                 <field name="cs_next_action" string="To Do"/>
@@ -52,6 +66,13 @@
                 <attribute name="decoration-warning">is_submit_overdue</attribute>
                 <attribute name="decoration-success">state in ('approved', 'approved_noted', 'closed')</attribute>
                 <attribute name="decoration-muted">state in ('cancelled', 'rejected')</attribute>
+            </list>
+            <list position="inside">
+                <header>
+                    <button name="%(cs_dashboards.action_report_cs_submittal_log)d"
+                            type="action" string="Report (PDF)"
+                            class="btn-secondary" display="always"/>
+                </header>
             </list>
             <field name="date_required_onsite" position="before">
                 <field name="date_required_submit" string="Submit Due" optional="show"/>
