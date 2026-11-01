@@ -8,8 +8,8 @@
         <field name="model">cs.daily.log</field>
         <field name="inherit_id" ref="cs_field.view_cs_dsl_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@string='Labour']" position="before">
-                <xpath expr="//page[@string='Photos']" position="move"/>
+            <xpath expr="//notebook/page[1]" position="before">
+                <xpath expr="//page[field[@name='photo_ids']]" position="move"/>
             </xpath>
         </field>
     </record>
@@ -22,7 +22,8 @@
         <field name="inherit_id" ref="cs_field.view_cs_punch_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[field[@name='description']]" position="before">
-                <xpath expr="//group[group[@string='Before']]" position="move"/>
+                <xpath expr="//group[group[field[@name='photo_before_ids']]]"
+                       position="move"/>
             </xpath>
         </field>
     </record>
@@ -34,8 +35,8 @@
         <field name="model">cs.incident</field>
         <field name="inherit_id" ref="cs_hse.view_cs_incident_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@string='What Happened']" position="before">
-                <xpath expr="//page[@string='Evidence']" position="move"/>
+            <xpath expr="//notebook/page[1]" position="before">
+                <xpath expr="//page[field[@name='photo_ids']]" position="move"/>
             </xpath>
         </field>
     </record>
