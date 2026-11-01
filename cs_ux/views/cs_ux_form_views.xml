@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- RFI form: workflow timeline at the top of the sheet. -->
+    <record id="view_cs_rfi_form_ux" model="ir.ui.view">
+        <field name="name">cs.rfi.form.ux</field>
+        <field name="model">cs.rfi</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_rfi_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/*[1]" position="before">
+                <group string="Workflow" class="mb-3">
+                    <field name="cs_lifecycle" nolabel="1" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Change Order form -->
+    <record id="view_cs_co_form_ux" model="ir.ui.view">
+        <field name="name">cs.change.order.form.ux</field>
+        <field name="model">cs.change.order</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_co_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/*[1]" position="before">
+                <group string="Workflow" class="mb-3">
+                    <field name="cs_lifecycle" nolabel="1" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Submittal form -->
+    <record id="view_cs_submittal_form_ux" model="ir.ui.view">
+        <field name="name">cs.submittal.form.ux</field>
+        <field name="model">cs.submittal</field>
+        <field name="inherit_id" ref="cs_controls.view_cs_submittal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/*[1]" position="before">
+                <group string="Workflow" class="mb-3">
+                    <field name="cs_lifecycle" nolabel="1" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

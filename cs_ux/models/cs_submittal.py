@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from .lifecycle import build_lifecycle_html
 
 
 class CsSubmittal(models.Model):
@@ -11,6 +12,38 @@ class CsSubmittal(models.Model):
     is_submit_overdue = fields.Boolean(compute="_compute_is_submit_overdue")
     cs_next_action = fields.Char(
         string="To Do", compute="_compute_cs_next_action")
+    cs_lifecycle = fields.Html(
+        string="Workflow", compute="_compute_cs_lifecycle", sanitize=False)
+
+    @api.depends("state", "date_received", "date_submitted",
+                 "date_returned", "date_required_submit",
+                 "date_required_onsite")
+    def _compute_cs_lifecycle(self):
+        today = fields.Date.context_today(self)
+        requested = ("requested", "received", "review", "submitted",
+                     "approved", "approved_noted", "revise", "rejected",
+                     "closed")
+        received = ("received", "review", "submitted", "approved",
+                    "approved_noted", "revise", "rejected", "closed")
+        submitted = ("submitted", "approved", "approved_noted", "revise",
+                     "rejected", "closed")
+        approved = ("approved", "approved_noted", "closed")
+        for rec in self:
+            st = rec.state
+            steps = [
+                {"name": "Request from Supplier",
+                 "due": rec.date_required_submit, "done": st in requested,
+                 "completed": False},
+                {"name": "Receive from Supplier", "due": False,
+                 "done": st in received, "completed": rec.date_received},
+                {"name": "Submit for Review",
+                 "due": rec.date_required_submit, "done": st in submitted,
+                 "completed": rec.date_submitted},
+                {"name": "Obtain Approval",
+                 "due": rec.date_required_onsite, "done": st in approved,
+                 "completed": rec.date_returned},
+            ]
+            rec.cs_lifecycle = build_lifecycle_html(steps, today)
 
     @api.depends("date_required_submit", "state")
     def _compute_is_submit_overdue(self):
