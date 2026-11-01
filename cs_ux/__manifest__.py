@@ -2,7 +2,7 @@
     "name": "Construction UX Enhancements",
     "summary": "Presentation-layer polish: colour-coded workflow lists and "
                "next-action ('To Do') hints on RFIs, change orders and submittals",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "author": "Construction Suite",
     "license": "OPL-1",
     "category": "Construction",
