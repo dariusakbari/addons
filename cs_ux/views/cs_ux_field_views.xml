@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Daily Site Log (field "site report"): make Photos the first tab so
+         field staff can attach pictures in one tap on a phone/tablet. -->
+    <record id="view_cs_dsl_form_ux" model="ir.ui.view">
+        <field name="name">cs.daily.log.form.ux</field>
+        <field name="model">cs.daily.log</field>
+        <field name="inherit_id" ref="cs_field.view_cs_dsl_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@string='Labour']" position="before">
+                <xpath expr="//page[@string='Photos']" position="move"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
