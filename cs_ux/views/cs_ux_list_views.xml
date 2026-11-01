@@ -16,7 +16,7 @@
                 <field name="cs_next_action" string="To Do"/>
             </field>
             <field name="state" position="before">
-                <field name="priority" widget="badge" optional="show"/>
+                <field name="priority" widget="priority" optional="show"/>
             </field>
         </field>
     </record>
