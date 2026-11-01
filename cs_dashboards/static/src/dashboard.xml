@@ -7,7 +7,7 @@
                         t-on-click="() => this.toggleValues()"
                         t-attf-title="{{state.hideValues ? 'Show commercial values' : 'Hide commercial values (for screen-sharing / field)'}}">
                     <i t-attf-class="fa {{state.hideValues ? 'fa-eye-slash' : 'fa-eye'}}"/>
-                    <t t-esc="state.hideValues ? 'Values hidden' : 'Hide values'"/>
+                    <t t-esc="'Privacy mode'"/>
                 </button>
             </div>
             <div t-if="state.loading" class="text-center p-5 text-muted">Loading…</div>
