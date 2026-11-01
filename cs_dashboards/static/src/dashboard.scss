@@ -3,6 +3,27 @@
     height: 100%;
     overflow-y: auto;
 
+    .o_cs_toolbar {
+        display: flex; justify-content: flex-end;
+        padding: 12px 16px 0;
+    }
+    .o_cs_privacy {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 12px; font-weight: 600; color: #4b5563;
+        background: #fff; border: 1px solid #d7dde3; border-radius: 6px;
+        padding: 6px 12px; cursor: pointer;
+        i { font-size: 13px; }
+        &:hover { background: #f3f4f6; }
+        &[data-on="1"] { color: #1d6f4f; border-color: #bfe6d1; background: #e9f6ef; }
+    }
+
+    /* Privacy mode: blur commercial figures (labels stay for context). */
+    &.o_cs_hide_values .o_cs_money_val {
+        filter: blur(7px);
+        user-select: none;
+        pointer-events: none;
+    }
+
     .o_cs_wrap {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(540px, 1fr));

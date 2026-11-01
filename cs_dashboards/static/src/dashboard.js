@@ -10,12 +10,40 @@ export class ConstructionDashboard extends Component {
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
-        this.state = useState({ projects: [], loading: true });
+        this.state = useState({
+            projects: [],
+            loading: true,
+            hideValues: this._loadHideValues(),
+        });
         onWillStart(async () => {
             this.state.projects = await this.orm.call(
                 "cs.dashboard", "get_project_kpis", []);
             this.state.loading = false;
         });
+    }
+
+    // Any commercial figures on the board? (only money-trusted roles get them)
+    get hasMoney() {
+        return this.state.projects.some(
+            (p) => p.money && p.money.length);
+    }
+
+    _loadHideValues() {
+        try {
+            return localStorage.getItem("cs_dashboard_hide_values") === "1";
+        } catch (e) {
+            return false;
+        }
+    }
+
+    toggleValues() {
+        this.state.hideValues = !this.state.hideValues;
+        try {
+            localStorage.setItem(
+                "cs_dashboard_hide_values", this.state.hideValues ? "1" : "0");
+        } catch (e) {
+            // storage unavailable — toggle still works for this session
+        }
     }
 
     open(action) {
