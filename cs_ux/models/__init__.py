@@ -4,3 +4,4 @@ from . import cs_submittal
 from . import project_task
 from . import daily_log
 from . import hse
+from . import account_move
